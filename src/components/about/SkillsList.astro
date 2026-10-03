@@ -1,0 +1,19 @@
+---
+import type { Locale } from '../../lib/i18n';
+import { t } from '../../i18n/ui';
+import type { Profile } from '../../lib/content';
+
+interface Props { lang: Locale; skills: Profile['skills'] }
+const { lang, skills } = Astro.props;
+---
+<section id="skills" class="section" aria-labelledby="skills-title">
+  <h2 id="skills-title" class="section-title">{t(lang, 'about.skills')}</h2>
+  <div class="skills-grid">
+    {skills.map((group) => (
+      <div>
+        <h3 class="mono-path">{group.group[lang]}</h3>
+        <ul class="stack-list">{group.items.map((item) => <li>{item}</li>)}</ul>
+      </div>
+    ))}
+  </div>
+</section>
