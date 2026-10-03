@@ -1,0 +1,7 @@
+{
+  "recurse": true,
+  "checkFragments": true,
+  "concurrency": 20,
+  "skip": ["^(?!http://127\\.0\\.0\\.1:)"],
+  "verbosity": "error"
+}
