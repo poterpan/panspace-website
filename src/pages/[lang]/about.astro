@@ -1,0 +1,31 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Timeline from '../../components/about/Timeline.astro';
+import AwardsList from '../../components/about/AwardsList.astro';
+import SkillsList from '../../components/about/SkillsList.astro';
+import ContactSection from '../../components/ContactSection.astro';
+import { langPaths, type Locale } from '../../lib/i18n';
+import { t } from '../../i18n/ui';
+import { getAwards, getExperience, getProfile } from '../../lib/content';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Locale;
+const [profile, experience, awards] = await Promise.all([getProfile(), getExperience(), getAwards()]);
+---
+<BaseLayout lang={lang} path="/about" title={`${t(lang, 'about.title')} — ${profile.name[lang]}`} description={profile.bio[lang]}>
+  <section class="section">
+    <p class="mono-path">~/about</p>
+    <h1 class="page-title">{t(lang, 'about.title')}</h1>
+    <div class="about-intro">
+      <p class="about-bio">{profile.bio[lang]}</p>
+      {profile.photo && (
+        <Picture src={profile.photo} alt={profile.name[lang]} formats={['avif', 'webp']} widths={[240, 480]} sizes="240px" class="about-photo" loading="eager" />
+      )}
+    </div>
+  </section>
+  <Timeline lang={lang} items={experience} />
+  <AwardsList lang={lang} items={awards} />
+  <SkillsList lang={lang} skills={profile.skills} />
+  <ContactSection lang={lang} profile={profile} />
+</BaseLayout>

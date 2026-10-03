@@ -1,4 +1,6 @@
 // Progressive enhancement: reveal "copy email" buttons only when the Clipboard API exists.
+export {};
+
 function bind(): void {
   if (!navigator.clipboard) return;
   document.querySelectorAll<HTMLButtonElement>('button[data-copy-email]').forEach((button) => {

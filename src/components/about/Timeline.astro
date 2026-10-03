@@ -1,0 +1,36 @@
+---
+import type { Locale } from '../../lib/i18n';
+import { experienceTypeLabel, t } from '../../i18n/ui';
+import { EXPERIENCE_TYPES } from '../../lib/taxonomy';
+import { formatPeriod } from '../../lib/dates';
+import type { Experience } from '../../lib/content';
+
+interface Props { lang: Locale; items: Experience[] }
+const { lang, items } = Astro.props;
+const types = EXPERIENCE_TYPES.filter((type) => items.some((i) => i.type === type));
+---
+<section id="timeline" class="section" aria-labelledby="timeline-title">
+  <h2 id="timeline-title" class="section-title">{t(lang, 'about.timeline')}</h2>
+  <div class="timeline-filters" role="group" aria-label={t(lang, 'about.filterLabel')} hidden>
+    <button type="button" class="filter-chip" data-timeline-filter="all" aria-pressed="true">{t(lang, 'about.filter.all')}</button>
+    {types.map((type) => (
+      <button type="button" class="filter-chip" data-timeline-filter={type} aria-pressed="false">{experienceTypeLabel(lang, type)}</button>
+    ))}
+  </div>
+  <div class="timeline-wrap">
+    <span class="timeline-progress" aria-hidden="true"></span>
+    <ol class="timeline">
+      {items.map((item) => (
+        <li class="timeline-item" data-type={item.type}>
+          <span class="mono-path">{formatPeriod(item.start, item.end, lang)} · {experienceTypeLabel(lang, item.type)}</span>
+          <h3>{item.title[lang]}</h3>
+          <p class="timeline-org">{item.org[lang]}</p>
+          <p>{item.description[lang]}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+<script>
+  import '../../scripts/timeline-filter';
+</script>

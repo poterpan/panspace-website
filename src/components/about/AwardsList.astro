@@ -1,0 +1,21 @@
+---
+import type { Locale } from '../../lib/i18n';
+import { t } from '../../i18n/ui';
+import type { Award } from '../../lib/content';
+
+interface Props { lang: Locale; items: Award[] }
+const { lang, items } = Astro.props;
+---
+<section id="awards" class="section" aria-labelledby="awards-title">
+  <h2 id="awards-title" class="section-title">{t(lang, 'about.awards')}</h2>
+  <ol class="awards-list">
+    {items.map((a) => (
+      <li>
+        <span class="mono-path">{a.year} · {t(lang, a.kind === 'paper' ? 'award.paper' : 'award.award')}</span>
+        <strong>{a.name[lang]}</strong>
+        {a.rank && <span class="award-rank">{a.rank[lang]}</span>}
+        {a.org && <span class="mono-path">{a.org[lang]}</span>}
+      </li>
+    ))}
+  </ol>
+</section>
