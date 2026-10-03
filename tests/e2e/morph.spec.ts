@@ -71,7 +71,7 @@ test('browsers without View Transitions still navigate', async ({ page }) => {
 });
 
 test('names are unique on every page', async ({ page }) => {
-  for (const url of ['/zh', '/en', ...orderedSlugs().map((s) => `/zh/work/${s}`)]) {
+  for (const url of ['/zh', '/en', '/zh/work', '/en/work', ...orderedSlugs().map((s) => `/zh/work/${s}`)]) {
     await page.goto(url);
     const names = await allNames(page);
     expect(new Set(names).size, `${url}: ${names.join(', ')}`).toBe(names.length);
