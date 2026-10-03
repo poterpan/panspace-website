@@ -1,0 +1,15 @@
+---
+import type { Locale } from '../lib/i18n';
+import { t } from '../i18n/ui';
+import { getProfile } from '../lib/content';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const profile = await getProfile();
+---
+<footer class="site-footer">
+  <div class="container-ps mono-path">
+    © {new Date().getFullYear()} {profile.name[lang]} ·
+    <a href="https://github.com/poterpan/panspace-website">{t(lang, 'footer.source')}</a>
+  </div>
+</footer>

@@ -1,0 +1,26 @@
+---
+import { localizedPath, type Locale } from '../lib/i18n';
+import { t } from '../i18n/ui';
+import LangSwitch from './LangSwitch.astro';
+
+interface Props { lang: Locale; path: string | null }
+const { lang, path } = Astro.props;
+const links = [
+  { href: localizedPath(lang, '/work'), label: t(lang, 'nav.work'), active: path?.startsWith('/work') ?? false },
+  { href: localizedPath(lang, '/about'), label: t(lang, 'nav.about'), active: path === '/about' },
+];
+---
+<header class="site-nav">
+  <nav class="container-ps" aria-label={t(lang, 'nav.label')}>
+    <a class="brand" href={localizedPath(lang, '/')} aria-current={path === '/' ? 'page' : undefined}>~/panspace</a>
+    <ul>
+      {links.map((l) => <li><a href={l.href} aria-current={l.active ? 'page' : undefined}>{l.label}</a></li>)}
+    </ul>
+    <div class="nav-end">
+      <button type="button" class="kbd-hint kbd" data-palette-open hidden aria-label={t(lang, 'palette.open')}>
+        <kbd>⌘</kbd><kbd>K</kbd>
+      </button>
+      {path !== null && <LangSwitch lang={lang} path={path} />}
+    </div>
+  </nav>
+</header>

@@ -1,11 +1,13 @@
 ---
-import { HTML_LANG, langPaths, type Locale } from '../../lib/i18n';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { langPaths, type Locale } from '../../lib/i18n';
+import { t } from '../../i18n/ui';
+import { getProfile } from '../../lib/content';
 
 export const getStaticPaths = langPaths;
 const lang = Astro.params.lang as Locale;
+const profile = await getProfile();
 ---
-<!doctype html>
-<html lang={HTML_LANG[lang]}>
-  <head><meta charset="utf-8" /><title>Pan's Space</title></head>
-  <body><h1>Pan's Space</h1></body>
-</html>
+<BaseLayout lang={lang} path="/" title={`${profile.name[lang]} — ${t(lang, 'home.title')}`} description={profile.tagline[lang]}>
+  <h1>{profile.name[lang]}</h1>
+</BaseLayout>

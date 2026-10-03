@@ -1,0 +1,11 @@
+---
+import { HTML_LANG, localizedPath, otherLocale, type Locale } from '../lib/i18n';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Locale; path: string }
+const { lang, path } = Astro.props;
+const other = otherLocale(lang);
+---
+<a href={localizedPath(other, path)} hreflang={HTML_LANG[other]} lang={HTML_LANG[other]} data-lang-switch={other} class="mono-path">
+  {t(lang, 'lang.switchTo')}
+</a>

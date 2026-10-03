@@ -1,0 +1,44 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import SeoHead from '../components/SeoHead.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { HTML_LANG, type Locale } from '../lib/i18n';
+import { t } from '../i18n/ui';
+
+interface Props {
+  lang: Locale;
+  path: string | null;
+  title: string;
+  description: string;
+  noindex?: boolean;
+}
+const { lang, path, title, description, noindex = false } = Astro.props;
+---
+<!doctype html>
+<html lang={HTML_LANG[lang]} data-lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07080a" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <SeoHead lang={lang} path={path} title={title} description={description} noindex={noindex} />
+    <Font cssVariable="--font-geist" preload />
+    <Font cssVariable="--font-geist-mono" />
+    <ClientRouter />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t(lang, 'a11y.skip')}</a>
+    <Nav lang={lang} path={path} />
+    <main id="main" tabindex="-1" class="container-ps">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <script>
+      import '../scripts/global';
+    </script>
+  </body>
+</html>

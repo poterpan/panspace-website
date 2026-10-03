@@ -1,0 +1,18 @@
+---
+import { alternateLinks, canonicalUrl } from '../lib/seo';
+import type { Locale } from '../lib/i18n';
+
+interface Props {
+  lang: Locale;
+  path: string | null;
+  title: string;
+  description: string;
+  noindex: boolean;
+}
+const { lang, path, title, description, noindex } = Astro.props;
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex" />}
+{path !== null && <link rel="canonical" href={canonicalUrl(lang, path)} />}
+{path !== null && alternateLinks(path).map((l) => <link rel="alternate" hreflang={l.hreflang} href={l.href} />)}
