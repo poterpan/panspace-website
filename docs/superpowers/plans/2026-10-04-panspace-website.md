@@ -1808,19 +1808,13 @@ if (data.entries.some((e) => e.sha256 === entry.sha256)) {
 
 - [ ] **Step 15: Seed the denylist with the basketball client's identifier (without writing it anywhere)**
 
-Run:
+Look up the client's identifier from your own private notes and add it, and its spelled-out form if you know it, with:
 
 ```bash
-gh repo list poterpan --limit 300 --json name -q '.[].name' | grep -i basketball
+node scripts/denylist-add.mjs '<that term>'
 ```
 
-The token before `-basketball` in those repo names identifies the client. Add it, and its spelled-out form if you know it, with:
-
-```bash
-node scripts/denylist-add.mjs '<that token>'
-```
-
-Expected: `added (len N); 1 entries total`. Do **not** paste the token into the plan, tests, commit message or chat summary.
+Expected: `added (len N); 1 entries total`. Do **not** paste the term into the plan, tests, commit message or chat summary.
 
 - [ ] **Step 16: Run all unit tests**
 
@@ -6461,7 +6455,7 @@ gh repo list poterpan --limit 300 --json name,visibility,description,url > "$SRC
 for r in ChipPot LocMotion ntutbox-website ntutbox-course ntutbox-checkin ntutbox-template-api taipei-traffic-risk-map ntut-ar-campus-tour asr-server IncognitoEarth BaeMoments poterpan; do
   gh api "repos/poterpan/$r/readme" -H 'Accept: application/vnd.github.raw' > "$SRC/$r.md" 2>/dev/null || echo "no README: $r"
 done
-jq -r '.[] | select(.visibility=="PRIVATE") | .name' "$SRC/repos.json" | grep -iE 'ntutbox|spine|radiopaque|cervical|basketball|signin|healthy|uptime' > "$SRC/private-candidates.txt"
+jq -r '.[] | select(.visibility=="PRIVATE") | .name' "$SRC/repos.json" | grep -iE '<keywords of the projects to cover>' > "$SRC/private-candidates.txt"
 while read -r r; do gh api "repos/poterpan/$r/readme" -H 'Accept: application/vnd.github.raw' > "$SRC/private-$r.md" 2>/dev/null || echo "no README: $r"; done < "$SRC/private-candidates.txt"
 ls "$SRC"
 ```
