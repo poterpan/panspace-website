@@ -277,3 +277,10 @@ figcaption { font-size: 0.875rem; color: var(--color-muted); margin-top: 8px; }
   }
   .kbd-hint { display: none; }
 }
+
+/* ---------- 404 ---------- */
+.nf-term { background: #0e1013; border: 1px solid var(--color-line); border-radius: 12px; padding: 16px 18px; font: 14px/1.8 var(--font-mono); max-width: 560px; }
+.nf-term p { margin: 0; }
+.nf-error { color: #f87171; }
+.nf-links { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 8px; font-family: var(--font-mono); }
+.nf-links a { color: var(--color-accent); text-decoration: none; }

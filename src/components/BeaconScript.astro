@@ -1,0 +1,6 @@
+---
+import { beaconConfig } from '../lib/analytics';
+
+const config = beaconConfig(import.meta.env.PUBLIC_CF_BEACON_TOKEN);
+---
+{config && <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={config}></script>}
