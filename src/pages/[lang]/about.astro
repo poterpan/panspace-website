@@ -6,6 +6,7 @@ import AwardsList from '../../components/about/AwardsList.astro';
 import SkillsList from '../../components/about/SkillsList.astro';
 import ContactSection from '../../components/ContactSection.astro';
 import { langPaths, type Locale } from '../../lib/i18n';
+import { canonicalUrl, personJsonLd } from '../../lib/seo';
 import { t } from '../../i18n/ui';
 import { getAwards, getExperience, getProfile } from '../../lib/content';
 
@@ -13,7 +14,12 @@ export const getStaticPaths = langPaths;
 const lang = Astro.params.lang as Locale;
 const [profile, experience, awards] = await Promise.all([getProfile(), getExperience(), getAwards()]);
 ---
-<BaseLayout lang={lang} path="/about" title={`${t(lang, 'about.title')} — ${profile.name[lang]}`} description={profile.bio[lang]}>
+<BaseLayout lang={lang} path="/about" title={`${t(lang, 'about.title')} — ${profile.name[lang]}`} description={profile.bio[lang]}
+  jsonLd={[personJsonLd({
+    name: profile.name[lang], url: canonicalUrl(lang, '/'), email: profile.email, description: profile.tagline[lang],
+    location: profile.location[lang], sameAs: [profile.socials.github, profile.socials.linkedin].filter((u): u is string => Boolean(u)),
+  })]}
+>
   <section class="section">
     <p class="mono-path">~/about</p>
     <h1 class="page-title">{t(lang, 'about.title')}</h1>

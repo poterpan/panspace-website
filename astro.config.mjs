@@ -1,6 +1,7 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
@@ -8,7 +9,14 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'never',
   build: { format: 'file' },
-  integrations: [react(), mdx()],
+  integrations: [
+    react(),
+    mdx(),
+    sitemap({
+      filter: (page) => !page.includes('/og/') && !page.includes('/404') && page !== 'https://panspace.me/' && page !== 'https://panspace.me',
+      i18n: { defaultLocale: 'zh', locales: { zh: 'zh-Hant', en: 'en' } },
+    }),
+  ],
   markdown: { shikiConfig: { theme: 'github-dark-dimmed' } },
   fonts: [
     {
