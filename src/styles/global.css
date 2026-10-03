@@ -277,3 +277,10 @@ figcaption { font-size: 0.875rem; color: var(--color-muted); margin-top: 8px; }
   }
   .kbd-hint { display: none; }
 }
+
+/* ---------- work list ---------- */
+.work-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.work-grid { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.work-grid > li { min-width: 0; }
+.work-card { height: 100%; }
+.work-card .card-cover { margin: 0 0 8px; }

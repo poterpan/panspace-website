@@ -1,0 +1,53 @@
+---
+import { getImage } from 'astro:assets';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import WorkGrid from '../../../components/work/WorkGrid.tsx';
+import { langPaths, localizedPath, type Locale } from '../../../lib/i18n';
+import { categoryLabel, t } from '../../../i18n/ui';
+import { CATEGORIES } from '../../../lib/taxonomy';
+import { formatPeriod } from '../../../lib/dates';
+import { getProjects } from '../../../lib/content';
+import type { WorkCardData, WorkFilter } from '../../../lib/work';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Locale;
+const projects = await getProjects();
+
+const items: WorkCardData[] = await Promise.all(
+  projects.map(async (p) => {
+    const [avif, webp] = await Promise.all([
+      getImage({ src: p.meta.cover, widths: [400, 800], format: 'avif' }),
+      getImage({ src: p.meta.cover, widths: [400, 800], format: 'webp' }),
+    ]);
+    return {
+      slug: p.slug,
+      href: localizedPath(lang, `/work/${p.slug}`),
+      title: p.text[lang].data.title,
+      summary: p.text[lang].data.summary,
+      categories: p.meta.categories,
+      categoryLabels: p.meta.categories.map((c) => categoryLabel(lang, c)),
+      period: formatPeriod(p.meta.date, p.meta.end, lang),
+      cover: {
+        avifSrcset: avif.srcSet.attribute,
+        webpSrcset: webp.srcSet.attribute,
+        src: webp.src,
+        width: p.meta.cover.width,
+        height: p.meta.cover.height,
+        alt: p.meta.coverAlt[lang],
+      },
+    };
+  }),
+);
+const filters: WorkFilter[] = [
+  { key: 'all', label: t(lang, 'work.filter.all') },
+  ...CATEGORIES.map((c) => ({ key: c, label: categoryLabel(lang, c) })),
+];
+---
+<BaseLayout lang={lang} path="/work" title={`${t(lang, 'work.title')} — ${t(lang, 'meta.siteName')}`} description={t(lang, 'work.description')}>
+  <section class="section">
+    <p class="mono-path">~/work</p>
+    <h1 class="page-title">{t(lang, 'work.title')}</h1>
+    <p class="page-lede">{t(lang, 'work.description')}</p>
+    <WorkGrid client:load items={items} filters={filters} filterLabel={t(lang, 'work.filterLabel')} countTemplate={t(lang, 'work.count')} />
+  </section>
+</BaseLayout>
