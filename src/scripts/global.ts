@@ -1,5 +1,6 @@
 import './lang-memory';
 import './copy-email';
+import './spotlight';
 
 declare global {
   interface Window {
