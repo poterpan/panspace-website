@@ -1,0 +1,69 @@
+---
+title: Spine X-ray AI
+summary: Lateral spine X-ray analysis built with a medical center. From one X-ray it locates every vertebra, measures clinical angles and flags implants and anomalies, with every number traceable to how it was derived.
+---
+
+## Background & problem
+
+When spine surgeons read a lateral X-ray, they measure a series of angles (cervical lordosis, thoracic kyphosis, lumbar lordosis) and check for slippage, implants and compression fractures. Most of this is done by hand. It is slow, and two people measuring the same image can disagree by 4–7°.
+
+The clinical team at the medical center cared most about trust. The system must not miss an obvious implant, and it must not produce numbers it can't justify. So the goal was never just accuracy: every number has to show where it came from.
+
+## My role
+
+I own the model training, the post-processing algorithms, the clinical measurements and the backend and frontend. I also work with the surgeons to turn their needs into specs we can verify. The project started as my undergraduate capstone and continued into grad school.
+
+## Approach & technical decisions
+
+<Diagram caption="From one X-ray to structured measurements">
+  <svg viewBox="0 0 760 170" width="100%" role="img" aria-label="Pipeline: X-ray image, vertebra and keypoint detection, post-processing and geometry checks, clinical measurements, implant classification, structured result">
+    <g font-family="ui-monospace, Menlo, monospace" font-size="13" fill="#e7e9ee" text-anchor="middle">
+      <rect x="4" y="40" width="112" height="70" rx="10" fill="#101216" stroke="#3b4250" />
+      <text x="60" y="80">X-ray</text>
+      <rect x="132" y="40" width="140" height="70" rx="10" fill="#101216" stroke="#34d399" />
+      <text x="202" y="70">YOLO11 pose</text>
+      <text x="202" y="92" fill="#8a909c" font-size="11">24 classes × 6 pts</text>
+      <rect x="288" y="40" width="140" height="70" rx="10" fill="#101216" stroke="#3b4250" />
+      <text x="358" y="70">Post-process</text>
+      <text x="358" y="92" fill="#8a909c" font-size="11">geometry, gap fill</text>
+      <rect x="444" y="40" width="140" height="70" rx="10" fill="#101216" stroke="#3b4250" />
+      <text x="514" y="70">Measurements</text>
+      <text x="514" y="92" fill="#8a909c" font-size="11">CL / TK / LL / slip</text>
+      <rect x="600" y="40" width="156" height="70" rx="10" fill="#101216" stroke="#60a5fa" />
+      <text x="678" y="70">Structured result</text>
+      <text x="678" y="92" fill="#8a909c" font-size="11">JSON → overlay UI</text>
+      <rect x="444" y="128" width="140" height="36" rx="10" fill="#101216" stroke="#3b4250" />
+      <text x="514" y="151" font-size="11">Implants: ResNet-18</text>
+    </g>
+    <g stroke="#8a909c" stroke-width="1.5">
+      <line x1="116" y1="75" x2="128" y2="75" />
+      <line x1="272" y1="75" x2="284" y2="75" />
+      <line x1="428" y1="75" x2="440" y2="75" />
+      <line x1="584" y1="75" x2="596" y2="75" />
+      <line x1="584" y1="146" x2="678" y2="146" />
+      <line x1="678" y1="146" x2="678" y2="114" />
+    </g>
+  </svg>
+</Diagram>
+
+**Detection** uses a YOLO11 pose model that finds 24 vertebra classes from C2 to S1, with 6 keypoints each. The keypoints never go straight into the angle math. They first pass through post-processing: drop low-confidence points, check that the geometry makes sense, resolve overlaps and mislabels, then use the monotonic spacing and height of vertebrae to find fused segments and compression fractures.
+
+**Missed vertebrae** are filled in with a spline fitted to their neighbours. Interpolated vertebrae are drawn with dashed outlines, so a clinician can see at a glance what was estimated.
+
+**Measurements** come from endplates derived from the keypoints: cervical lordosis, thoracic kyphosis, lumbar lordosis, T1 slope, and slip percentage with its grade. **Implants** are classified per level (screws, cages, bone cement) by ROI cropping and a ResNet-18 classifier.
+
+The backend is FastAPI, and a React frontend overlays the results on the original image. A side track detects radiopaque markers on X-rays with classical image processing, an ensemble of thresholding, blob and Hough-circle detectors.
+
+## Outcome
+
+<Stat value="24 × 6" label="vertebra classes × keypoints each" note="C2 through S1" />
+
+<Stat value="4–7°" label="disagreement between manual readers" note="measured in this project; the gap the system targets" />
+
+The system turns a single lateral X-ray into a full set of structured measurements, with implant detection built into the main pipeline. The earlier cervical-spine version won an honorable mention in Feng Chia University's communications engineering capstone competition.
+
+## What I learned
+
+In a clinical setting, being defensible matters more than a high score. Surgeons won't use an angle nobody can explain. Marking what was estimated made them trust the rest of the system more, not less.
+
+Working with clinicians also taught me to write the requirement down as a spec we can verify before talking about models.

@@ -1,7 +1,7 @@
-date: "2025-06"
+date: "2025-10"
 end: present
 categories: [ai, web]
-stack: [PyTorch, FastAPI, React, Cloudflare Workers, Queues]
+stack: [PyTorch, YOLO, FastAPI, Google Cloud Run, Cloudflare Workers, D1, R2, Queues, Vue]
 role: { zh: 技術負責人, en: Technical lead }
 featured: 4
 confidential: true

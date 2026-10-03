@@ -1,0 +1,26 @@
+---
+title: asr-server
+summary: A self-hosted meeting transcription service. Upload a long recording and get a speaker-labelled, timestamped transcript in Taiwanese Traditional Chinese, formatted to hand straight to an LLM. Open source.
+---
+
+## Background & problem
+
+To have an LLM summarise a meeting, you first need a transcript that says who said what. Cloud services mean uploading the recording to a third party, and their Chinese output is often Simplified or uses mainland phrasing.
+
+## My role
+
+Built it alone: the transcription pipeline, the API, the web UI and the setup guide.
+
+## Approach & technical decisions
+
+FunASR chains four models: voice activity detection, speech recognition, punctuation and speaker diarization. They load onto the GPU once and are shared across jobs. OpenCC then converts the text to Taiwanese Traditional Chinese.
+
+The output format is designed for LLMs. Consecutive turns by the same speaker are merged and timestamps are kept coarse, which cuts about 80% of the formatting tokens compared with line-per-segment Markdown. The service is FastAPI with a single-file web UI that needs no build step, and can be protected with a bearer token or Cloudflare Access.
+
+## Outcome
+
+Runs end to end on a single RTX 3090. The source is on GitHub.
+
+## What I learned
+
+The real reader of a transcript is an LLM, so the output format deserves the same care as an API: keep what the model needs and drop what only burns tokens.

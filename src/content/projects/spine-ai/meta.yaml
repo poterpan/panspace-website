@@ -1,0 +1,8 @@
+date: "2024-11"
+end: present
+categories: [ai, research]
+stack: [Python, PyTorch, YOLO11, torchvision, OpenCV, FastAPI, React]
+role: { zh: 研究與系統開發, en: Researcher and developer }
+featured: 2
+cover: ./images/cover.png
+coverAlt: { zh: 脊椎 X 光 AI 封面, en: Spine X-ray AI cover }

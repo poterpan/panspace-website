@@ -1,1 +1,41 @@
-[]
+- id: fcu-capstone-2024
+  year: 2024
+  kind: award
+  name: { zh: 頸椎影像及植入物動態分析之深度學習模型, en: Deep-learning analysis of cervical spine X-rays and implants }
+  rank: { zh: 佳作, en: Honorable mention }
+  org: { zh: 逢甲大學通訊工程學系專題競賽, en: "Feng Chia University Communications Engineering capstone competition" }
+- id: maker-2024-focus-moment
+  year: 2024
+  kind: award
+  name: { zh: 專注時刻, en: Focus Moment }
+  rank: { zh: 三等獎, en: Third prize }
+  org: { zh: 海峽兩岸青年創客大賽, en: Cross-Strait Youth Maker Competition }
+- id: paper-2024-defect
+  year: 2024
+  kind: paper
+  name: { zh: 金屬零件單瑕疵檢測, en: Single-defect detection in metal parts }
+  org: { zh: 2024 系統性創新研討會與專案競賽, en: 2024 Conference and Project Competition on Systematic Innovation }
+- id: maic-2023-healthy-baby
+  year: 2023
+  kind: award
+  name: { zh: 健康寶寶, en: Healthy Baby }
+  rank: { zh: 台灣區二等獎、大中華區二等獎, en: "Second prize, Taiwan final and Greater China final" }
+  org: { zh: 移動應用創新賽, en: Mobile Application Innovation Contest }
+- id: maker-2023-love-home
+  year: 2023
+  kind: award
+  name: { zh: 享愛家園, en: BaeMoments }
+  rank: { zh: 二等獎, en: Second prize }
+  org: { zh: 海峽兩岸青年創客大賽, en: Cross-Strait Youth Maker Competition }
+- id: defect-contest-2023
+  year: 2023
+  kind: award
+  name: { zh: 粉末冶金零件瑕疵檢測, en: Defect detection for powder-metallurgy parts }
+  rank: { zh: 第三名, en: Third place }
+  org: { zh: 人工智慧瑕疵檢驗競賽, en: AI Defect Inspection Competition }
+- id: maic-2022-incognito-earth
+  year: 2022
+  kind: award
+  name: { zh: 無痕地球, en: Incognito Earth }
+  rank: { zh: 佳作, en: Honorable mention }
+  org: { zh: 移動應用創新賽, en: Mobile Application Innovation Contest }

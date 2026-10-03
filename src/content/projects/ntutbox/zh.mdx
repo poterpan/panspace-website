@@ -1,30 +1,52 @@
 ---
 title: NTUTBox 北科盒子
-summary: 已上架 App Store 的北科課表 App，以及一個人做出的官網、排課器、打卡系統與狀態頁。
+summary: 北科學生用的校務 App，已上架 App Store。課表、成績、公告與小工具整合在一個 App 裡，周邊還有排課網站、QR Code 簽到系統、節次範本 API 與服務狀態頁，全部由我一個人開發與維運。
 ---
-
-import cover from './images/cover.png';
+import app1 from './images/app-1.webp';
+import app2 from './images/app-2.webp';
+import app4 from './images/app-4.webp';
+import app8 from './images/app-8.webp';
+import planner from './images/course-planner.png';
 
 ## 背景與問題
 
-北科學生查課表、排課需要在多個系統之間切換。
+北科的課表、成績、校園公告和選課分散在好幾個校務系統裡，每個都要各自登入，手機上也不好用。想知道「下一節在哪間教室」，往往要先開瀏覽器、登入、再找到正確的頁面。
+
+我想做的是一個每天打開就有答案的 App：登入一次，課表、成績和公告都在手邊，主畫面的小工具直接顯示下一節課。
 
 ## 我的角色
 
-獨立開發：產品設計、iOS App、網站與後端服務。
+一個人負責整個產品：產品規劃、iOS App、官網、排課網站、資料管線、後端服務、部署與監控。
 
 ## 做法與技術決策
 
-App 以 SwiftUI 開發，網站與服務部署在 Cloudflare。
+**App 本體**用 SwiftUI 開發，SwiftData 存本機資料，課表離線也能看。登入走學校的 SSO 流程，密碼只存在 iOS Keychain，不經過我的伺服器。WidgetKit 小工具透過 App Group 和主程式共用資料，依目前時間判斷要顯示「進行中」還是「下一節」。
+
+**排課網站** [course.ntutbox.com](https://course.ntutbox.com) 只負責規劃：不登入，也不代替學生操作學校系統。Python 爬蟲在 GitHub Actions 上排程，每天更新課程與人數、每週更新課綱與教室課表，產出的 JSON 發佈到 Cloudflare R2。網頁是 Next.js 靜態輸出，全文搜尋在前端完成。排好的課表透過 Universal Link 帶進 App，送出前一律由學生本人確認。這部分[開源在 GitHub](https://github.com/poterpan/ntutbox-course)。
+
+**其他服務**都跑在 Cloudflare 上：[QR Code 簽到系統](https://github.com/poterpan/ntutbox-checkin)（Next.js、D1、KV，QR Code 每 30 秒輪換，搭配一次性 nonce 防重放）、[節次範本 API](https://github.com/poterpan/ntutbox-template-api)（讓其他學校的課表也能匯入），以及監控校務系統的服務狀態頁。App 出問題時，可以先看狀態頁判斷是不是學校系統掛了。
 
 ## 成果
 
-<Stat value="App Store" label="已上架" />
+<Stat value="3.3 萬筆" label="開課資料" note="排課網站涵蓋 110-1 起 11 個學期" />
 
-<Gallery label="NTUTBox 截圖" images={[{ src: cover, alt: 'NTUTBox 封面' }]} />
+<Stat value="6 個" label="即時監控的校務系統" note="服務狀態頁" />
 
-App 已上架 App Store，周邊服務持續營運中。
+<Gallery
+  label="北科盒子截圖"
+  images={[
+    { src: app1, alt: 'App 的今日總覽：進行中的課程、待辦事項與近期行程' },
+    { src: app4, alt: '成績查詢頁：GPA 與班級、系所排名' },
+    { src: app8, alt: '北科小郵差：分類瀏覽校園公告' },
+    { src: app2, alt: '登入畫面，使用學校帳號登入' },
+    { src: planner, alt: '排課網站：週課表、課程庫搜尋與學分統計' },
+  ]}
+/>
+
+App 已上架 App Store，官網、排課網站、簽到系統與狀態頁都在線上運作。排課網站和範本 API 以 MIT 授權開源。
 
 ## 學到什麼
 
-一個人維運一整套產品，需要把部署與監控自動化。
+一個人維運一整套產品，能省的人力都得交給自動化：爬蟲排程、部署、資料驗證和監控都要能自己跑，壞掉時也要第一時間知道。
+
+另一個體會是界線要畫清楚。網頁只做規劃、送件只在 App 裡由本人確認，這條線讓系統容易解釋，也比較安全。
