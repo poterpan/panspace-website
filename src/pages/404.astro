@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout lang="en" path={null} title="404 · command not found — Pan's Space" description="This page does not exist." noindex>
+  <section class="section not-found">
+    <h1 class="page-title">404</h1>
+    <div class="nf-term" aria-label="Terminal">
+      <p><span class="boot-prompt">$ </span>cd <span data-missing-path>this-page</span></p>
+      <p class="nf-error">zsh: command not found</p>
+      <p class="mono-path">找不到這個頁面 · This page doesn't exist.</p>
+    </div>
+    <ul class="nf-links">
+      <li><a href="/zh">~/zh — 回首頁</a></li>
+      <li><a href="/en">~/en — Home</a></li>
+      <li><a href="/zh/work">~/zh/work — 作品</a></li>
+      <li><a href="/en/work">~/en/work — Work</a></li>
+    </ul>
+  </section>
+  <script>
+    function showPath(): void {
+      const el = document.querySelector('[data-missing-path]');
+      if (el) el.textContent = window.location.pathname;
+    }
+    document.addEventListener('astro:page-load', showPath);
+  </script>
+</BaseLayout>
