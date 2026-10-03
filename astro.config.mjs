@@ -9,6 +9,7 @@ export default defineConfig({
   trailingSlash: 'never',
   build: { format: 'file' },
   integrations: [react(), mdx()],
+  markdown: { shikiConfig: { theme: 'github-dark-dimmed' } },
   fonts: [
     {
       name: 'Geist',

@@ -1,0 +1,67 @@
+---
+import { Picture } from 'astro:assets';
+import { render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ProjectFacts from '../../../components/project/ProjectFacts.astro';
+import ProjectNav from '../../../components/project/ProjectNav.astro';
+import { mdxComponents } from '../../../components/mdx';
+import { LOCALES, type Locale } from '../../../lib/i18n';
+import { categoryLabel, t } from '../../../i18n/ui';
+import { getProjects, type ProjectEntry } from '../../../lib/content';
+import { neighbors, visibleLinks } from '../../../lib/projects';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.flatMap((project) =>
+    LOCALES.map((lang) => ({ params: { lang, slug: project.slug }, props: { project, ordered: projects } })),
+  );
+}
+
+interface Props { project: ProjectEntry; ordered: ProjectEntry[] }
+const lang = Astro.params.lang as Locale;
+const { project, ordered } = Astro.props;
+const body = project.text[lang];
+const { Content, headings } = await render(body);
+const toc = headings.filter((h) => h.depth === 2);
+const { prev, next } = neighbors(ordered, project.slug);
+const links = visibleLinks(project.meta);
+---
+<BaseLayout lang={lang} path={`/work/${project.slug}`} title={`${body.data.title} — ${t(lang, 'meta.siteName')}`} description={body.data.summary}>
+  <article class="project">
+    <header class="project-header">
+      <p class="mono-path">~/work/{project.slug}</p>
+      <h1 class="project-title">{body.data.title}</h1>
+      <p class="project-summary">{body.data.summary}</p>
+      <ul class="tag-list">{project.meta.categories.map((c) => <li>{categoryLabel(lang, c)}</li>)}</ul>
+      {links.length > 0 && (
+        <ul class="link-list">
+          {links.map((l) => <li><a href={l.href} target="_blank" rel="noopener">{t(lang, `project.links.${l.kind}`)} ↗</a></li>)}
+        </ul>
+      )}
+    </header>
+    <div class="project-hero">
+      <Picture
+        src={project.meta.cover}
+        alt={project.meta.coverAlt[lang]}
+        formats={['avif', 'webp']}
+        widths={[640, 1024, 1600]}
+        sizes="(min-width: 1120px) 1120px, 100vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+    <details class="project-facts-mobile">
+      <summary>{t(lang, 'project.details')}</summary>
+      <ProjectFacts lang={lang} project={project} toc={toc} />
+    </details>
+    <div class="project-layout">
+      <div class="project-body prose-ps">
+        <Content components={mdxComponents} />
+      </div>
+      <aside class="project-facts-desktop" aria-label={t(lang, 'project.details')}>
+        <ProjectFacts lang={lang} project={project} toc={toc} />
+      </aside>
+    </div>
+    <ProjectNav lang={lang} prev={prev} next={next} />
+  </article>
+</BaseLayout>

@@ -1,0 +1,26 @@
+---
+import type { Locale } from '../../lib/i18n';
+import { t } from '../../i18n/ui';
+import { formatPeriod } from '../../lib/dates';
+import type { ProjectEntry } from '../../lib/content';
+
+interface Props { lang: Locale; project: ProjectEntry; toc: { slug: string; text: string }[] }
+const { lang, project, toc } = Astro.props;
+---
+<div class="project-facts">
+  {project.meta.confidential && <p class="confidential-note" data-confidential>{t(lang, 'project.confidential')}</p>}
+  <dl>
+    <dt class="mono-path">{t(lang, 'project.role')}</dt>
+    <dd>{project.meta.role[lang]}</dd>
+    <dt class="mono-path">{t(lang, 'project.period')}</dt>
+    <dd>{formatPeriod(project.meta.date, project.meta.end, lang)}</dd>
+    <dt class="mono-path">{t(lang, 'project.stack')}</dt>
+    <dd><ul class="stack-list">{project.meta.stack.map((s) => <li>{s}</li>)}</ul></dd>
+  </dl>
+  {toc.length > 0 && (
+    <nav aria-label={t(lang, 'project.toc')}>
+      <p class="mono-path">{t(lang, 'project.toc')}</p>
+      <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+    </nav>
+  )}
+</div>
