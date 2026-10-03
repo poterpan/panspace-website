@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BentoGrid from '../../components/home/BentoGrid.astro';
+import BootOverlay from '../../components/home/BootOverlay.astro';
 import ExperienceSnippet from '../../components/home/ExperienceSnippet.astro';
 import ContactSection from '../../components/ContactSection.astro';
 import { langPaths, type Locale } from '../../lib/i18n';
@@ -8,19 +9,19 @@ import { t } from '../../i18n/ui';
 import { getAwards, getExperience, getProfile, getProjects } from '../../lib/content';
 import { featuredForHome } from '../../lib/projects';
 import { awardYearRange, recentExperience } from '../../lib/experience';
+import { bootGateScript, bootLines } from '../../lib/boot';
 
 export const getStaticPaths = langPaths;
 const lang = Astro.params.lang as Locale;
 const [projects, profile, experience, awards] = await Promise.all([getProjects(), getProfile(), getExperience(), getAwards()]);
+const featured = featuredForHome(projects);
 ---
 <BaseLayout lang={lang} path="/" title={`${profile.name[lang]} — ${t(lang, 'home.title')}`} description={profile.tagline[lang]}>
-  <BentoGrid
-    lang={lang}
-    profile={profile}
-    featured={featuredForHome(projects)}
-    awardsCount={awards.length}
-    awardYears={awardYearRange(awards)}
-  />
+  <Fragment slot="head">
+    <script is:inline set:html={bootGateScript()} />
+  </Fragment>
+  <BootOverlay lines={bootLines(profile.name.en, featured.map((p) => p.slug))} />
+  <BentoGrid lang={lang} profile={profile} featured={featured} awardsCount={awards.length} awardYears={awardYearRange(awards)} />
   <ExperienceSnippet lang={lang} items={recentExperience(experience, 5)} />
   <ContactSection lang={lang} profile={profile} />
 </BaseLayout>

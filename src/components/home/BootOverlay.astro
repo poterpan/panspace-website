@@ -1,0 +1,19 @@
+---
+import type { BootLine } from '../../lib/boot';
+
+interface Props { lines: BootLine[] }
+const { lines } = Astro.props;
+---
+<div id="boot" class="boot" aria-hidden="true" data-lines={JSON.stringify(lines)}>
+  <div class="boot-term">
+    <div class="boot-bar"><i></i><i></i><i></i></div>
+    {lines.map((line, i) => (
+      <div class="boot-line" data-kind={line.kind} data-index={i} style={`--chars:${line.text.length}`}>
+        {line.kind === 'cmd' && <span class="boot-prompt">$ </span>}<span class="boot-text">{line.text}</span>
+      </div>
+    ))}
+  </div>
+</div>
+<script>
+  import '../../scripts/boot';
+</script>
