@@ -1,0 +1,37 @@
+---
+// Language redirector. Stored choice wins, then navigator.languages (the browser's
+// Accept-Language list). Without JS the visitor picks a language from the links.
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pan's Space</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>
+      import { pickLocale } from '../lib/i18n';
+      import { LANG_KEY, safeGet } from '../lib/storage';
+
+      const lang = pickLocale({
+        stored: safeGet(() => window.localStorage, LANG_KEY),
+        languages: navigator.languages?.length ? navigator.languages : [navigator.language],
+      });
+      window.location.replace(`/${lang}`);
+    </script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #07080a; color: #e7e9ee; font: 16px/1.6 system-ui, "PingFang TC", "Microsoft JhengHei", sans-serif; }
+      a { color: #34d399; }
+      ul { list-style: none; padding: 0; display: flex; gap: 24px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Pan's Space</h1>
+      <ul>
+        <li><a href="/zh" hreflang="zh-Hant" lang="zh-Hant">中文</a></li>
+        <li><a href="/en" hreflang="en" lang="en">English</a></li>
+      </ul>
+    </main>
+  </body>
+</html>

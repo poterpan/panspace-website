@@ -1,0 +1,11 @@
+---
+import { HTML_LANG, langPaths, type Locale } from '../../lib/i18n';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Locale;
+---
+<!doctype html>
+<html lang={HTML_LANG[lang]}>
+  <head><meta charset="utf-8" /><title>Pan's Space</title></head>
+  <body><h1>Pan's Space</h1></body>
+</html>
