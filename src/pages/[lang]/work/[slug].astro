@@ -9,6 +9,7 @@ import { LOCALES, type Locale } from '../../../lib/i18n';
 import { categoryLabel, t } from '../../../i18n/ui';
 import { getProjects, type ProjectEntry } from '../../../lib/content';
 import { neighbors, visibleLinks } from '../../../lib/projects';
+import { vtStyle } from '../../../lib/transitions';
 
 export async function getStaticPaths() {
   const projects = await getProjects();
@@ -27,10 +28,10 @@ const { prev, next } = neighbors(ordered, project.slug);
 const links = visibleLinks(project.meta);
 ---
 <BaseLayout lang={lang} path={`/work/${project.slug}`} title={`${body.data.title} — ${t(lang, 'meta.siteName')}`} description={body.data.summary}>
-  <article class="project">
-    <header class="project-header">
+  <article class="project" style={vtStyle(project.slug)}>
+    <header class="project-header vt-card">
       <p class="mono-path">~/work/{project.slug}</p>
-      <h1 class="project-title">{body.data.title}</h1>
+      <h1 class="project-title vt-title">{body.data.title}</h1>
       <p class="project-summary">{body.data.summary}</p>
       <ul class="tag-list">{project.meta.categories.map((c) => <li>{categoryLabel(lang, c)}</li>)}</ul>
       {links.length > 0 && (
@@ -43,6 +44,7 @@ const links = visibleLinks(project.meta);
       <Picture
         src={project.meta.cover}
         alt={project.meta.coverAlt[lang]}
+        class="vt-cover"
         formats={['avif', 'webp']}
         widths={[640, 1024, 1600]}
         sizes="(min-width: 1120px) 1120px, 100vw"

@@ -235,3 +235,16 @@ html[data-boot="folding"] .boot { animation: boot-fold 400ms cubic-bezier(0.7, 0
 .mdx-compare-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 .mdx-compare img, .mdx-diagram img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--color-line); }
 figcaption { font-size: 0.875rem; color: var(--color-muted); margin-top: 8px; }
+
+/* ---------- view transitions (keep unlayered) ---------- */
+.vt-card { view-transition-name: var(--vt-card, none); }
+.vt-title { view-transition-name: var(--vt-title, none); }
+.vt-cover { view-transition-name: var(--vt-cover, none); }
+::view-transition-group(*) { animation-duration: 420ms; animation-timing-function: cubic-bezier(0.2, 0.9, 0.2, 1); }
+@media (prefers-reduced-motion: reduce) {
+  .vt-card, .vt-title, .vt-cover { view-transition-name: none; }
+  html::view-transition-old(root) { animation: 160ms ease both ps-fade-out !important; }
+  html::view-transition-new(root) { animation: 160ms ease both ps-fade-in !important; }
+}
+@keyframes ps-fade-out { to { opacity: 0; } }
+@keyframes ps-fade-in { from { opacity: 0; } }
