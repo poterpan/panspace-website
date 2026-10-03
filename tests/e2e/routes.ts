@@ -17,8 +17,8 @@ export function projectMetas(): MetaLite[] {
 export const orderedSlugs = (): string[] => sortForList(projectMetas()).map((p) => p.slug);
 export const featuredSlugs = (): string[] => featuredForHome(projectMetas()).map((p) => p.slug);
 
-/** Language-less paths that exist. Later tasks add '/work', project pages and '/about'. */
+/** Language-less paths that exist. Later tasks add '/work' and '/about'. */
 export const STATIC_PATHS = ['/'];
 export function allPaths(): string[] {
-  return [...STATIC_PATHS];
+  return [...STATIC_PATHS, ...orderedSlugs().map((s) => `/work/${s}`)];
 }

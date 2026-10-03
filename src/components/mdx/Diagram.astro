@@ -1,0 +1,11 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props { src?: ImageMetadata; alt?: string; caption?: string }
+const { src, alt = '', caption } = Astro.props;
+---
+<figure class="mdx-diagram">
+  {src ? <Picture src={src} alt={alt} formats={['avif', 'webp']} widths={[640, 1024]} sizes="(min-width: 1024px) 760px, 100vw" /> : <slot />}
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

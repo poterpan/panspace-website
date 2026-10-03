@@ -1,0 +1,19 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+type Side = { src: ImageMetadata; alt: string; label: string };
+interface Props { before: Side; after: Side; caption?: string }
+const { before, after, caption } = Astro.props;
+---
+<figure class="mdx-compare">
+  <div class="mdx-compare-grid">
+    {[before, after].map((side) => (
+      <div>
+        <span class="mono-path">{side.label}</span>
+        <Picture src={side.src} alt={side.alt} formats={['avif', 'webp']} widths={[480, 800]} sizes="(min-width: 768px) 380px, 100vw" />
+      </div>
+    ))}
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
