@@ -1,0 +1,9 @@
+date: "2025-06"
+end: present
+categories: [ai, web]
+stack: [PyTorch, FastAPI, React, Cloudflare Workers, Queues]
+role: { zh: 技術負責人, en: Technical lead }
+featured: 4
+confidential: true
+cover: ./images/cover.png
+coverAlt: { zh: 籃球動作分析封面, en: Basketball motion analysis cover }

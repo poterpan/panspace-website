@@ -1,0 +1,21 @@
+name: { zh: Poter Pan, en: Poter Pan }
+tagline:
+  zh: 把想法做成上線產品的開發者
+  en: I build products that ship.
+bio:
+  zh: 我是 Poter，在台北念研究所，做 iOS、全端與 AI/CV。我喜歡把想法一路做到上線，從 App、網站到背後的服務都自己來。
+  en: I'm Poter, a graduate student in Taipei working across iOS, full-stack and AI/CV. I like taking ideas all the way to production — the app, the website and the services behind them.
+location: { zh: 台北, en: "Taipei, Taiwan" }
+email: poter.pan@panspace.me
+freelance: open
+socials:
+  github: https://github.com/poterpan
+skills:
+  - group: { zh: iOS, en: iOS }
+    items: [Swift, SwiftUI]
+  - group: { zh: Web, en: Web }
+    items: [TypeScript, React, Next.js, Astro, Vue]
+  - group: { zh: 雲端, en: Cloud }
+    items: [Cloudflare Workers, D1, R2, Queues]
+  - group: { zh: AI / CV, en: AI / CV }
+    items: [PyTorch, YOLO, FastAPI]

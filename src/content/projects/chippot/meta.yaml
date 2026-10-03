@@ -1,0 +1,9 @@
+date: "2025-01"
+categories: [web]
+stack: [TypeScript, Cloudflare Workers, D1, R2, Discord]
+role: { zh: 獨立開發, en: Solo developer }
+links:
+  github: https://github.com/poterpan/ChipPot
+featured: 3
+cover: ./images/cover.png
+coverAlt: { zh: ChipPot 封面, en: ChipPot cover }

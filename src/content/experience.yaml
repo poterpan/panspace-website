@@ -1,0 +1,21 @@
+- id: ios-club-teaching
+  type: teaching
+  start: "2022-08"
+  end: "2023-07"
+  title: { zh: 第 6 屆教學, en: Instructor (6th term) }
+  org: { zh: iOS Club, en: iOS Club }
+  description: { zh: 負責 iOS 開發課程教學。, en: "Taught the club's iOS development course." }
+- id: ios-club-president
+  type: teaching
+  start: "2023-08"
+  end: "2024-07"
+  title: { zh: 第 7 屆社長, en: President (7th term) }
+  org: { zh: iOS Club, en: iOS Club }
+  description: { zh: 帶領社團規劃課程與活動。, en: "Led the club, planning courses and events." }
+- id: ios-club-webmaster
+  type: teaching
+  start: "2024-08"
+  end: "2025-07"
+  title: { zh: 第 8 屆網管, en: Webmaster (8th term) }
+  org: { zh: iOS Club, en: iOS Club }
+  description: { zh: 維護社團網站與服務。, en: "Maintained the club's website and services." }
