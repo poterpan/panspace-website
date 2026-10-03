@@ -1,0 +1,26 @@
+---
+import type { Locale } from '../lib/i18n';
+import { t } from '../i18n/ui';
+import { resumeHref } from '../lib/resume';
+import type { Profile } from '../lib/content';
+
+interface Props { lang: Locale; profile: Profile }
+const { lang, profile } = Astro.props;
+const resume = resumeHref(lang);
+---
+<section id="contact" class="section" aria-labelledby="contact-title">
+  <h2 id="contact-title" class="section-title">{t(lang, 'contact.title')}</h2>
+  <ul class="contact-list">
+    <li>
+      <span class="mono-path">{t(lang, 'contact.email')}</span>
+      <a href={`mailto:${profile.email}`}>{profile.email}</a>
+      <button type="button" data-copy-email={profile.email} data-copied-label={t(lang, 'contact.copied')} hidden>
+        {t(lang, 'contact.copyEmail')}
+      </button>
+      <span class="mono-path" data-copy-status role="status" aria-live="polite"></span>
+    </li>
+    {resume && <li><a href={resume} download>{t(lang, 'contact.resume')}</a></li>}
+    <li><a href={profile.socials.github} rel="me noopener" target="_blank">{t(lang, 'contact.github')}</a></li>
+    {profile.socials.linkedin && <li><a href={profile.socials.linkedin} rel="me noopener" target="_blank">{t(lang, 'contact.linkedin')}</a></li>}
+  </ul>
+</section>

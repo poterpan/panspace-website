@@ -1,0 +1,13 @@
+---
+import { localizedPath, type Locale } from '../../lib/i18n';
+import type { Profile } from '../../lib/content';
+
+interface Props { lang: Locale; profile: Profile }
+const { lang, profile } = Astro.props;
+---
+<a href={localizedPath(lang, '/about')} class="bento-card bento-hero" data-spotlight>
+  <span class="mono-path">~/panspace · $ whoami</span>
+  <h1>{profile.name[lang]}</h1>
+  <p class="tagline">{profile.tagline[lang]}</p>
+  <p class="mono-path">{profile.location[lang]}</p>
+</a>

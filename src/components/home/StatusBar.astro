@@ -1,0 +1,14 @@
+---
+import type { Locale } from '../../lib/i18n';
+import { t } from '../../i18n/ui';
+import type { Profile } from '../../lib/content';
+
+interface Props { lang: Locale; profile: Profile }
+const { lang, profile } = Astro.props;
+---
+<div class="bento-card status-bar" data-spotlight>
+  <span><span class="status-dot" data-status={profile.freelance} aria-hidden="true"></span>{t(lang, profile.freelance === 'open' ? 'status.open' : 'status.busy')}</span>
+  <a href={`mailto:${profile.email}`}>{profile.email}</a>
+  <a href={profile.socials.github} rel="me noopener" target="_blank">{t(lang, 'contact.github')}</a>
+  {profile.socials.linkedin && <a href={profile.socials.linkedin} rel="me noopener" target="_blank">{t(lang, 'contact.linkedin')}</a>}
+</div>

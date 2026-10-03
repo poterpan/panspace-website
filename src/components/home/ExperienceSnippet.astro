@@ -1,0 +1,21 @@
+---
+import { localizedPath, type Locale } from '../../lib/i18n';
+import { t } from '../../i18n/ui';
+import { formatPeriod } from '../../lib/dates';
+import type { Experience } from '../../lib/content';
+
+interface Props { lang: Locale; items: Experience[] }
+const { lang, items } = Astro.props;
+---
+<section id="experience" class="section" aria-labelledby="experience-title">
+  <h2 id="experience-title" class="section-title">{t(lang, 'home.experience')}</h2>
+  <ol class="timeline-mini">
+    {items.map((item) => (
+      <li>
+        <span class="mono-path">{formatPeriod(item.start, item.end, lang)}</span>
+        <span><strong>{item.title[lang]}</strong> · {item.org[lang]}</span>
+      </li>
+    ))}
+  </ol>
+  <a class="more-link" href={`${localizedPath(lang, '/about')}#timeline`}>{t(lang, 'home.experienceMore')}</a>
+</section>

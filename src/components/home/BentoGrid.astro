@@ -1,0 +1,29 @@
+---
+import type { Locale } from '../../lib/i18n';
+import { t } from '../../i18n/ui';
+import type { Profile, ProjectEntry } from '../../lib/content';
+import HeroCard from './HeroCard.astro';
+import ProjectCard from './ProjectCard.astro';
+import AwardsCard from './AwardsCard.astro';
+import StackCard from './StackCard.astro';
+import StatusBar from './StatusBar.astro';
+
+interface Props {
+  lang: Locale;
+  profile: Profile;
+  featured: ProjectEntry[];
+  awardsCount: number;
+  awardYears: [number, number] | null;
+}
+const { lang, profile, featured, awardsCount, awardYears } = Astro.props;
+const SLOTS = ['p1', 'p2', 'p3', 'p4', 'p5'] as const;
+---
+<section class="bento" aria-label={t(lang, 'home.bentoLabel')}>
+  <HeroCard lang={lang} profile={profile} />
+  {featured.slice(0, SLOTS.length).map((project, i) => (
+    <ProjectCard lang={lang} project={project} slot={SLOTS[i]!} eager={i === 0} />
+  ))}
+  <AwardsCard lang={lang} count={awardsCount} years={awardYears} />
+  <StackCard lang={lang} skills={profile.skills} />
+  <StatusBar lang={lang} profile={profile} />
+</section>

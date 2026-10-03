@@ -1,13 +1,26 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import BentoGrid from '../../components/home/BentoGrid.astro';
+import ExperienceSnippet from '../../components/home/ExperienceSnippet.astro';
+import ContactSection from '../../components/ContactSection.astro';
 import { langPaths, type Locale } from '../../lib/i18n';
 import { t } from '../../i18n/ui';
-import { getProfile } from '../../lib/content';
+import { getAwards, getExperience, getProfile, getProjects } from '../../lib/content';
+import { featuredForHome } from '../../lib/projects';
+import { awardYearRange, recentExperience } from '../../lib/experience';
 
 export const getStaticPaths = langPaths;
 const lang = Astro.params.lang as Locale;
-const profile = await getProfile();
+const [projects, profile, experience, awards] = await Promise.all([getProjects(), getProfile(), getExperience(), getAwards()]);
 ---
 <BaseLayout lang={lang} path="/" title={`${profile.name[lang]} — ${t(lang, 'home.title')}`} description={profile.tagline[lang]}>
-  <h1>{profile.name[lang]}</h1>
+  <BentoGrid
+    lang={lang}
+    profile={profile}
+    featured={featuredForHome(projects)}
+    awardsCount={awards.length}
+    awardYears={awardYearRange(awards)}
+  />
+  <ExperienceSnippet lang={lang} items={recentExperience(experience, 5)} />
+  <ContactSection lang={lang} profile={profile} />
 </BaseLayout>

@@ -1,4 +1,5 @@
 import './lang-memory';
+import './copy-email';
 
 declare global {
   interface Window {

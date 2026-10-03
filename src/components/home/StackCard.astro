@@ -1,0 +1,13 @@
+---
+import { localizedPath, type Locale } from '../../lib/i18n';
+import { t } from '../../i18n/ui';
+import type { Profile } from '../../lib/content';
+
+interface Props { lang: Locale; skills: Profile['skills'] }
+const { lang, skills } = Astro.props;
+const preview = skills.flatMap((g) => g.items.slice(0, 2)).slice(0, 8);
+---
+<a href={`${localizedPath(lang, '/about')}#skills`} class="bento-card stack-card" data-spotlight>
+  <span class="mono-path">{t(lang, 'bento.stack')}</span>
+  <p class="mono-path" style="color: var(--color-text); line-height: 1.8; margin: 0">{preview.join(' · ')}</p>
+</a>
