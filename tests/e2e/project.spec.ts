@@ -15,6 +15,17 @@ test.describe('project pages', () => {
     });
   }
 
+  test('prose has vertical rhythm, bulleted lists and bold headings', async ({ page }) => {
+    await page.goto(`/zh/work/${orderedSlugs()[0]}`);
+    const prose = page.locator('.prose-ps');
+    const margin = await prose.locator('p').first().evaluate((e) => parseFloat(getComputedStyle(e).marginBottom));
+    expect(margin).toBeGreaterThan(0);
+    const weight = await prose.locator('h2').first().evaluate((e) => Number(getComputedStyle(e).fontWeight));
+    expect(weight).toBeGreaterThanOrEqual(600);
+    const lists = await prose.locator('ul').evaluateAll((els) => els.map((e) => getComputedStyle(e).listStyleType));
+    for (const type of lists) expect(type).toBe('disc');
+  });
+
   test('desktop: facts sidebar is sticky; mobile: facts collapse under the header', async ({ page }, info) => {
     await page.goto(`/en/work/${orderedSlugs()[0]}`);
     if (info.project.name === 'desktop') {
