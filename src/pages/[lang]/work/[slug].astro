@@ -5,9 +5,10 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ProjectFacts from '../../../components/project/ProjectFacts.astro';
 import ProjectNav from '../../../components/project/ProjectNav.astro';
 import { mdxComponents } from '../../../components/mdx';
-import { LOCALES, type Locale } from '../../../lib/i18n';
+import { HTML_LANG, LOCALES, type Locale } from '../../../lib/i18n';
 import { categoryLabel, t } from '../../../i18n/ui';
-import { getProjects, type ProjectEntry } from '../../../lib/content';
+import { getProfile, getProjects, type ProjectEntry } from '../../../lib/content';
+import { canonicalUrl, ogImageUrl, projectJsonLd } from '../../../lib/seo';
 import { neighbors, visibleLinks } from '../../../lib/projects';
 import { vtStyle } from '../../../lib/transitions';
 
@@ -26,8 +27,17 @@ const { Content, headings } = await render(body);
 const toc = headings.filter((h) => h.depth === 2);
 const { prev, next } = neighbors(ordered, project.slug);
 const links = visibleLinks(project.meta);
+const profile = await getProfile();
 ---
-<BaseLayout lang={lang} path={`/work/${project.slug}`} title={`${body.data.title} — ${t(lang, 'meta.siteName')}`} description={body.data.summary}>
+<BaseLayout lang={lang} path={`/work/${project.slug}`} title={`${body.data.title} — ${t(lang, 'meta.siteName')}`} description={body.data.summary}
+  ogImage={ogImageUrl(lang, project.slug)}
+  ogType="article"
+  jsonLd={[projectJsonLd({
+    name: body.data.title, description: body.data.summary, url: canonicalUrl(lang, `/work/${project.slug}`),
+    image: ogImageUrl(lang, project.slug), dateCreated: project.meta.date, inLanguage: HTML_LANG[lang],
+    keywords: project.meta.stack, authorName: profile.name[lang], authorUrl: canonicalUrl(lang, '/'),
+  })]}
+>
   <article class="project" style={vtStyle(project.slug)}>
     <header class="project-header vt-card">
       <p class="mono-path">~/work/{project.slug}</p>

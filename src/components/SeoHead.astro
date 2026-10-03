@@ -1,6 +1,6 @@
 ---
-import { alternateLinks, canonicalUrl } from '../lib/seo';
-import type { Locale } from '../lib/i18n';
+import { OG_LOCALE, alternateLinks, canonicalUrl, jsonLdScript } from '../lib/seo';
+import { otherLocale, type Locale } from '../lib/i18n';
 
 interface Props {
   lang: Locale;
@@ -8,11 +8,26 @@ interface Props {
   title: string;
   description: string;
   noindex: boolean;
+  ogImage: string;
+  ogType: 'website' | 'article';
+  jsonLd: Record<string, unknown>[];
 }
-const { lang, path, title, description, noindex } = Astro.props;
+const { lang, path, title, description, noindex, ogImage, ogType, jsonLd } = Astro.props;
 ---
 <title>{title}</title>
 <meta name="description" content={description} />
 {noindex && <meta name="robots" content="noindex" />}
 {path !== null && <link rel="canonical" href={canonicalUrl(lang, path)} />}
 {path !== null && alternateLinks(path).map((l) => <link rel="alternate" hreflang={l.hreflang} href={l.href} />)}
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content="Pan's Space" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+{path !== null && <meta property="og:url" content={canonicalUrl(lang, path)} />}
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content={OG_LOCALE[lang]} />
+<meta property="og:locale:alternate" content={OG_LOCALE[otherLocale(lang)]} />
+<meta name="twitter:card" content="summary_large_image" />
+{jsonLd.map((d) => <script type="application/ld+json" set:html={jsonLdScript(d)} />)}
