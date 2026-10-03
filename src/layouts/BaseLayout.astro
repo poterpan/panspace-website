@@ -5,8 +5,12 @@ import '../styles/global.css';
 import SeoHead from '../components/SeoHead.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import { HTML_LANG, type Locale } from '../lib/i18n';
+import CommandPalette from '../components/palette/CommandPalette.tsx';
+import { HTML_LANG, otherLocale, type Locale } from '../lib/i18n';
 import { t } from '../i18n/ui';
+import { getProfile, getProjects } from '../lib/content';
+import { buildPaletteItems, type PaletteItem } from '../lib/palette';
+import { resumeHref } from '../lib/resume';
 
 interface Props {
   lang: Locale;
@@ -16,6 +20,39 @@ interface Props {
   noindex?: boolean;
 }
 const { lang, path, title, description, noindex = false } = Astro.props;
+
+let paletteItems: PaletteItem[] | null = null;
+if (path !== null) {
+  const [projects, profile] = await Promise.all([getProjects(), getProfile()]);
+  const other = otherLocale(lang);
+  paletteItems = buildPaletteItems({
+    lang,
+    labels: {
+      home: t(lang, 'palette.home'),
+      work: t(lang, 'palette.work'),
+      about: t(lang, 'palette.about'),
+      switchLang: t(lang, 'palette.switchLang'),
+      copyEmail: t(lang, 'palette.copyEmail'),
+      resume: t(lang, 'palette.resume'),
+      github: t(lang, 'palette.github'),
+      linkedin: t(lang, 'palette.linkedin'),
+      action: t(lang, 'palette.action'),
+    },
+    projects: projects.map((p) => ({ slug: p.slug, title: p.text[lang].data.title, altTitle: p.text[other].data.title })),
+    email: profile.email,
+    github: profile.socials.github,
+    linkedin: profile.socials.linkedin,
+    resumeHref: resumeHref(lang),
+  });
+}
+const paletteLabels = {
+  title: t(lang, 'palette.title'),
+  placeholder: t(lang, 'palette.placeholder'),
+  listLabel: t(lang, 'palette.listLabel'),
+  empty: t(lang, 'palette.empty'),
+  open: t(lang, 'palette.open'),
+  copied: t(lang, 'palette.copied'),
+};
 ---
 <!doctype html>
 <html lang={HTML_LANG[lang]} data-lang={lang}>
@@ -37,6 +74,9 @@ const { lang, path, title, description, noindex = false } = Astro.props;
       <slot />
     </main>
     <Footer lang={lang} />
+    {paletteItems && (
+      <CommandPalette client:idle transition:persist={`palette-${lang}`} items={paletteItems} labels={paletteLabels} />
+    )}
     <script>
       import '../scripts/global';
     </script>
