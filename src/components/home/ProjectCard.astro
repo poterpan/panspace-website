@@ -3,6 +3,7 @@ import { Picture } from 'astro:assets';
 import { localizedPath, type Locale } from '../../lib/i18n';
 import { categoryLabel } from '../../i18n/ui';
 import type { ProjectEntry } from '../../lib/content';
+import { vtStyle } from '../../lib/transitions';
 
 interface Props {
   lang: Locale;
@@ -17,14 +18,14 @@ const first = project.meta.categories[0];
 ---
 <a
   href={localizedPath(lang, `/work/${project.slug}`)}
-  class="bento-card project-card"
+  class="bento-card project-card vt-card"
   data-slot={slot}
   data-bento={project.meta.bento}
   data-spotlight
-  style={`grid-area:${slot}`}
+  style={`grid-area:${slot};${vtStyle(project.slug)}`}
 >
   <span class="mono-path">{first ? `${categoryLabel(lang, first)} · ` : ''}~/work/{project.slug}</span>
-  <h2 class="card-title">{text.title}</h2>
+  <h2 class="card-title vt-title">{text.title}</h2>
   <p class="card-summary">{text.summary}</p>
   <Picture
     src={project.meta.cover}
@@ -34,6 +35,6 @@ const first = project.meta.categories[0];
     sizes={wide ? '(min-width: 1024px) 50vw, 100vw' : '(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw'}
     loading={eager ? 'eager' : 'lazy'}
     fetchpriority={eager ? 'high' : 'auto'}
-    class="card-cover"
+    class="card-cover vt-cover"
   />
 </a>
