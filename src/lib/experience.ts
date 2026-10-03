@@ -1,3 +1,7 @@
+/**
+ * Newest first. A year-only value ("2024") is the whole year, so it sorts after
+ * every dated month of that year ("2024-08" before "2024"); ties fall back to id.
+ */
 export function sortByStartDesc<T extends { start: string; id: string }>(items: readonly T[]): T[] {
   return [...items].sort((a, b) => (a.start !== b.start ? (a.start < b.start ? 1 : -1) : a.id.localeCompare(b.id)));
 }

@@ -3,8 +3,15 @@ import { CATEGORIES, EXPERIENCE_TYPES } from './taxonomy';
 
 export { CATEGORIES, EXPERIENCE_TYPES, type Category, type ExperienceType } from './taxonomy';
 
-export const ym = z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/, 'expected YYYY-MM');
+export const ym = z.string().regex(/^\d{4}(-(0[1-9]|1[0-2]))?$/, 'expected YYYY-MM or YYYY');
 const end = z.union([ym, z.literal('present')]);
+
+/** An end date is valid when it is not before the start; a year-only value compares by year alone. */
+export function endNotBefore(start: string, endValue: string | undefined): boolean {
+  if (!endValue || endValue === 'present') return true;
+  if (start.length === 4 || endValue.length === 4) return endValue.slice(0, 4) >= start.slice(0, 4);
+  return endValue >= start;
+}
 export const localized = z.object({ zh: z.string().min(1), en: z.string().min(1) }).strict();
 
 export function projectMetaSchema<C extends z.ZodType>(cover: C) {
@@ -32,7 +39,7 @@ export function projectMetaSchema<C extends z.ZodType>(cover: C) {
       listOrder: z.number().int().optional(),
     })
     .strict()
-    .refine((m) => !m.end || m.end === 'present' || m.end >= m.date, {
+    .refine((m) => endNotBefore(m.date, m.end), {
       message: 'end must not be before date',
       path: ['end'],
     })
@@ -73,8 +80,10 @@ export const experienceSchema = z
     title: localized,
     org: localized,
     description: localized,
+    project: z.string().min(1).optional(),
   })
-  .strict();
+  .strict()
+  .refine((e) => endNotBefore(e.start, e.end), { message: 'end must not be before start', path: ['end'] });
 
 export const awardSchema = z
   .object({

@@ -29,9 +29,3 @@ A few deliberate choices:
 <Stat value="431" label="test cases" note="run against real Miniflare D1 and R2, no mocks" />
 
 The club uses it for real. The code is MIT-licensed and ships with a full self-hosting guide.
-
-## What I learned
-
-In a billing system, every state needs a clear meaning. I modelled a bill as a state machine (pending → paid → verified) where each step can be checked, undone and audited.
-
-I also learned to test close to production. Running tests on a real D1 enforces foreign keys, and that catches bugs mocks never would.

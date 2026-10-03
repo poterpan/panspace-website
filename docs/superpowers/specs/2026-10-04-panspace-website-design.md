@@ -71,14 +71,16 @@ src/content/
     └── images/         由 Astro 建置時最佳化
 ```
 
+`experience.yaml` 的 `start`/`end` 同樣接受 `YYYY-MM` 或 `YYYY`，並可用選填的 `project`（作品 slug）連到作品頁。
+
 `experience.yaml` 的 `type` ∈ `education`、`work`（實習、研究助理）、`teaching`（教學與社群）、`freelance`。
 
 **`meta.yaml` schema**（以 Astro content collection 的 zod schema 強制驗證）：
 
 | 欄位 | 型別 | 說明 |
 |---|---|---|
-| `date` | `YYYY-MM` | 起始時間 |
-| `end` | `YYYY-MM` \| `present` \| 省略 | |
+| `date` | `YYYY-MM` \| `YYYY` | 起始時間；僅年份時顯示年份，排序時排在同年各月之後 |
+| `end` | `YYYY-MM` \| `YYYY` \| `present` \| 省略 | 單一年份區間（起訖同為 `YYYY`）只顯示一次 |
 | `categories` | `("ios"\|"web"\|"ai"\|"research"\|"competition")[]` | 作品列表篩選 |
 | `stack` | `string[]` | |
 | `role` | `{zh, en}` | 例如「獨立開發」 |
@@ -91,7 +93,7 @@ src/content/
 
 zod schema 要求 zh 與 en 兩個版本都存在，缺任一個就建置失敗。
 
-**作品頁正文固定段落**：背景與問題 → 我的角色 → 做法與技術決策 → 成果 → 學到什麼。
+**作品頁正文固定段落**：背景與問題 → 我的角色 → 做法與技術決策 → 成果。
 
 **可在 MDX 中使用的元件**：`<Gallery>`（截圖輪播）、`<Compare>`（前後對比）、`<Diagram>`（架構圖）、`<Stat>`（數據卡）、程式碼區塊。
 

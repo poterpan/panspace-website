@@ -11,7 +11,7 @@ The clinical team at the medical center cared most about trust. The system must 
 
 ## My role
 
-I own the model training, the post-processing algorithms, the clinical measurements and the backend and frontend. I also work with the surgeons to turn their needs into specs we can verify. The project started as my undergraduate capstone and continued into grad school.
+I own the model training, the post-processing algorithms, the clinical measurements and the backend and frontend. I also work with the surgeons to turn their needs into specs we can verify. The project continues my undergraduate capstone on cervical-spine imaging and grew into a full-spine system in grad school.
 
 ## Approach & technical decisions
 
@@ -61,9 +61,3 @@ The backend is FastAPI, and a React frontend overlays the results on the origina
 <Stat value="4–7°" label="disagreement between manual readers" note="measured in this project; the gap the system targets" />
 
 The system turns a single lateral X-ray into a full set of structured measurements, with implant detection built into the main pipeline. The earlier cervical-spine version won an honorable mention in Feng Chia University's communications engineering capstone competition.
-
-## What I learned
-
-In a clinical setting, being defensible matters more than a high score. Surgeons won't use an angle nobody can explain. Marking what was estimated made them trust the rest of the system more, not less.
-
-Working with clinicians also taught me to write the requirement down as a spec we can verify before talking about models.

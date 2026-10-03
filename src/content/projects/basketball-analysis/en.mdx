@@ -48,9 +48,3 @@ The frontend only talks to a Cloudflare Worker, which handles sign-in, credits a
 ## Outcome
 
 The system has been delivered to the client. Players get a free preview after uploading, then spend a credit to unlock the full report, which covers the three key moments and four joint angles.
-
-## What I learned
-
-Turning a research model into a service is mostly about everything around the model: large uploads, async queues, never charging twice, retrying failures. Splitting those into clear layers let each one be tested and deployed on its own.
-
-Client work also taught me to write the spec and acceptance criteria first, so both sides check delivery against the same list.

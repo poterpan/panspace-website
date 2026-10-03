@@ -2,6 +2,7 @@ import type { Locale } from './i18n';
 
 const PRESENT: Record<Locale, string> = { zh: '現在', en: 'Present' };
 
+/** `YYYY-MM` shows as `YYYY.MM`; a year-only `YYYY` stays as is. */
 export function formatYm(ym: string): string {
   return ym.replace('-', '.');
 }

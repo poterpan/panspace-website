@@ -9,5 +9,9 @@ describe('dates', () => {
     expect(formatPeriod('2024-03', 'present', 'en')).toBe('2024.03 – Present');
     expect(formatPeriod('2023-08', '2024-07', 'en')).toBe('2023.08 – 2024.07');
     expect(formatPeriod('2023-08', '2023-08', 'en')).toBe('2023.08');
+    expect(formatPeriod('2024', '2024', 'zh')).toBe('2024');
+    expect(formatPeriod('2024', 'present', 'en')).toBe('2024 – Present');
+    expect(formatPeriod('2023', '2024-06', 'en')).toBe('2023 – 2024.06');
   });
+  it('formats year-only values', () => expect(formatYm('2024')).toBe('2024'));
 });

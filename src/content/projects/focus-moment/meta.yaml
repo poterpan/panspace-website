@@ -1,6 +1,6 @@
 date: "2024-08"
 categories: [competition, ai]
-stack: [Python, OpenCV]
+stack: [Python, OpenCV, YOLO]
 role: { zh: 團隊成員, en: Team member }
 cover: ./images/cover.png
 coverAlt: { zh: 專注時刻封面, en: Focus Moment cover }

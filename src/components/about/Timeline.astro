@@ -1,5 +1,5 @@
 ---
-import type { Locale } from '../../lib/i18n';
+import { localizedPath, type Locale } from '../../lib/i18n';
 import { experienceTypeLabel, t } from '../../i18n/ui';
 import { EXPERIENCE_TYPES } from '../../lib/taxonomy';
 import { formatPeriod } from '../../lib/dates';
@@ -23,7 +23,7 @@ const types = EXPERIENCE_TYPES.filter((type) => items.some((i) => i.type === typ
       {items.map((item) => (
         <li class="timeline-item" data-type={item.type}>
           <span class="mono-path">{formatPeriod(item.start, item.end, lang)} · {experienceTypeLabel(lang, item.type)}</span>
-          <h3>{item.title[lang]}</h3>
+          <h3>{item.project ? <a href={localizedPath(lang, `/work/${item.project}`)}>{item.title[lang]}</a> : item.title[lang]}</h3>
           <p class="timeline-org">{item.org[lang]}</p>
           <p>{item.description[lang]}</p>
         </li>

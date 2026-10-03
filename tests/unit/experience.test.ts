@@ -14,6 +14,13 @@ describe('experience helpers', () => {
   });
 });
 
+describe('year-only dates', () => {
+  it('sorts a year-only start after the months of the same year', () => {
+    const mixed = [{ id: 'y', start: '2024' }, { id: 'm1', start: '2024-03' }, { id: 'm2', start: '2024-11' }, { id: 'p', start: '2025' }, { id: 'o', start: '2023-12' }];
+    expect(sortByStartDesc(mixed).map((i) => i.id)).toEqual(['p', 'm2', 'm1', 'y', 'o']);
+  });
+});
+
 describe('award helpers', () => {
   const awards = [{ id: 'x', year: 2022 }, { id: 'y', year: 2024 }, { id: 'a', year: 2024 }];
   it('sorts by year desc, then id', () => {

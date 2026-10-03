@@ -23,10 +23,4 @@ The backend is FastAPI with four modules: device manager, route engine, motion e
 
 ## Outcome
 
-Click a route on the map, press start, and the device moves along it. It supports pausing, rerouting mid-trip, looping, returning to the start, and importing GPX or GeoJSON tracks. The source is on GitHub.
-
-## What I learned
-
-Realism lives in the details. Drop acceleration, stops or noise, and the track stops behaving like real movement, so the movement logic in the app goes untested.
-
-I also learned to be upfront about limits. The simulation protocol has no speed field, so apps that read speed directly show zero, while navigation apps that derive speed from position work fine. It's all in the README.
+Click a route on the map, press start, and the device moves along it. It supports pausing, rerouting mid-trip, looping, returning to the start, and importing GPX or GeoJSON tracks. The simulation protocol has no speed field, so apps that read speed directly show zero while navigation apps that derive speed from position work fine; the limit is documented in the README. The source is on GitHub.

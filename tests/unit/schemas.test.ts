@@ -24,6 +24,11 @@ describe('projectMetaSchema', () => {
     expect(parsed.bento).toBe('regular');
     expect(parsed.confidential).toBe(false);
   });
+  it('accepts year-only date and end', () => {
+    expect(meta.safeParse({ ...validMeta, date: '2024', end: 'present' }).success).toBe(true);
+    expect(meta.safeParse({ ...validMeta, date: '2023-05', end: '2023' }).success).toBe(true);
+    expect(meta.safeParse({ ...validMeta, date: '2023', end: '2023-11' }).success).toBe(true);
+  });
   it('defaults links to an empty object', () => {
     expect(meta.parse({ ...validMeta, links: undefined }).links).toEqual({});
   });
@@ -31,6 +36,7 @@ describe('projectMetaSchema', () => {
     ['bad month', { date: '2023-13' }],
     ['bad end', { end: '2023/10' }],
     ['end before date', { end: '2023-01' }],
+    ['year-only end before year', { end: '2022' }],
     ['unknown category', { categories: ['android'] }],
     ['empty categories', { categories: [] }],
     ['missing en role', { role: { zh: '獨立開發' } }],
@@ -82,6 +88,9 @@ describe('experienceSchema / awardSchema', () => {
     expect(experienceSchema.safeParse(base).success).toBe(true);
     expect(experienceSchema.safeParse({ ...base, type: 'hobby' }).success).toBe(false);
     expect(experienceSchema.safeParse({ ...base, start: '2023-8' }).success).toBe(false);
+    expect(experienceSchema.safeParse({ ...base, start: '2024', end: '2024' }).success).toBe(true);
+    expect(experienceSchema.safeParse({ ...base, start: '2024', end: '2023' }).success).toBe(false);
+    expect(experienceSchema.safeParse({ ...base, project: 'ntutbox' }).success).toBe(true);
   });
   it('validates awards', () => {
     const award = { id: 'a1', year: 2023, kind: 'award', name: { zh: '獎', en: 'Prize' } };

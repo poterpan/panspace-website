@@ -5,10 +5,18 @@
   title: { zh: 碩士班（就讀中）, en: "Master's student" }
   org: { zh: 國立臺北科技大學, en: National Taipei University of Technology }
   description: { zh: 在台北念研究所，研究醫學影像 AI，與醫學中心合作脊椎 X 光分析。, en: "Graduate study in Taipei, researching medical-imaging AI and working with a medical center on spine X-ray analysis." }
+- id: ntutbox-indie
+  type: work
+  start: "2025-09"
+  end: present
+  project: ntutbox
+  title: { zh: 獨立開發者, en: Independent developer }
+  org: { zh: NTUTBox 北科盒子, en: NTUTBox }
+  description: { zh: 一個人做完並持續維護北科盒子：上架 App Store 的校園 App，加上官網、排課網站、簽到系統與狀態頁。, en: "Built and maintain NTUTBox on my own: an App Store campus app plus its website, course planner, check-in system and status page." }
 - id: basketball-freelance
   type: freelance
   start: "2025-10"
-  end: present
+  end: "2026-09"
   title: { zh: 運動動作分析 AI 系統, en: Sports motion-analysis AI system }
   org: { zh: 商業客戶（保密）, en: Commercial client (confidential) }
   description: { zh: 擔任技術負責人，從資料標註、模型訓練到雲端上線，交付投籃影片分析系統。, en: "Technical lead, from data labelling and model training to cloud deployment, delivering a shooting-video analysis system." }
@@ -21,11 +29,25 @@
   description: { zh: 維護社團網站與線上服務，讓社課與活動順利進行。, en: "Ran the club's website and online services for classes and events." }
 - id: emergency-vehicle-project
   type: work
-  start: "2024-03"
-  end: "2024-08"
+  start: "2024"
+  end: "2024"
   title: { zh: 研究計畫參與, en: Research project member }
   org: { zh: 緊急車輛來向定位與號誌控制系統, en: Emergency-vehicle localization and signal control }
   description: { zh: 交通部合作計畫。GPS 在路口常失準，我們改用聲音辨識判斷緊急車輛的來向，作為號誌控制的依據。, en: "A project with Taiwan's Ministry of Transportation. GPS is unreliable at intersections, so we located approaching emergency vehicles by sound to drive signal control." }
+- id: fcu-ios-ta
+  type: teaching
+  start: "2023-09"
+  end: "2024-06"
+  title: { zh: iOS／基礎程式邏輯課程助教, en: "Course TA, iOS development and programming basics" }
+  org: { zh: 逢甲大學, en: Feng Chia University }
+  description: { zh: 兩個學期協助授課與課堂練習，帶學生釐清 iOS 開發與基礎程式邏輯。, en: "Two semesters assisting in class and lab, helping students work through iOS development and basic programming logic." }
+- id: swift-club-teacher
+  type: teaching
+  start: "2023"
+  end: "2024"
+  title: { zh: Swift Coding Club 社團老師, en: Swift Coding Club instructor }
+  org: { zh: 台中市私立國小, en: A private elementary school in Taichung }
+  description: { zh: 兩個學期教國小學生基礎程式，用 Swift 從做出會動的畫面學起。, en: "Taught elementary-school students basic programming over two semesters, starting from making something move on screen in Swift." }
 - id: ios-club-president
   type: teaching
   start: "2023-08"
@@ -33,13 +55,13 @@
   title: { zh: 第 7 屆社長, en: President (7th term) }
   org: { zh: 逢甲大學 iOS Club, en: Feng Chia University iOS Club }
   description: { zh: 帶領社團規劃課程與活動，並擔任給國小學生的程式營隊總召，與合作學校共同舉辦。, en: "Led the club's courses and events, and directed a coding camp for elementary-school students run with partner schools." }
-- id: pm-defect-internship
-  type: work
-  start: "2023-07"
-  end: "2023-08"
-  title: { zh: AI 瑕疵檢測實習生, en: AI defect-inspection intern }
-  org: { zh: 粉末冶金零件製造商（產學合作）, en: "Powder-metallurgy parts manufacturer (industry–academia)" }
-  description: { zh: 以 YOLOv4、YOLOv7 訓練粉末冶金多孔材料的瑕疵檢測模型，處理產品照片的前處理與參數比較；成果後來整理成論文發表。, en: "Trained YOLOv4 and YOLOv7 models to detect defects in porous powder-metallurgy parts, including image preprocessing and parameter comparisons. The work later became a conference paper." }
+- id: mbot-camp-instructor
+  type: teaching
+  start: "2022-12"
+  end: "2023-04"
+  title: { zh: mBot 機器人營隊講師, en: mBot robotics camp instructor }
+  org: { zh: 台中市公立國小, en: A public elementary school in Taichung }
+  description: { zh: 教授入門營隊（2022 年 12 月）與進階營隊（2023 年 4 月），帶學生組裝並寫程式控制 mBot 機器人。, en: "Taught the beginner camp (December 2022) and the advanced camp (April 2023), where students built and programmed mBot robots." }
 - id: ios-club-teaching
   type: teaching
   start: "2022-08"

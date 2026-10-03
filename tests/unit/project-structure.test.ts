@@ -2,8 +2,8 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 const SECTIONS = {
-  zh: ['背景與問題', '我的角色', '做法與技術決策', '成果', '學到什麼'],
-  en: ['Background & problem', 'My role', 'Approach & technical decisions', 'Outcome', 'What I learned'],
+  zh: ['背景與問題', '我的角色', '做法與技術決策', '成果'],
+  en: ['Background & problem', 'My role', 'Approach & technical decisions', 'Outcome'],
 } as const;
 const root = 'src/content/projects';
 const slugs = readdirSync(root, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);

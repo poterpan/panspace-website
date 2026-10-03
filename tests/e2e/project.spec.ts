@@ -10,7 +10,7 @@ test.describe('project pages', () => {
       await expect(page.locator('.project-hero picture source[type="image/avif"]')).toHaveCount(1);
       await expect(page.locator('.project-hero picture source[type="image/webp"]')).toHaveCount(1);
       const hrefs = await page.locator('.project-facts-desktop nav a').evaluateAll((as) => as.map((a) => a.getAttribute('href') ?? ''));
-      expect(hrefs).toHaveLength(5);
+      expect(hrefs).toHaveLength(4);
       for (const href of hrefs) await expect(page.locator(`[id="${decodeURIComponent(href.slice(1))}"]`)).toHaveCount(1);
     });
   }
