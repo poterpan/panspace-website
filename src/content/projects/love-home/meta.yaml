@@ -1,0 +1,8 @@
+date: "2023-08"
+categories: [competition, ios]
+stack: [Swift, SwiftUI, AVFoundation, Firebase]
+role: { zh: iOS 開發, en: iOS developer }
+links:
+  github: https://github.com/poterpan/BaeMoments
+cover: ./images/cover.png
+coverAlt: { zh: 享愛家園封面, en: BaeMoments cover }

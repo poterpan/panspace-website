@@ -1,0 +1,36 @@
+---
+title: Taipei Traffic Risk Map
+summary: An urban data analytics course project. An interactive map of Taipei showing an often-missed structural risk, arterial roads meeting small local streets, next to model predictions and actual crash hotspots.
+---
+
+## Background & problem
+
+Road-safety discussions usually focus on crash hotspots. Some junctions, though, are risky because of their structure: a major arterial road meets a small local street, with a big gap in road class between them. They aren't always hotspots yet, but the conditions are the same.
+
+The course analysis found these junctions. The hard part was making the result understandable. A static chart can't answer "what kind of junction is the one near my home?"
+
+## My role
+
+I designed and built the interactive map, turned the analysis output into something people can explore, and deployed it.
+
+## Approach & technical decisions
+
+The map uses MapLibre GL JS on a free CARTO basemap, with Vite and TypeScript on the front end. The data covers Taipei traffic crashes from 2022 to 2024, the OpenStreetMap road network and urban features, exported as GeoJSON by the analysis scripts.
+
+The map has three layers:
+
+- **A four-quadrant risk grid**: known hotspots, structurally similar to hotspots, missed by the model, and low risk.
+- **High-gap junctions**, where an arterial road meets a local street at least four road classes below it.
+- **Crash points** for the two most severe crash categories, clustered.
+
+Click the pegman on any junction to see Google Street View. The API key never reaches the browser. A Cloudflare Worker proxies the requests, only for locations inside Taipei, and the key itself is restricted to the Street View API with a daily quota.
+
+## Outcome
+
+An interactive map covering all of Taipei where you can compare model predictions with actual crashes, deployed on Cloudflare Workers with the source on GitHub.
+
+## What I learned
+
+How a result is presented matters as much as the analysis. Finding a junction you know on the map, then opening Street View to see it, explains the risk better than any table of statistics.
+
+And any third-party service that needs a key belongs behind a server-side proxy, with the key limited to the APIs and volume you actually need.

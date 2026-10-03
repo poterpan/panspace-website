@@ -1,9 +1,10 @@
-date: "2025-01"
+date: "2026-05"
+end: "2026-08"
 categories: [web]
-stack: [TypeScript, Cloudflare Workers, D1, R2, Discord]
+stack: [TypeScript, Cloudflare Workers, D1, R2, Cloudflare Access, React, Vite, Vitest, Discord API]
 role: { zh: 獨立開發, en: Solo developer }
 links:
   github: https://github.com/poterpan/ChipPot
 featured: 3
 cover: ./images/cover.png
-coverAlt: { zh: ChipPot 封面, en: ChipPot cover }
+coverAlt: { zh: ChipPot 標誌與標語：serverless 訂閱帳務與對帳, en: "ChipPot logo and tagline: serverless subscription billing and reconciliation" }

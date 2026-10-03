@@ -1,0 +1,9 @@
+date: "2026-05"
+end: "2026-06"
+categories: [ios]
+stack: [Unity 6, C#, AR Foundation, ARCore Geospatial API, OpenAI-compatible API, GitHub Actions]
+role: { zh: 系統架構與 AR 定位（四人團隊）, en: "Architecture and AR positioning (team of four)" }
+links:
+  github: https://github.com/poterpan/ntut-ar-campus-tour
+cover: ./images/cover.png
+coverAlt: { zh: 兩張 App 實機截圖：校園貓餵食小遊戲，以及 AR 導遊在學生餐廳入口回答問題, en: "Two in-app screenshots: the campus-cat feeding game, and the AR guide answering a question at the cafeteria entrance" }

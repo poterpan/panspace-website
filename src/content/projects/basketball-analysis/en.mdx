@@ -1,24 +1,56 @@
 ---
 title: Basketball Motion Analysis
-summary: A commercial project that detects key moments in shooting videos and produces analysis reports.
+summary: A shooting-analysis system for a sports-training client. Players upload a video; the system finds three key moments, measures joint angles and writes a report. I own it end to end, from labelling data to production.
 ---
 
 ## Background & problem
 
-Coaches need to find the key frames of a player's motion in video quickly.
+When coaches review a shot, they look for a few key moments: the player starts loading, reaches the deepest point, and releases. Those moments and the joint angles at each one say most of what matters about the motion. Finding them frame by frame is slow and depends on who is looking, so the client wanted players to upload a video and get a consistent report back.
 
 ## My role
 
-Built the training pipeline, the inference backend and the website.
+Technical lead. I designed and built the labelling tool, the models, the inference service, the cloud architecture and the report site, and worked with the client on specs, acceptance and delivery.
 
 ## Approach & technical decisions
 
-A keyframe-detection model behind a queued inference pipeline.
+**The labelling tool came first.** I built a browser-based frame annotator that reads frame rate and frame count straight from the video container, marks the three moments with keyboard shortcuts, and can accept a model prediction as a label in one keystroke. Data and model improved together.
+
+**I picked the model for production, not just the score.** Joint coordinates and angle features come from pose estimation, and I compared three temporal models with cross-validation: LSTM, ASFormer and a heatmap approach. ASFormer scored highest, but the heatmap approach went to production: a live service has to weigh stability, inference cost and maintenance, not just accuracy.
+
+**Three layers.**
+
+<Diagram caption="How a request flows in production">
+  <svg viewBox="0 0 760 150" width="100%" role="img" aria-label="Architecture: website and report, a Cloudflare Worker for auth, credits and uploads, Cloudflare Queues, and an inference service on Cloud Run">
+    <g font-family="ui-monospace, Menlo, monospace" font-size="13" fill="#e7e9ee" text-anchor="middle">
+      <rect x="4" y="30" width="150" height="80" rx="10" fill="#101216" stroke="#3b4250" />
+      <text x="79" y="64">Site + report</text>
+      <text x="79" y="86" fill="#8a909c" font-size="11">upload, preview</text>
+      <rect x="194" y="30" width="190" height="80" rx="10" fill="#101216" stroke="#34d399" />
+      <text x="289" y="58">Cloudflare Worker</text>
+      <text x="289" y="78" fill="#8a909c" font-size="11">SSO, credit ledger (D1)</text>
+      <text x="289" y="96" fill="#8a909c" font-size="11">signed R2 uploads</text>
+      <rect x="424" y="30" width="120" height="80" rx="10" fill="#101216" stroke="#3b4250" />
+      <text x="484" y="74">Queues</text>
+      <rect x="584" y="30" width="172" height="80" rx="10" fill="#101216" stroke="#60a5fa" />
+      <text x="670" y="64">Cloud Run</text>
+      <text x="670" y="86" fill="#8a909c" font-size="11">FastAPI inference</text>
+    </g>
+    <g stroke="#8a909c" stroke-width="1.5">
+      <line x1="154" y1="70" x2="190" y2="70" />
+      <line x1="384" y1="70" x2="420" y2="70" />
+      <line x1="544" y1="70" x2="580" y2="70" />
+    </g>
+  </svg>
+</Diagram>
+
+The frontend only talks to a Cloudflare Worker, which handles sign-in, credits and signed upload URLs for R2, then puts the analysis job on Cloudflare Queues. Inference runs as a FastAPI service on Google Cloud Run, and the two sides authenticate each other with HMAC signatures. Credits are kept as a ledger, and the payment webhook is idempotent, so a repeated notification never credits an account twice.
 
 ## Outcome
 
-The system has been delivered and is in use.
+The system has been delivered to the client. Players get a free preview after uploading, then spend a credit to unlock the full report, which covers the three key moments and four joint angles.
 
 ## What I learned
 
-Turning a research model into a reliable online service.
+Turning a research model into a service is mostly about everything around the model: large uploads, async queues, never charging twice, retrying failures. Splitting those into clear layers let each one be tested and deployed on its own.
+
+Client work also taught me to write the spec and acceptance criteria first, so both sides check delivery against the same list.

@@ -1,0 +1,7 @@
+date: "2023-11"
+end: "2024-03"
+categories: [ios]
+stack: [Swift, SwiftUI, AVFoundation]
+role: { zh: 獨立開發, en: Solo developer }
+cover: ./images/cover.png
+coverAlt: { zh: FCU 簽到 App 封面, en: FCU Check-in App cover }

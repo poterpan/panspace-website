@@ -1,0 +1,9 @@
+date: "2026-04"
+categories: [ios, web]
+stack: [Python, FastAPI, WebSocket, pymobiledevice3, Leaflet, OpenStreetMap]
+role: { zh: 獨立開發, en: Solo developer }
+links:
+  github: https://github.com/poterpan/LocMotion
+featured: 5
+cover: ./images/cover.png
+coverAlt: { zh: LocMotion 封面, en: LocMotion cover }

@@ -1,0 +1,34 @@
+---
+title: AR Campus Tour
+summary: A graduate AR course project. ARCore visual positioning anchors a virtual guide in front of real NTUT buildings, where it greets you and answers typed or spoken questions. iOS and Android, built by a team of four.
+---
+
+## Background & problem
+
+New students and visitors get lost on campus, and typical tour apps rely on GPS, which can be off by 5 to 15 metres between tall buildings. That's not enough to tell which building someone is standing in front of, so the app can't talk about what's actually in front of them.
+
+## My role
+
+On a team of four, I owned the overall plan and system architecture, the AR positioning (Geospatial localization, anchors and proximity triggers), and cross-platform integration with CI/CD. The other three owned the guide character and UI, the LLM conversation and voice pipeline, and the reinforcement-learning campus cat.
+
+## Approach & technical decisions
+
+**Positioning** uses the ARCore Geospatial API, which matches the camera view against a feature map built from Google Street View and corrects GPS from metres of error to under a metre. Before committing to it, I tested it on campus during the proposal phase to make sure coverage was good enough.
+
+Once localized, the app creates anchors at the real coordinates of five points of interest. Every second it checks the distance to the nearest one, and the guide appears when you're within 30 metres. Anchors are cached by POI id, and in-flight resolutions are deduplicated so no point gets anchored twice.
+
+**The codebase** is split into five modules with Assembly Definitions: POI data, AR positioning, the guide, the cat and the UI. That kept compile coupling low and avoided Unity scene merge conflicts. All work that touched the main scene went through me, while teammates delivered self-contained modules, so four people could work in parallel.
+
+**CI/CD** on GitHub Actions builds iOS (to a public TestFlight) and Android automatically. API keys are generated from secrets at build time and never committed.
+
+## Outcome
+
+<Stat value="< 1 m" label="horizontal positioning error on campus" note="measured during the proposal phase; under 0.5 m in open areas off campus" />
+
+Working iOS and Android apps covering five campus locations, with a public TestFlight, an Android build and the source on GitHub.
+
+## What I learned
+
+The biggest risk in an AR project is positioning, not graphics. Testing on site early told us whether the plan would work sooner than any amount of planning.
+
+When a team works in Unity, most conflicts come from scene files. Agreeing on module interfaces first and routing scene integration through one person is what let us finish in four weeks.

@@ -1,11 +1,12 @@
-date: "2023-09"
+date: "2025-09"
 end: present
 categories: [ios, web]
-stack: [Swift, SwiftUI, Next.js, Cloudflare Workers, D1]
+stack: [Swift, SwiftUI, SwiftData, WidgetKit, Next.js, Python, Cloudflare Workers, D1, R2, KV]
 role: { zh: 獨立開發, en: Solo developer }
 links:
+  appStore: https://apps.apple.com/tw/app/id6753217696
   website: https://ntutbox.com
 featured: 1
 bento: wide
 cover: ./images/cover.png
-coverAlt: { zh: NTUTBox 北科盒子封面, en: NTUTBox cover }
+coverAlt: { zh: 北科盒子官網首頁，旁邊是 App 的今日總覽畫面, en: "The NTUTBox website hero next to the app's Today screen" }

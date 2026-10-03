@@ -1,0 +1,8 @@
+date: "2026-06"
+categories: [web, research]
+stack: [TypeScript, Vite, MapLibre GL JS, Cloudflare Workers, GeoJSON]
+role: { zh: 互動地圖開發, en: Interactive map developer }
+links:
+  github: https://github.com/poterpan/taipei-traffic-risk-map
+cover: ./images/cover.png
+coverAlt: { zh: 台北交通風險地圖封面, en: Taipei Traffic Risk Map cover }

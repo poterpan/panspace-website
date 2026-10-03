@@ -1,0 +1,6 @@
+date: "2023-08"
+categories: [competition, ios]
+stack: [Swift, SwiftUI, watchOS, Core ML, Firebase]
+role: { zh: iOS 開發, en: iOS developer }
+cover: ./images/cover.png
+coverAlt: { zh: 健康寶寶封面, en: Healthy Baby cover }

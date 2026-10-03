@@ -1,30 +1,52 @@
 ---
 title: NTUTBox
-summary: A timetable app for NTUT students on the App Store, plus a website, course planner, check-in system and status page — all built solo.
+summary: A campus app for NTUT students on the App Store, with timetable, grades, announcements and widgets in one place, plus a course planner, QR check-in, a template API and a status page. Built and run solo.
 ---
-
-import cover from './images/cover.png';
+import app1 from './images/app-1.webp';
+import app2 from './images/app-2.webp';
+import app4 from './images/app-4.webp';
+import app8 from './images/app-8.webp';
+import planner from './images/course-planner.png';
 
 ## Background & problem
 
-NTUT students juggle several systems to check timetables and plan courses.
+At NTUT, timetables, grades, campus announcements and course registration live in separate university systems, each with its own login and none of them built for a phone. Finding out which room your next class is in means opening a browser, logging in and digging for the right page.
+
+I wanted an app that answers that the moment you open it: log in once, and your timetable, grades and announcements are there, with a home-screen widget showing the next class.
 
 ## My role
 
-Solo developer: product design, the iOS app, the website and the backend services.
+Everything, solo: product decisions, the iOS app, the website, the course planner, the data pipeline, the backend services, deployment and monitoring.
 
 ## Approach & technical decisions
 
-The app is built with SwiftUI; the website and services run on Cloudflare.
+**The app** is SwiftUI with SwiftData for local storage, so the timetable works offline. Sign-in goes through the university's SSO flow, and the password stays in the iOS Keychain; it never touches my servers. The widgets share data with the app through an App Group and decide from the current time whether to show the class in progress or the next one.
+
+**The course planner** at [course.ntutbox.com](https://course.ntutbox.com) only plans. It needs no login and never talks to the university's registration system on a student's behalf. A Python crawler runs on GitHub Actions: course listings and enrolment daily, syllabi and room schedules weekly, published as JSON to Cloudflare R2. The site is a static Next.js export with client-side full-text search. A finished plan opens in the app through a Universal Link, and the student confirms it there before anything is submitted. The planner is [open source](https://github.com/poterpan/ntutbox-course).
+
+**The other services** run on Cloudflare: a [QR check-in system](https://github.com/poterpan/ntutbox-checkin) (Next.js, D1, KV, with QR codes that rotate every 30 seconds and one-time nonces against replays), a [timetable template API](https://github.com/poterpan/ntutbox-template-api) so students at other universities can import their period schedules, and a status page that monitors the university's systems. When the app misbehaves, the status page shows whether the university's side is down.
 
 ## Outcome
 
-<Stat value="App Store" label="Live" />
+<Stat value="33k" label="course listings" note="in the planner, 11 semesters since fall 2021" />
 
-<Gallery label="NTUTBox screenshots" images={[{ src: cover, alt: 'NTUTBox cover' }]} />
+<Stat value="6" label="university systems monitored" note="on the status page" />
 
-The app is live on the App Store and the surrounding services are in production.
+<Gallery
+  label="NTUTBox screenshots"
+  images={[
+    { src: app1, alt: "The app's Today view: the class in progress, to-dos and upcoming events" },
+    { src: app4, alt: 'Grades: GPA plus class and department ranking' },
+    { src: app8, alt: 'Campus announcements, filtered by category' },
+    { src: app2, alt: 'Sign-in with a university account' },
+    { src: planner, alt: 'The course planner: weekly grid, course search and credit total' },
+  ]}
+/>
+
+The app is on the App Store, and the website, planner, check-in system and status page are all in production. The planner and the template API are MIT-licensed.
 
 ## What I learned
 
-Running a whole product alone means automating deployment and monitoring.
+Running a whole product alone means handing everything you can to automation. Crawls, deploys, data validation and monitoring have to run on their own, and tell me first when they break.
+
+I also learned to draw clear boundaries. The website plans, and only the app submits, after the student confirms. That line makes the system easy to explain and safer to run.

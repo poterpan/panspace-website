@@ -1,0 +1,26 @@
+---
+title: Healthy Baby
+summary: Second prize in the Taiwan and Greater China finals of the Mobile Application Innovation Contest. A parenting app for feeds, sleep, diapers and growth, with on-device jaundice and stool-colour checks.
+---
+
+## Background & problem
+
+New parents track a lot every day: feeds, sleep, diapers, and early warning signs such as jaundice or unusual stool colour. Notes end up scattered across paper and different apps, so when something does go wrong, the trend is hard to see.
+
+## My role
+
+I built the iOS app and the Apple Watch app for the team.
+
+## Approach & technical decisions
+
+The app is SwiftUI, with accounts and data in Firebase and support for more than one baby. Daily logs (feeds, sleep, diapers, height and weight) turn into trend charts.
+
+Image checks run on the phone with Core ML, built on MobileNetV2, so photos of the baby never need to leave the device. The Watch app syncs with the phone over WatchConnectivity and handles heart-rate and breathing checks.
+
+## Outcome
+
+Second prize in the Taiwan final of the Mobile Application Innovation Contest, and second prize again in the Greater China final.
+
+## What I learned
+
+Caregivers only have time in scraps. Logging has to be fast with minimal typing, or the data stops coming in, and without the data the trend charts and warnings mean nothing.

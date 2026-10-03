@@ -1,24 +1,37 @@
 ---
 title: ChipPot
-summary: Discord-first subscription billing and reconciliation for clubs sharing AI subscriptions, fully serverless.
+summary: Billing and reconciliation for clubs that co-buy AI subscriptions. Members pay with one button in Discord, admins verify in one click, and the whole thing runs serverless on Cloudflare. Open source.
 ---
 
 ## Background & problem
 
-Club members split AI subscription costs, and collecting and reconciling payments is tedious.
+A club bulk-buys OpenAI and Anthropic subscriptions and splits the cost across members. Tracking every month in a spreadsheet who paid, who hasn't and whether the screenshots match quickly becomes a job nobody wants.
 
 ## My role
 
-Designed and built it solo.
+Designed and built it alone: the data model, the Discord bot, the backend API, two frontends, tests and deployment.
 
 ## Approach & technical decisions
 
-Discord is the interface; the backend runs entirely on Cloudflare Workers, D1 and R2.
+The whole payment loop moved into Discord, where members already are. A member taps **Pay**, picks a payment channel and is done. One submission settles every subscription they have for the period, and members who haven't linked their account pick their name in the same flow.
+
+The backend is a single Cloudflare Worker with the ledger in D1 and payment screenshots in a private R2 bucket. A daily cron opens billing periods, sends overdue reminders and enforces screenshot retention. Every notification is deduplicated through a log table, so re-runs never double-send.
+
+A few deliberate choices:
+
+- **Amounts are frozen per period**, so a price change never rewrites past bills.
+- **Core and channel adapters are separate.** Billing logic doesn't depend on Discord, and LINE and Telegram adapters are pre-wired.
+- **The admin site sits behind Cloudflare Access.** The SPA and API share an origin, and the Worker re-verifies the JWT and an email allow-list.
+- **CSV imports preview the diff first**: which subscriptions get added, paused or reactivated. Nothing is written until you confirm, and re-runs are idempotent.
 
 ## Outcome
 
-Open source on GitHub.
+<Stat value="431" label="test cases" note="run against real Miniflare D1 and R2, no mocks" />
+
+The club uses it for real. The code is MIT-licensed and ships with a full self-hosting guide.
 
 ## What I learned
 
-Breaking a billing flow into small, verifiable steps.
+In a billing system, every state needs a clear meaning. I modelled a bill as a state machine (pending → paid → verified) where each step can be checked, undone and audited.
+
+I also learned to test close to production. Running tests on a real D1 enforces foreign keys, and that catches bugs mocks never would.

@@ -1,0 +1,8 @@
+date: "2022-06"
+categories: [competition, ios]
+stack: [Swift, SwiftUI, Firebase]
+role: { zh: iOS 開發, en: iOS developer }
+links:
+  github: https://github.com/poterpan/IncognitoEarth
+cover: ./images/cover.png
+coverAlt: { zh: 無痕地球封面, en: Incognito Earth cover }

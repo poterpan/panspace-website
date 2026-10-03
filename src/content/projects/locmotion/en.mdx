@@ -1,0 +1,32 @@
+---
+title: LocMotion
+summary: A macOS tool that simulates realistic iPhone movement from a web control panel. It streams coordinates twice a second with acceleration, traffic-light stops and GPS jitter, for testing location-based apps. Open source.
+---
+
+## Background & problem
+
+When you test a location-based iOS app, Xcode and most tools can only set a fixed point or jump along a route at constant speed. Real movement doesn't look like that. Cars accelerate, stop at junctions, and GPS drifts. Test with unrealistic tracks and a lot of movement logic never gets exercised.
+
+## My role
+
+Built it alone: the motion engine, device connection, backend API and web control panel.
+
+## Approach & technical decisions
+
+The backend is FastAPI with four modules: device manager, route engine, motion engine and GPS noise. The web panel draws the map with Leaflet and shows the device's position live over a WebSocket.
+
+**Routes** come from OSRM for driving, walking or cycling, with any number of waypoints. Traffic-light positions come from OpenStreetMap's Overpass API, and address search from Nominatim. These public services are sometimes slow or down, so every call has retries and mirror fallbacks.
+
+**The motion engine** streams coordinates at 2 Hz with acceleration curves and speed variation, and pauses at traffic lights. When the device is standing still it adds a small drift, so it never sits frozen on one point.
+
+**Device connection** uses pymobiledevice3 and the DVT location-simulation service over USB or Wi-Fi, before and after iOS 17. The connection flow is adapted from the open-source GeoPort project, so LocMotion is released under GPL-3.0.
+
+## Outcome
+
+Click a route on the map, press start, and the device moves along it. It supports pausing, rerouting mid-trip, looping, returning to the start, and importing GPX or GeoJSON tracks. The source is on GitHub.
+
+## What I learned
+
+Realism lives in the details. Drop acceleration, stops or noise, and the track stops behaving like real movement, so the movement logic in the app goes untested.
+
+I also learned to be upfront about limits. The simulation protocol has no speed field, so apps that read speed directly show zero, while navigation apps that derive speed from position work fine. It's all in the README.

@@ -1,0 +1,9 @@
+date: "2026-05"
+categories: [ai]
+stack: [Python, FastAPI, FunASR, OpenCC, JavaScript]
+role: { zh: 獨立開發, en: Solo developer }
+links:
+  github: https://github.com/poterpan/asr-server
+cover: ./images/cover.png
+coverAlt: { zh: asr-server 網頁介面：上傳音檔後得到標上講者與時間的逐字稿, en: "The asr-server web UI showing a finished transcript with speaker labels and timestamps" }
+listOrder: 1

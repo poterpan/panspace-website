@@ -1,21 +1,56 @@
-- id: ios-club-teaching
-  type: teaching
-  start: "2022-08"
-  end: "2023-07"
-  title: { zh: 第 6 屆教學, en: Instructor (6th term) }
-  org: { zh: iOS Club, en: iOS Club }
-  description: { zh: 負責 iOS 開發課程教學。, en: "Taught the club's iOS development course." }
-- id: ios-club-president
-  type: teaching
-  start: "2023-08"
-  end: "2024-07"
-  title: { zh: 第 7 屆社長, en: President (7th term) }
-  org: { zh: iOS Club, en: iOS Club }
-  description: { zh: 帶領社團規劃課程與活動。, en: "Led the club, planning courses and events." }
+- id: ntut-ms
+  type: education
+  start: "2025-09"
+  end: present
+  title: { zh: 碩士班（就讀中）, en: "Master's student" }
+  org: { zh: 國立臺北科技大學, en: National Taipei University of Technology }
+  description: { zh: 在台北念研究所，研究醫學影像 AI，與醫學中心合作脊椎 X 光分析。, en: "Graduate study in Taipei, researching medical-imaging AI and working with a medical center on spine X-ray analysis." }
+- id: basketball-freelance
+  type: freelance
+  start: "2025-10"
+  end: present
+  title: { zh: 運動動作分析 AI 系統, en: Sports motion-analysis AI system }
+  org: { zh: 商業客戶（保密）, en: Commercial client (confidential) }
+  description: { zh: 擔任技術負責人，從資料標註、模型訓練到雲端上線，交付投籃影片分析系統。, en: "Technical lead, from data labelling and model training to cloud deployment, delivering a shooting-video analysis system." }
 - id: ios-club-webmaster
   type: teaching
   start: "2024-08"
   end: "2025-07"
   title: { zh: 第 8 屆網管, en: Webmaster (8th term) }
-  org: { zh: iOS Club, en: iOS Club }
-  description: { zh: 維護社團網站與服務。, en: "Maintained the club's website and services." }
+  org: { zh: 逢甲大學 iOS Club, en: Feng Chia University iOS Club }
+  description: { zh: 維護社團網站與線上服務，讓社課與活動順利進行。, en: "Ran the club's website and online services for classes and events." }
+- id: emergency-vehicle-project
+  type: work
+  start: "2024-03"
+  end: "2024-08"
+  title: { zh: 研究計畫參與, en: Research project member }
+  org: { zh: 緊急車輛來向定位與號誌控制系統, en: Emergency-vehicle localization and signal control }
+  description: { zh: 交通部合作計畫。GPS 在路口常失準，我們改用聲音辨識判斷緊急車輛的來向，作為號誌控制的依據。, en: "A project with Taiwan's Ministry of Transportation. GPS is unreliable at intersections, so we located approaching emergency vehicles by sound to drive signal control." }
+- id: ios-club-president
+  type: teaching
+  start: "2023-08"
+  end: "2024-07"
+  title: { zh: 第 7 屆社長, en: President (7th term) }
+  org: { zh: 逢甲大學 iOS Club, en: Feng Chia University iOS Club }
+  description: { zh: 帶領社團規劃課程與活動，並擔任給國小學生的程式營隊總召，與合作學校共同舉辦。, en: "Led the club's courses and events, and directed a coding camp for elementary-school students run with partner schools." }
+- id: pm-defect-internship
+  type: work
+  start: "2023-07"
+  end: "2023-08"
+  title: { zh: AI 瑕疵檢測實習生, en: AI defect-inspection intern }
+  org: { zh: 粉末冶金零件製造商（產學合作）, en: "Powder-metallurgy parts manufacturer (industry–academia)" }
+  description: { zh: 以 YOLOv4、YOLOv7 訓練粉末冶金多孔材料的瑕疵檢測模型，處理產品照片的前處理與參數比較；成果後來整理成論文發表。, en: "Trained YOLOv4 and YOLOv7 models to detect defects in porous powder-metallurgy parts, including image preprocessing and parameter comparisons. The work later became a conference paper." }
+- id: ios-club-teaching
+  type: teaching
+  start: "2022-08"
+  end: "2023-07"
+  title: { zh: 第 6 屆教學, en: Lead instructor (6th term) }
+  org: { zh: 逢甲大學 iOS Club, en: Feng Chia University iOS Club }
+  description: { zh: 規劃並教授社團的 iOS 開發課程，舉辦兩天的 Swift 入門工作坊。, en: "Planned and taught the club's iOS development course, including a two-day Swift workshop for beginners." }
+- id: fcu-bs
+  type: education
+  start: "2021-09"
+  end: "2025-06"
+  title: { zh: 通訊工程學系 學士, en: "B.S., Communications Engineering" }
+  org: { zh: 逢甲大學（台中）, en: "Feng Chia University, Taichung" }
+  description: { zh: 在台中讀大學四年，專題做頸椎 X 光的深度學習分析，課餘參加 App 競賽與 iOS Club。, en: "Four years in Taichung. My capstone applied deep learning to cervical spine X-rays, and outside class I entered app competitions and ran the iOS Club." }
