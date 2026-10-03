@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  PHONE_RE, WEAK_METRIC_RE, findDenylistHits, findDisallowedRepoLinks, hashTerm, normalize,
+  PHONE_RE, WEAK_METRIC_RE, findDenylistHits, findDisallowedRepoLinks, hashTerm, loadDenylist, normalize,
 } from '../../scripts/content-policy.mjs';
 
 describe('normalize / hashTerm', () => {
@@ -37,5 +37,24 @@ describe('patterns', () => {
   it('allows only listed public repos', () => {
     expect(findDisallowedRepoLinks('https://github.com/poterpan/ChipPot and github.com/poterpan/locmotion')).toEqual([]);
     expect(findDisallowedRepoLinks('https://github.com/poterpan/some-script')).toEqual(['some-script']);
+  });
+});
+
+describe('loadDenylist', () => {
+  const none = () => false;
+  it('prefers the env var (newline-separated terms)', () => {
+    const r = loadDenylist({ env: { CONTENT_DENYLIST: 'acme corp\n\nfoo' }, exists: none });
+    expect(r?.source).toBe('env');
+    expect(r?.entries).toEqual([hashTerm('acme corp'), hashTerm('foo')]);
+  });
+  it('accepts JSON in the env var', () => {
+    const entries = [hashTerm('x')];
+    expect(loadDenylist({ env: { CONTENT_DENYLIST: JSON.stringify({ entries }) }, exists: none })?.entries).toEqual(entries);
+  });
+  it('falls back to the local file, then null', () => {
+    const entries = [hashTerm('y')];
+    const r = loadDenylist({ env: {}, exists: () => true, read: () => JSON.stringify({ entries }) });
+    expect(r).toEqual({ entries, source: 'file' });
+    expect(loadDenylist({ env: {}, exists: none })).toBeNull();
   });
 });

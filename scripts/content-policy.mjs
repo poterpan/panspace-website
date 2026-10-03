@@ -1,4 +1,7 @@
 import { createHash } from 'node:crypto';
+import { existsSync, readFileSync } from 'node:fs';
+
+export const LOCAL_DENYLIST = 'content-policy/denylist.local.json';
 
 /** Public repos that may be linked from content. Anything else is rejected (grey-area and private repos included). */
 export const ALLOWED_REPOS = [
@@ -55,4 +58,21 @@ export function findDisallowedRepoLinks(text, allowed = ALLOWED_REPOS) {
   return [...text.matchAll(/github\.com\/poterpan\/([A-Za-z0-9_.-]+)/gi)]
     .map((m) => (m[1] ?? '').replace(/\.git$/, ''))
     .filter((repo) => !allowed.includes(repo.toLowerCase()));
+}
+
+/**
+ * Loads denylist entries: `CONTENT_DENYLIST` env first (JSON `{entries}` or newline-separated terms),
+ * then the git-ignored local file. Returns null when neither exists.
+ * @param {{ env?: Record<string, string | undefined>, file?: string, exists?: (p: string) => boolean, read?: (p: string) => string }} [opts]
+ * @returns {{ entries: { len: number, sha256: string }[], source: 'env' | 'file' } | null}
+ */
+export function loadDenylist({ env = process.env, file = LOCAL_DENYLIST, exists = existsSync, read = (p) => readFileSync(p, 'utf8') } = {}) {
+  const raw = env.CONTENT_DENYLIST?.trim();
+  if (raw) {
+    if (raw.startsWith('{')) return { entries: JSON.parse(raw).entries, source: 'env' };
+    const terms = raw.split('\n').map((l) => l.trim()).filter(Boolean);
+    return { entries: terms.map(hashTerm), source: 'env' };
+  }
+  if (exists(file)) return { entries: JSON.parse(read(file)).entries, source: 'file' };
+  return null;
 }
