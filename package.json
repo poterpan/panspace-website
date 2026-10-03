@@ -12,7 +12,10 @@
     "check": "astro check",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "preview:cf": "wrangler dev --port ${E2E_PORT:-8788} --ip 127.0.0.1 --show-interactive-dev-session=false"
+    "preview:cf": "wrangler dev --port ${E2E_PORT:-8788} --ip 127.0.0.1 --show-interactive-dev-session=false",
+    "check:dist": "node scripts/check-dist.mjs",
+    "check:links": "linkinator http://127.0.0.1:${E2E_PORT:-8788}/ --config linkinator.config.json",
+    "lhci": "lhci autorun"
   },
   "dependencies": {
     "@astrojs/mdx": "8.0.2",
