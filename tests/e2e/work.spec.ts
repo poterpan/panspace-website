@@ -61,9 +61,20 @@ test('cards morph into the project page and names stay unique', async ({ page })
   expect(new Set(names).size).toBe(names.length);
   const first = orderedSlugs()[0];
   const card = page.locator(`a.work-card[href="/zh/work/${first}"]`);
-  expect(await card.evaluate((e) => getComputedStyle(e).getPropertyValue('view-transition-name'))).toBe(`card-${first}`);
+  await expect(card).toHaveAttribute('data-vt', `card-${first}`);
+  await page.evaluate(() =>
+    document.addEventListener('astro:before-swap', () => {
+      const el = document.querySelector('a.work-card');
+      (window as unknown as { __name: string }).__name = el ? getComputedStyle(el).getPropertyValue('view-transition-name') : '';
+    }),
+  );
   await card.click();
   await expect(page.locator('h1.project-title')).toBeVisible();
+  expect(await page.evaluate(() => (window as unknown as { __name: string }).__name)).toBe(`card-${first}`);
+  await expect(page.locator('[data-window-close]')).toHaveAttribute('href', '/zh/work');
+  await page.locator('[data-window-close]').click();
+  await expect(page).toHaveURL(/\/zh\/work$/);
+  await expect(card).toBeVisible();
 });
 
 test.describe('without JavaScript', () => {

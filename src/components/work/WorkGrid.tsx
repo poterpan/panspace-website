@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'motion/react';
 import { filterByCategory } from '../../lib/projects';
 import { vtNames } from '../../lib/transitions';
@@ -47,8 +47,6 @@ export default function WorkGrid({ items, filters, filterLabel, countTemplate }:
       <motion.ul layout className="work-grid" style={{ position: 'relative' }}>
         <AnimatePresence mode="popLayout" initial={false}>
           {visible.map((item) => {
-            const names = vtNames(item.slug);
-            const vars = { '--vt-card': names.card, '--vt-title': names.title, '--vt-cover': names.cover } as CSSProperties;
             return (
               <motion.li
                 key={item.slug}
@@ -57,12 +55,12 @@ export default function WorkGrid({ items, filters, filterLabel, countTemplate }:
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.96 }}
               >
-                <a href={item.href} className="bento-card work-card vt-card" data-spotlight style={vars}>
+                <a href={item.href} className="bento-card work-card vt-card" data-spotlight data-vt={vtNames(item.slug).card}>
                   <picture>
                     <source type="image/avif" srcSet={item.cover.avifSrcset} sizes="(min-width: 1024px) 360px, 100vw" />
                     <source type="image/webp" srcSet={item.cover.webpSrcset} sizes="(min-width: 1024px) 360px, 100vw" />
                     <img
-                      className="card-cover vt-cover"
+                      className="card-cover"
                       src={item.cover.src}
                       alt={item.cover.alt}
                       width={item.cover.width}
@@ -72,7 +70,7 @@ export default function WorkGrid({ items, filters, filterLabel, countTemplate }:
                     />
                   </picture>
                   <span className="mono-path">{item.categoryLabels.join(' · ')} · {item.period}</span>
-                  <h2 className="card-title vt-title">{item.title}</h2>
+                  <h2 className="card-title">{item.title}</h2>
                   <p className="card-summary">{item.summary}</p>
                 </a>
               </motion.li>

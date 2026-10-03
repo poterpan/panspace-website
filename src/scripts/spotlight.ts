@@ -35,3 +35,12 @@ document.addEventListener('pointerout', (e) => {
     current = null;
   }
 });
+
+// Flatten the tilt before the view-transition snapshot, so the card morphs from a flat box.
+document.addEventListener('astro:before-preparation', () => {
+  if (current) {
+    current.style.transition = 'none';
+    reset(current);
+    current = null;
+  }
+});

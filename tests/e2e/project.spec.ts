@@ -5,7 +5,7 @@ test.describe('project pages', () => {
   for (const slug of orderedSlugs()) {
     test(`/zh/work/${slug}: header, cover, table of contents`, async ({ page }) => {
       await page.goto(`/zh/work/${slug}`);
-      await expect(page.locator('.project-header .mono-path')).toHaveText(`~/work/${slug}`);
+      await expect(page.locator('.window-bar .window-path')).toHaveText(`~/work/${slug}`);
       await expect(page.locator('h1.project-title')).toBeVisible();
       await expect(page.locator('.project-hero picture source[type="image/avif"]')).toHaveCount(1);
       await expect(page.locator('.project-hero picture source[type="image/webp"]')).toHaveCount(1);
