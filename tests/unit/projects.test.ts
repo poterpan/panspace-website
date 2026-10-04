@@ -7,7 +7,7 @@ import {
 function meta(patch: Partial<ProjectMetaData<string>> = {}): ProjectMetaData<string> {
   return {
     date: '2024-01', categories: ['web'], stack: ['TS'], role: { zh: '開發', en: 'Dev' },
-    links: {}, bento: 'regular', cover: 'c.png', coverAlt: { zh: 'a', en: 'a' },
+    links: {}, bento: 'regular', coverStyle: 'image', cover: 'c.png', coverAlt: { zh: 'a', en: 'a' },
     confidential: false, ...patch,
   };
 }

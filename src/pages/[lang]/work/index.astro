@@ -1,7 +1,7 @@
 ---
-import { getImage } from 'astro:assets';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import WorkGrid from '../../../components/work/WorkGrid.tsx';
+import WorkCovers from '../../../components/work/WorkCovers.astro';
+import Cover from '../../../components/covers/Cover.astro';
 import { langPaths, localizedPath, type Locale } from '../../../lib/i18n';
 import { categoryLabel, t } from '../../../i18n/ui';
 import { CATEGORIES } from '../../../lib/taxonomy';
@@ -13,31 +13,15 @@ export const getStaticPaths = langPaths;
 const lang = Astro.params.lang as Locale;
 const projects = await getProjects();
 
-const items: WorkCardData[] = await Promise.all(
-  projects.map(async (p) => {
-    const [avif, webp] = await Promise.all([
-      getImage({ src: p.meta.cover, widths: [400, 800], format: 'avif' }),
-      getImage({ src: p.meta.cover, widths: [400, 800], format: 'webp' }),
-    ]);
-    return {
-      slug: p.slug,
-      href: localizedPath(lang, `/work/${p.slug}`),
-      title: p.text[lang].data.title,
-      summary: p.text[lang].data.summary,
-      categories: p.meta.categories,
-      categoryLabels: p.meta.categories.map((c) => categoryLabel(lang, c)),
-      period: formatPeriod(p.meta.date, p.meta.end, lang),
-      cover: {
-        avifSrcset: avif.srcSet.attribute,
-        webpSrcset: webp.srcSet.attribute,
-        src: webp.src,
-        width: p.meta.cover.width,
-        height: p.meta.cover.height,
-        alt: p.meta.coverAlt[lang],
-      },
-    };
-  }),
-);
+const items: Omit<WorkCardData, 'coverHtml'>[] = projects.map((p) => ({
+  slug: p.slug,
+  href: localizedPath(lang, `/work/${p.slug}`),
+  title: p.text[lang].data.title,
+  summary: p.text[lang].data.summary,
+  categories: p.meta.categories,
+  categoryLabels: p.meta.categories.map((c) => categoryLabel(lang, c)),
+  period: formatPeriod(p.meta.date, p.meta.end, lang),
+}));
 const filters: WorkFilter[] = [
   { key: 'all', label: t(lang, 'work.filter.all') },
   ...CATEGORIES.map((c) => ({ key: c, label: categoryLabel(lang, c) })),
@@ -48,6 +32,10 @@ const filters: WorkFilter[] = [
     <p class="mono-path">~/work</p>
     <h1 class="page-title">{t(lang, 'work.title')}</h1>
     <p class="page-lede">{t(lang, 'work.description')}</p>
-    <WorkGrid client:load items={items} filters={filters} filterLabel={t(lang, 'work.filterLabel')} countTemplate={t(lang, 'work.count')} />
+    <WorkCovers items={items} filters={filters} filterLabel={t(lang, 'work.filterLabel')} countTemplate={t(lang, 'work.count')}>
+      {projects.map((p) => (
+        <Cover slot={p.slug} lang={lang} project={p} context="card" widths={[400, 800]} sizes="(min-width: 1024px) 360px, 100vw" class="card-cover" />
+      ))}
+    </WorkCovers>
   </section>
 </BaseLayout>

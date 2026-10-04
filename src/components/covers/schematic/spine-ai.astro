@@ -1,0 +1,51 @@
+---
+import SchematicFrame from '../SchematicFrame.astro';
+
+// A lateral lumbar column: vertebral bodies with their keypoints, one vertebra filled in by interpolation
+// (drawn dashed, as the real system does), and the endplate lines a lordosis angle is measured between.
+const W = 42;
+const H = 15;
+const r = (n: number) => Math.round(n * 10) / 10;
+const vertebrae = Array.from({ length: 7 }, (_, i) => {
+  const t = i / 6;
+  const cx = 146 + 16 * Math.sin(t * Math.PI);
+  const cy = 30 + i * 20;
+  const deg = -14 + 28 * t;
+  const rad = (deg * Math.PI) / 180;
+  const at = (dx: number, dy: number) => ({
+    x: r(cx + dx * Math.cos(rad) - dy * Math.sin(rad)),
+    y: r(cy + dx * Math.sin(rad) + dy * Math.cos(rad)),
+  });
+  const corners = [at(-W / 2, -H / 2), at(W / 2, -H / 2), at(W / 2, H / 2), at(-W / 2, H / 2)];
+  return { cx: r(cx), cy, deg: r(deg), corners, interpolated: i === 4, at };
+});
+const top = vertebrae[1]!;
+const bottom = vertebrae[5]!;
+// Endplate lines extended to the right of the column.
+const reach = (v: typeof top, dy: number, len: number) => ({ a: v.at(-W / 2 - 6, dy), b: v.at(W / 2 + len, dy) });
+const upper = reach(top, -H / 2, 52);
+const lower = reach(bottom, H / 2, 52);
+// The angle arc bulges right of its chord by its sagitta; the label sits just past it.
+const ARC = 110;
+const chord = Math.hypot(lower.b.x - upper.b.x, lower.b.y - upper.b.y);
+const labelX = r(Math.max(upper.b.x, lower.b.x) + ARC - Math.sqrt(ARC ** 2 - (chord / 2) ** 2) + 6);
+const canal = vertebrae.map((v) => v.at(W / 2 + 12, 0));
+const canalPath = `M${canal.map((p) => `${p.x} ${p.y}`).join(' L')}`;
+---
+<SchematicFrame>
+  <path class="sk-glow" d={canalPath} />
+  {vertebrae.map((v) => (
+    <rect
+      class:list={['sk-line', v.interpolated && 'sk-dashed']}
+      x={v.cx - W / 2} y={v.cy - H / 2} width={W} height={H} rx="3.5"
+      transform={`rotate(${v.deg} ${v.cx} ${v.cy})`}
+    />
+  ))}
+  {vertebrae.filter((v) => !v.interpolated).flatMap((v) => v.corners.map((c) => <circle class="sk-dot" cx={c.x} cy={c.y} r="1.9" />))}
+  <path class="sk-accent-2 sk-dashed" d={`M${upper.a.x} ${upper.a.y} L${upper.b.x} ${upper.b.y}`} />
+  <path class="sk-accent-2 sk-dashed" d={`M${lower.a.x} ${lower.a.y} L${lower.b.x} ${lower.b.y}`} />
+  <path class="sk-accent-2" d={`M${upper.b.x} ${upper.b.y} A ${ARC} ${ARC} 0 0 1 ${lower.b.x} ${lower.b.y}`} />
+  <text class="sk-label sk-label-accent-2" x={labelX} y={(upper.b.y + lower.b.y) / 2 + 4}>lordosis ∠</text>
+  <path class="sk-faint" d={`M${vertebrae[4]!.corners[0]!.x - 4} ${vertebrae[4]!.cy} H96`} />
+  <text class="sk-label" x="34" y={vertebrae[4]!.cy + 3.5}>interpolated</text>
+</SchematicFrame>

@@ -1,0 +1,81 @@
+---
+import { Picture } from 'astro:assets';
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import type { Locale } from '../../lib/i18n';
+import type { ProjectEntry } from '../../lib/content';
+import { coverTint, tintStyle } from '../../lib/covers';
+
+/**
+ * A project's cover, in the style its meta.yaml picks:
+ * `image` (a screenshot), `phones` (name + two framed app screenshots), `schematic` (a per-project line drawing)
+ * or `type` (name + one-line feature). Non-image covers repeat what the card already says, so they are hidden
+ * from assistive tech; only the phones' screenshots are announced, through coverAlt.
+ */
+interface Props {
+  lang: Locale;
+  project: ProjectEntry;
+  /** `card` sits in a Bento/work card; `hero` heads the project window. */
+  context: 'card' | 'hero';
+  /** Responsive image hints for the card's slot. */
+  widths?: number[];
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+const { lang, project, context, widths, sizes, eager = false, class: className } = Astro.props;
+const { meta, slug } = project;
+// `?? 'image'`: a content cache written before coverStyle existed has no default filled in.
+const style = meta.coverStyle ?? 'image';
+const name = meta.coverTitle?.[lang] ?? project.text[lang].data.title;
+const tagline = meta.coverTagline?.[lang];
+const loading = eager ? 'eager' : 'lazy';
+const fetchpriority = eager ? 'high' : 'auto';
+
+const schematics = import.meta.glob<{ default: AstroComponentFactory }>('./schematic/*.astro', { eager: true });
+const Schematic = style === 'schematic' ? schematics[`./schematic/${slug}.astro`]?.default : undefined;
+if (style === 'schematic' && !Schematic) {
+  throw new Error(`${slug} uses coverStyle: schematic but src/components/covers/schematic/${slug}.astro is missing`);
+}
+const phoneWidths = context === 'hero' ? [320, 640] : [200, 400];
+---
+<div
+  class:list={['cover', className]}
+  data-cover={style}
+  data-context={context}
+  style={style === 'image' ? undefined : tintStyle(coverTint(meta))}
+>
+  {style === 'image' && meta.cover && (
+    <Picture
+      src={meta.cover}
+      alt={meta.coverAlt?.[lang] ?? ''}
+      formats={['avif', 'webp']}
+      widths={widths}
+      sizes={sizes}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      class="cover-img"
+    />
+  )}
+  {(style === 'type' || style === 'phones') && (
+    <div class="cover-type" aria-hidden="true">
+      <p class="cover-name">{name}</p>
+      {tagline && <p class="cover-tagline">{tagline}</p>}
+    </div>
+  )}
+  {style === 'phones' && meta.screens && (
+    <div class="cover-phones" role="img" aria-label={meta.coverAlt?.[lang]}>
+      {meta.screens.map((src, i) => (
+        <span class="cover-phone" data-phone={i}>
+          <Picture src={src} alt="" formats={['avif', 'webp']} widths={phoneWidths} sizes={context === 'hero' ? '240px' : '120px'} loading={loading} />
+        </span>
+      ))}
+    </div>
+  )}
+  {Schematic && (
+    <>
+      <Schematic />
+      {tagline && <p class="cover-caption" aria-hidden="true">{tagline}</p>}
+    </>
+  )}
+  {style !== 'image' && <span class="cover-path" aria-hidden="true">~/work/{slug}</span>}
+</div>

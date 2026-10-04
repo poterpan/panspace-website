@@ -1,0 +1,46 @@
+---
+import SchematicFrame from '../SchematicFrame.astro';
+
+// A tilted street grid: two arterials, the narrow local streets that branch straight off them,
+// and rings where the two road classes meet: known crash hotspots, and junctions with the same structure
+// that aren't hotspots yet. No real locations or scores.
+const lanes = [-80, -54, -28, 26, 52, 78, 104];
+const hotspots = [
+  { x: 160, y: -28, r: 20, hot: true },
+  { x: 160, y: 26, r: 14, hot: false },
+  { x: 100, y: 0, r: 13, hot: false },
+  { x: -64, y: 0, r: 18, hot: true },
+];
+---
+<SchematicFrame>
+  <defs>
+    <radialGradient id="tr-risk-hot">
+      <stop offset="0" stop-color="var(--cover-accent)" stop-opacity="0.75" />
+      <stop offset="1" stop-color="var(--cover-accent)" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="tr-risk-mid">
+      <stop offset="0" stop-color="#fbbf24" stop-opacity="0.5" />
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <g transform="translate(130 96) rotate(-14)">
+    {lanes.map((y) => <path class="sk-road sk-road-thin" d={`M-420 ${y} H160`} />)}
+    {[-150, -124, -98, 130, 156].map((y) => <path class="sk-road sk-road-thin" d={`M-420 ${y} H420`} />)}
+    {[220, 280, 340].map((x) => <path class="sk-road sk-road-thin" d={`M${x} -260 V260`} />)}
+    {[-300, -240, -180, -120, -64, 40, 100].map((x) => <path class="sk-road sk-road-thin" d={`M${x} -260 V0`} />)}
+    <path class="sk-road" d="M-440 0 H440" />
+    <path class="sk-road" d="M160 -260 V260" />
+    {hotspots.map((h) => (
+      <>
+        <circle cx={h.x} cy={h.y} r={h.r * 1.9} fill={`url(#${h.hot ? 'tr-risk-hot' : 'tr-risk-mid'})`} />
+        <circle class:list={[h.hot ? 'sk-accent' : 'sk-warn', 'sk-thin']} cx={h.x} cy={h.y} r={h.r} />
+        <circle class={h.hot ? 'sk-fill-accent' : 'sk-fill-warn'} cx={h.x} cy={h.y} r="2.6" />
+      </>
+    ))}
+  </g>
+  <rect class="sk-panel" x="200" y="112" width="104" height="44" rx="7" />
+  <circle class="sk-fill-accent" cx="212" cy="127" r="3" />
+  <text class="sk-label" x="221" y="130.5">crash hotspot</text>
+  <circle class="sk-fill-warn" cx="212" cy="143" r="3" />
+  <text class="sk-label" x="221" y="146.5">same structure</text>
+</SchematicFrame>

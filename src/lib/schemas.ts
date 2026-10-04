@@ -1,5 +1,6 @@
 import { z } from 'astro/zod';
 import { CATEGORIES, EXPERIENCE_TYPES } from './taxonomy';
+import { COVER_STYLES, TINT_NAMES } from './covers';
 
 export { CATEGORIES, EXPERIENCE_TYPES, type Category, type ExperienceType } from './taxonomy';
 
@@ -33,12 +34,39 @@ export function projectMetaSchema<C extends z.ZodType>(cover: C) {
         .default({}),
       featured: z.number().int().positive().optional(),
       bento: z.enum(['wide', 'regular']).default('regular'),
-      cover,
-      coverAlt: localized,
+      coverStyle: z.enum(COVER_STYLES).default('image'),
+      cover: cover.optional(),
+      coverAlt: localized.optional(),
+      coverTagline: localized.optional(),
+      coverTitle: localized.optional(),
+      coverTint: z.enum(TINT_NAMES).optional(),
+      screens: z.array(cover).length(2).optional(),
       confidential: z.boolean().default(false),
       listOrder: z.number().int().optional(),
     })
     .strict()
+    .superRefine((m, ctx) => {
+      const need = (key: keyof typeof m, why: string) => {
+        if (m[key] === undefined) ctx.addIssue({ code: 'custom', message: `${String(key)} is required ${why}`, path: [key] });
+      };
+      const forbid = (key: keyof typeof m, why: string) => {
+        if (m[key] !== undefined) ctx.addIssue({ code: 'custom', message: `${String(key)} is not used ${why}`, path: [key] });
+      };
+      const style = `for coverStyle: ${m.coverStyle}`;
+      if (m.coverStyle === 'image') {
+        need('cover', style);
+        need('coverAlt', style);
+      } else {
+        forbid('cover', style);
+        need('coverTagline', style);
+      }
+      if (m.coverStyle === 'phones') {
+        need('screens', style);
+        need('coverAlt', style);
+      } else {
+        forbid('screens', style);
+      }
+    })
     .refine((m) => endNotBefore(m.date, m.end), {
       message: 'end must not be before date',
       path: ['end'],

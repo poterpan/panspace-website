@@ -1,9 +1,9 @@
 ---
-import { Picture } from 'astro:assets';
 import { render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ProjectFacts from '../../../components/project/ProjectFacts.astro';
 import ProjectNav from '../../../components/project/ProjectNav.astro';
+import Cover from '../../../components/covers/Cover.astro';
 import { mdxComponents } from '../../../components/mdx';
 import { HTML_LANG, LOCALES, type Locale } from '../../../lib/i18n';
 import { categoryLabel, t } from '../../../i18n/ui';
@@ -57,17 +57,11 @@ const profile = await getProfile();
           </ul>
         )}
       </header>
+      {project.meta.coverStyle !== 'type' && (
       <div class="project-hero">
-        <Picture
-          src={project.meta.cover}
-          alt={project.meta.coverAlt[lang]}
-          formats={['avif', 'webp']}
-          widths={[640, 1024, 1600]}
-          sizes="(min-width: 1120px) 1120px, 100vw"
-          loading="eager"
-          fetchpriority="high"
-        />
+        <Cover lang={lang} project={project} context="hero" widths={[640, 1024, 1600]} sizes="(min-width: 1120px) 1120px, 100vw" eager />
       </div>
+      )}
       <details class="project-facts-mobile">
         <summary>{t(lang, 'project.details')}</summary>
         <ProjectFacts lang={lang} project={project} toc={toc} />

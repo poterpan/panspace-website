@@ -32,13 +32,19 @@ import planner from './images/course-planner.png';
 
 <Stat value="6 個" label="即時監控的校務系統" note="服務狀態頁" />
 
+<PhoneStrip
+  label="北科盒子 App 截圖"
+  items={[
+    { src: app1, alt: 'App 的今日總覽：進行中的課程、待辦事項與近期行程', caption: '今日總覽' },
+    { src: app4, alt: '成績查詢頁：GPA 與班級、系所排名', caption: '成績與排名' },
+    { src: app8, alt: '北科小郵差：分類瀏覽校園公告', caption: '北科小郵差' },
+    { src: app2, alt: '登入畫面，使用學校帳號登入', caption: '學校帳號登入' },
+  ]}
+/>
+
 <Gallery
-  label="北科盒子截圖"
+  label="排課網站截圖"
   images={[
-    { src: app1, alt: 'App 的今日總覽：進行中的課程、待辦事項與近期行程' },
-    { src: app4, alt: '成績查詢頁：GPA 與班級、系所排名' },
-    { src: app8, alt: '北科小郵差：分類瀏覽校園公告' },
-    { src: app2, alt: '登入畫面，使用學校帳號登入' },
     { src: planner, alt: '排課網站：週課表、課程庫搜尋與學分統計' },
   ]}
 />

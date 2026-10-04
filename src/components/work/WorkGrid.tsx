@@ -56,19 +56,7 @@ export default function WorkGrid({ items, filters, filterLabel, countTemplate }:
                 exit={{ opacity: 0, scale: 0.96 }}
               >
                 <a href={item.href} className="bento-card work-card vt-card" data-spotlight data-vt={vtNames(item.slug).card}>
-                  <picture>
-                    <source type="image/avif" srcSet={item.cover.avifSrcset} sizes="(min-width: 1024px) 360px, 100vw" />
-                    <source type="image/webp" srcSet={item.cover.webpSrcset} sizes="(min-width: 1024px) 360px, 100vw" />
-                    <img
-                      className="card-cover"
-                      src={item.cover.src}
-                      alt={item.cover.alt}
-                      width={item.cover.width}
-                      height={item.cover.height}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </picture>
+                  <div className="card-cover-slot" dangerouslySetInnerHTML={{ __html: item.coverHtml }} />
                   <span className="mono-path">{item.categoryLabels.join(' · ')} · {item.period}</span>
                   <h2 className="card-title">{item.title}</h2>
                   <p className="card-summary">{item.summary}</p>

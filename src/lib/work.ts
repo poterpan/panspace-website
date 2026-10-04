@@ -15,7 +15,8 @@ export interface WorkCardData {
   categories: Category[];
   categoryLabels: string[];
   period: string;
-  cover: { avifSrcset: string; webpSrcset: string; src: string; width: number; height: number; alt: string };
+  /** The project's <Cover>, pre-rendered by Astro (see WorkCovers.astro). */
+  coverHtml: string;
 }
 
 export function parseCategoryParam(value: string | null): WorkFilterKey {

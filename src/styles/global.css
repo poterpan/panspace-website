@@ -126,7 +126,7 @@ a.bento-card:hover { border-color: var(--color-line-strong); }
 .project-card[data-slot="p1"] { min-height: 280px; }
 .card-title { font-size: 1rem; font-weight: 650; margin: 0; }
 .card-summary { font-size: 0.875rem; color: var(--color-muted); margin: 0; }
-.card-cover { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; border: 1px solid var(--color-line); margin-top: auto; }
+.card-cover { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: 10px; border: 1px solid var(--color-line); margin-top: auto; }
 .project-card[data-bento="regular"] .card-cover { aspect-ratio: 16 / 7; }
 .awards-card { grid-area: awards; }
 .stack-card { grid-area: stack; }
@@ -134,6 +134,98 @@ a.bento-card:hover { border-color: var(--color-line-strong); }
 .status-bar { grid-area: status; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
 .status-bar a { color: var(--color-muted); }
 .status-bar a:hover { color: var(--color-text); }
+
+/* ---------- project covers (see src/components/covers) ---------- */
+.cover {
+  --cover-glow: #1e3a8a;
+  --cover-accent: var(--color-accent);
+  position: relative;
+  overflow: hidden;
+  container-type: inline-size;
+  isolation: isolate;
+  background:
+    linear-gradient(#ffffff0a 1px, transparent 1px) 0 0 / 16px 16px,
+    linear-gradient(90deg, #ffffff0a 1px, transparent 1px) 0 0 / 16px 16px,
+    radial-gradient(110% 95% at 0% 100%, color-mix(in srgb, var(--cover-glow) 92%, transparent), transparent 62%),
+    radial-gradient(70% 70% at 100% 0%, color-mix(in srgb, var(--cover-glow) 30%, transparent), transparent 70%),
+    #0b0d10;
+}
+.cover[data-cover="image"] { background: #0b0d10; }
+.cover .cover-img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cover-type {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 7cqi 4cqi;
+}
+.cover-name {
+  margin: 0; color: #f4f5f8;
+  font-size: clamp(1.25rem, 10cqi, 4.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.02;
+  text-wrap: balance;
+}
+.cover-tagline {
+  margin: 2.6cqi 0 0; max-width: 34em;
+  font: clamp(10px, 3.1cqi, 15px) / 1.5 var(--font-mono); color: #c9ced8;
+}
+.cover-tagline::before { content: ""; display: block; width: 2.4em; height: 2px; border-radius: 2px; background: var(--cover-accent); margin-bottom: 0.9em; }
+.cover-path {
+  position: absolute; left: 3.6cqi; bottom: 3cqi; z-index: 3;
+  font: clamp(9px, 2.6cqi, 12px) var(--font-mono); color: #9aa1ad;
+}
+.cover-caption {
+  position: absolute; left: 3.6cqi; top: 3cqi; z-index: 3; margin: 0; max-width: 60%;
+  font: clamp(9px, 2.5cqi, 12px) / 1.4 var(--font-mono); color: #9aa1ad;
+}
+@container (max-width: 340px) { .cover-caption { display: none; } }
+/* Bento cards already print the path in their header. */
+.project-card .cover-path { display: none; }
+
+/* phones: the name on the left, two framed screenshots on the right that bleed off the bottom edge */
+.cover[data-cover="phones"] .cover-type { right: 46%; padding-right: 0; }
+.cover[data-cover="phones"] .cover-name { font-size: clamp(1.1rem, 8cqi, 3.75rem); }
+.cover[data-cover="phones"] { background:
+    linear-gradient(#ffffff0a 1px, transparent 1px) 0 0 / 16px 16px,
+    linear-gradient(90deg, #ffffff0a 1px, transparent 1px) 0 0 / 16px 16px,
+    radial-gradient(110% 100% at 100% 100%, color-mix(in srgb, var(--cover-glow) 85%, transparent), transparent 60%),
+    #0b0d10; }
+.cover-phone {
+  position: absolute; z-index: 1; width: 23cqi; aspect-ratio: 9 / 19.5;
+  padding: 0.9cqi; border-radius: 3.8cqi; background: #0a0a0a;
+  box-shadow: 0 18px 40px #000a, 0 0 0 1px #ffffff1f;
+}
+.cover-phone[data-phone="0"] { right: 27cqi; top: 15%; transform: rotate(-4deg); }
+.cover-phone[data-phone="1"] { right: 5cqi; top: 30%; transform: rotate(3deg); }
+.cover-phone img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 2.9cqi; }
+
+/* schematic: one line language for every drawing */
+.cover-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.cover-svg * { vector-effect: non-scaling-stroke; }
+.cover-svg .sk-line { stroke: #e7e9ee; stroke-opacity: 0.6; stroke-width: 1.4; }
+.cover-svg .sk-bold { stroke-width: 2; }
+.cover-svg .sk-thin { stroke-width: 1; }
+.cover-svg .sk-faint { stroke: #ffffff; stroke-opacity: 0.18; stroke-width: 1; }
+.cover-svg .sk-dashed { stroke-dasharray: 4 4; }
+.cover-svg .sk-accent { stroke: var(--cover-accent); stroke-width: 1.6; }
+.cover-svg .sk-accent-2 { stroke: var(--color-accent-2); stroke-width: 1.4; }
+.cover-svg .sk-warn { stroke: var(--color-warn); stroke-width: 1.4; }
+.cover-svg .sk-dot, .cover-svg .sk-fill-accent { fill: var(--cover-accent); stroke: none; }
+.cover-svg .sk-fill-warn { fill: var(--color-warn); stroke: none; }
+.cover-svg .sk-dot-soft { fill-opacity: 0.55; }
+.cover-svg .sk-glow { stroke: var(--cover-accent); stroke-opacity: 0.16; stroke-width: 10; }
+.cover-svg .sk-road { stroke: #ffffff; stroke-opacity: 0.09; stroke-width: 12; }
+.cover-svg .sk-road-thin { stroke-opacity: 0.07; stroke-width: 5; }
+.cover-svg .sk-panel { fill: #0d0f13e6; stroke: #ffffff26; stroke-width: 1; }
+.cover-svg .sk-bar { fill: #ffffff24; stroke: none; }
+.cover-svg .sk-label { fill: #9aa1ad; stroke: none; font: 10px var(--font-mono); }
+.cover-svg .sk-label-accent { fill: var(--cover-accent); }
+.cover-svg .sk-label-accent-2 { fill: var(--color-accent-2); }
+@container (max-width: 300px) { .cover-svg .sk-label { display: none; } }
+/* In the project window the drawing keeps a card-like scale instead of filling 1000px+. */
+.cover[data-context="hero"] .cover-svg { inset: 50% auto auto 50%; width: min(100%, 760px); height: auto; aspect-ratio: 16 / 9; translate: -50% -50%; }
+@container (min-width: 600px) { .cover[data-context="hero"] .cover-svg .sk-label { font-size: 6px; } }
+@media (prefers-reduced-motion: no-preference) {
+  .cover-svg .sk-pulse { transform-box: fill-box; transform-origin: center; animation: sk-pulse 2.4s ease-out infinite; }
+}
+@keyframes sk-pulse { from { transform: scale(0.6); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
 
 /* ---------- home sections ---------- */
 .timeline-mini { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
@@ -218,7 +310,11 @@ html[data-boot="folding"] .boot { animation: boot-fold 400ms cubic-bezier(0.7, 0
 .tag-list li { font: 12px var(--font-mono); border: 1px solid var(--color-line); border-radius: 999px; padding: 2px 10px; color: var(--color-muted); }
 .link-list a { color: var(--color-accent); text-decoration: none; }
 .stack-list li { font: 12px var(--font-mono); background: #16191f; border-radius: 6px; padding: 2px 8px; }
-.project-hero img { display: block; width: 100%; height: auto; border-radius: var(--radius-card); border: 1px solid var(--color-line); margin-block: 24px; }
+.project-hero { margin-block: 24px; }
+.project-hero .cover { border-radius: var(--radius-card); border: 1px solid var(--color-line); }
+.project-hero .cover .cover-img { height: auto; }
+.project-hero .cover:not([data-cover="image"]) { aspect-ratio: 16 / 9; }
+@media (min-width: 640px) { .project-hero .cover:not([data-cover="image"]) { aspect-ratio: 21 / 9; } }
 .project-layout { display: grid; gap: 40px; grid-template-columns: minmax(0, 1fr); }
 .project-facts dl { display: grid; gap: 4px 0; margin: 0 0 16px; }
 .project-facts dd { margin: 0 0 8px; }
@@ -260,6 +356,16 @@ html[data-boot="folding"] .boot { animation: boot-fold 400ms cubic-bezier(0.7, 0
 .mdx-gallery-track { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
 .mdx-gallery-track picture { flex: 0 0 auto; scroll-snap-align: start; }
 .mdx-gallery-track img { height: 320px; width: auto; border-radius: 12px; border: 1px solid var(--color-line); }
+.prose-ps .mdx-phones figure { margin: 0; }
+.mdx-phones-track { overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 4px; padding: 8px 4px 14px; }
+@media (prefers-reduced-motion: no-preference) { .mdx-phones-track { scroll-behavior: smooth; } }
+.mdx-phones-list { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; width: max-content; }
+.prose-ps .mdx-phones-list { list-style: none; padding: 0; margin: 0; }
+.prose-ps .mdx-phones-list li { margin: 0; }
+.mdx-phones-list li { flex: 0 0 auto; width: clamp(150px, 40vw, 200px); scroll-snap-align: start; }
+.phone-frame { display: block; padding: 5px; border-radius: 28px; background: #0a0a0a; box-shadow: 0 14px 36px #0009, 0 0 0 1px #ffffff1f; }
+.phone-frame img { display: block; width: 100%; height: auto; aspect-ratio: 9 / 19.5; object-fit: cover; object-position: top; border-radius: 23px; }
+.mdx-phones-list figcaption { text-align: center; }
 .mdx-compare-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 .mdx-diagram { overflow-x: auto; }
 .mdx-diagram svg { display: block; min-width: 680px; }

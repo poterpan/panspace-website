@@ -7,8 +7,16 @@ test.describe('project pages', () => {
       await page.goto(`/zh/work/${slug}`);
       await expect(page.locator('.window-bar .window-path')).toHaveText(`~/work/${slug}`);
       await expect(page.locator('h1.project-title')).toBeVisible();
-      await expect(page.locator('.project-hero picture source[type="image/avif"]')).toHaveCount(1);
-      await expect(page.locator('.project-hero picture source[type="image/webp"]')).toHaveCount(1);
+      const style = projectMetas().find((p) => p.slug === slug)?.meta.coverStyle ?? 'image';
+      if (style === 'image') {
+        await expect(page.locator('.project-hero picture source[type="image/avif"]')).toHaveCount(1);
+        await expect(page.locator('.project-hero picture source[type="image/webp"]')).toHaveCount(1);
+      } else if (style === 'type') {
+        // The window header already shows the name and summary that a type cover would repeat.
+        await expect(page.locator('.project-hero')).toHaveCount(0);
+      } else {
+        await expect(page.locator(`.project-hero .cover[data-cover="${style}"]`)).toBeVisible();
+      }
       const hrefs = await page.locator('.project-facts-desktop nav a').evaluateAll((as) => as.map((a) => a.getAttribute('href') ?? ''));
       expect(hrefs).toHaveLength(4);
       for (const href of hrefs) await expect(page.locator(`[id="${decodeURIComponent(href.slice(1))}"]`)).toHaveCount(1);
@@ -22,7 +30,7 @@ test.describe('project pages', () => {
     expect(margin).toBeGreaterThan(0);
     const weight = await prose.locator('h2').first().evaluate((e) => Number(getComputedStyle(e).fontWeight));
     expect(weight).toBeGreaterThanOrEqual(600);
-    const lists = await prose.locator('ul').evaluateAll((els) => els.map((e) => getComputedStyle(e).listStyleType));
+    const lists = await prose.locator('ul:not(.mdx-phones-list)').evaluateAll((els) => els.map((e) => getComputedStyle(e).listStyleType));
     for (const type of lists) expect(type).toBe('disc');
   });
 

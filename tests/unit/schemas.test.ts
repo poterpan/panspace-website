@@ -49,6 +49,38 @@ describe('projectMetaSchema', () => {
   });
 });
 
+describe('projectMetaSchema cover variants', () => {
+  const tagline = { zh: '一行特徵', en: 'One-line feature' };
+  const { cover: _cover, coverAlt: _alt, ...base } = validMeta;
+  it('defaults to the image cover and keeps old metas valid', () => {
+    expect(meta.parse(validMeta).coverStyle).toBe('image');
+  });
+  it.each([
+    ['image without cover', { ...base, coverAlt: validMeta.coverAlt }],
+    ['image without coverAlt', { ...base, cover: 'c.png' }],
+    ['image with screens', { ...validMeta, screens: ['a.png', 'b.png'] }],
+    ['phones without screens', { ...base, coverStyle: 'phones', coverTagline: tagline, coverAlt: validMeta.coverAlt }],
+    ['phones with one screen', { ...base, coverStyle: 'phones', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: ['a.png'] }],
+    ['phones without tagline', { ...base, coverStyle: 'phones', coverAlt: validMeta.coverAlt, screens: ['a.png', 'b.png'] }],
+    ['phones without coverAlt', { ...base, coverStyle: 'phones', coverTagline: tagline, screens: ['a.png', 'b.png'] }],
+    ['schematic without tagline', { ...base, coverStyle: 'schematic' }],
+    ['type without tagline', { ...base, coverStyle: 'type' }],
+    ['type with an image cover', { ...validMeta, coverStyle: 'type', coverTagline: tagline }],
+    ['type with a one-language tagline', { ...base, coverStyle: 'type', coverTagline: { zh: '特徵' } }],
+    ['unknown cover style', { ...base, coverStyle: 'terminal', coverTagline: tagline }],
+    ['unknown tint', { ...base, coverStyle: 'type', coverTagline: tagline, coverTint: 'pink' }],
+  ])('rejects %s', (_name, input) => {
+    expect(meta.safeParse(input).success).toBe(false);
+  });
+  it.each([
+    ['phones', { ...base, coverStyle: 'phones', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: ['a.png', 'b.png'] }],
+    ['schematic', { ...base, coverStyle: 'schematic', coverTagline: tagline }],
+    ['type', { ...base, coverStyle: 'type', coverTagline: tagline, coverTitle: { zh: '名稱', en: 'Name' }, coverTint: 'rose' }],
+  ])('accepts a %s cover without an image', (_name, input) => {
+    expect(meta.safeParse(input).success).toBe(true);
+  });
+});
+
 describe('projectBodySchema', () => {
   it('requires a title and summary', () => {
     expect(projectBodySchema.safeParse({ title: 'T', summary: 'S' }).success).toBe(true);

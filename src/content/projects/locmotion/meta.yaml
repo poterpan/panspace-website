@@ -5,5 +5,6 @@ role: { zh: 獨立開發, en: Solo developer }
 links:
   github: https://github.com/poterpan/LocMotion
 featured: 5
-cover: ./images/cover.png
-coverAlt: { zh: LocMotion 封面, en: LocMotion cover }
+coverStyle: schematic
+coverTagline: { zh: 每秒兩次座標串流 · 加減速、停等與 GPS 抖動, en: "Coordinates twice a second · speed changes, stops, GPS jitter" }
+coverTint: cyan

@@ -1,0 +1,45 @@
+---
+import SchematicFrame from '../SchematicFrame.astro';
+
+// A jump shot at release: the pose skeleton with its keypoints, the elbow angle, the ball's arc to the rim,
+// and the three moments the system finds along the clip (loading, the lowest point, release).
+const joints = {
+  head: { x: 74, y: 52 },
+  neck: { x: 76, y: 64 },
+  shoulder: { x: 78, y: 68 },
+  elbow: { x: 92, y: 54 },
+  wrist: { x: 96, y: 36 },
+  offElbow: { x: 64, y: 62 },
+  offWrist: { x: 74, y: 44 },
+  hip: { x: 76, y: 102 },
+  knee: { x: 84, y: 126 },
+  ankle: { x: 78, y: 150 },
+  knee2: { x: 70, y: 128 },
+  ankle2: { x: 70, y: 152 },
+};
+const j = joints;
+const bones = [
+  [j.neck, j.hip], [j.shoulder, j.elbow], [j.elbow, j.wrist], [j.shoulder, j.offElbow], [j.offElbow, j.offWrist],
+  [j.hip, j.knee], [j.knee, j.ankle], [j.hip, j.knee2], [j.knee2, j.ankle2],
+];
+const ball = { x: 99, y: 27 };
+const rim = { x: 266, y: 64 };
+const moments = [204, 236, 268];
+---
+<SchematicFrame>
+  <path class="sk-faint" d="M-240 158 H560" />
+  <path class="sk-line" d="M284 34 V82" />
+  <path class="sk-line" d={`M284 ${rim.y} H${rim.x + 10}`} />
+  <ellipse class="sk-accent" cx={rim.x} cy={rim.y + 1} rx="11" ry="3" />
+  <path class="sk-accent sk-dashed" d={`M${ball.x} ${ball.y} Q 180 -36 ${rim.x - 4} ${rim.y - 4}`} />
+  <circle class="sk-accent" cx={ball.x} cy={ball.y} r="7" />
+  <path class="sk-accent sk-thin" d={`M${ball.x - 7} ${ball.y} H${ball.x + 7} M${ball.x} ${ball.y - 7} V${ball.y + 7}`} />
+  {bones.map(([a, b]) => <path class="sk-line sk-bold" d={`M${a!.x} ${a!.y} L${b!.x} ${b!.y}`} />)}
+  <circle class="sk-line sk-bold" cx={j.head.x} cy={j.head.y} r="7" />
+  {Object.entries(joints).filter(([k]) => k !== 'head').map(([, p]) => <circle class="sk-dot" cx={p.x} cy={p.y} r="2.4" />)}
+  <path class="sk-accent-2" d="M86 62 A 10 10 0 0 0 94 46" />
+  <text class="sk-label sk-label-accent-2" x="104" y="66">elbow ∠</text>
+  <path class="sk-faint" d={`M${moments[0]! - 14} 138 H${moments[2]! + 14}`} />
+  {moments.map((x) => <circle class="sk-dot" cx={x} cy="138" r="3" />)}
+  <text class="sk-label" x={moments[0]! - 14} y="154">load · dip · release</text>
+</SchematicFrame>

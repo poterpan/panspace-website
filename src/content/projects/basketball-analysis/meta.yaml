@@ -5,5 +5,6 @@ stack: [PyTorch, YOLO, FastAPI, Google Cloud Run, Cloudflare Workers, D1, R2, Qu
 role: { zh: 技術負責人, en: Technical lead }
 featured: 4
 confidential: true
-cover: ./images/cover.png
-coverAlt: { zh: 籃球動作分析封面, en: Basketball motion analysis cover }
+coverStyle: schematic
+coverTagline: { zh: 姿態、球與籃框追蹤 → 三個關鍵時間點與關節角度, en: "Pose, ball and rim tracking → three key moments and joint angles" }
+coverTint: amber

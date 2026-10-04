@@ -1,0 +1,10 @@
+---
+/**
+ * Shared canvas for schematic covers: a 320×180 drawing that is cropped (never letterboxed) to the cover's
+ * aspect ratio, so keep anything that matters inside y 22–158 (the frame then insets the whole drawing by 10%). Strokes keep their width at any size.
+ * Use the sk-* classes for the line language; labels name what the system measures, never invented results.
+ */
+---
+<svg class="cover-svg" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  <g transform="translate(160 90) scale(0.9) translate(-160 -90)"><slot /></g>
+</svg>

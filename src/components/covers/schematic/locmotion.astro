@@ -1,0 +1,35 @@
+---
+import SchematicFrame from '../SchematicFrame.astro';
+
+// A street map with a simulated walk streamed onto it: the planned route, jittered GPS fixes around it,
+// a red-light stop, the live position, and a panel for the coordinate stream (labels only, no fake values).
+const route = 'M36 150 C 70 146 92 118 118 112 S 160 96 176 78 S 218 52 246 44';
+const fixes = [
+  [52, 147], [66, 141], [80, 131], [94, 121], [108, 115], [124, 109], [138, 105], [152, 97], [164, 88], [176, 80],
+  [190, 68], [204, 61], [218, 55], [232, 48],
+];
+const jitter = [[1.5, -2], [-2, 1], [2, 2], [-1, -2.5], [2.5, 1], [-2, 2], [1, -2], [-2.5, -1], [2, 1.5], [-1, 2.5], [2, -1.5], [-1.5, -2], [1, 2], [-2, 1]];
+---
+<SchematicFrame>
+  <path class="sk-road" d="M-240 50 Q -90 76 0 58 Q 90 40 150 82 T 320 70 T 560 60" />
+  <path class="sk-road" d="M40 -120 Q 52 -32 62 0 Q 92 96 70 180 T 66 320" />
+  <path class="sk-road sk-road-thin" d="M210 -120 Q 220 -36 214 0 Q 196 110 246 180 T 270 320" />
+  <path class="sk-road sk-road-thin" d="M-240 122 Q -120 116 0 128 Q 120 140 320 118 T 560 100" />
+  <path class="sk-road sk-road-thin" d="M-60 -120 Q -20 40 -40 320" />
+  <path class="sk-road sk-road-thin" d="M380 -120 Q 350 60 400 320" />
+  <path class="sk-accent sk-bold" d={route} />
+  {fixes.map(([x, y], i) => <circle class="sk-dot sk-dot-soft" cx={x! + jitter[i]![0]!} cy={y! + jitter[i]![1]!} r="1.7" />)}
+  <circle class="sk-accent" cx="36" cy="150" r="3.2" />
+  <rect class="sk-warn" x="112" y="104" width="12" height="12" rx="3" />
+  <path class="sk-warn" d="M116.5 107.5 V112.5 M119.5 107.5 V112.5" />
+  <text class="sk-label" x="98" y="134">stop</text>
+  <circle class="sk-fill-accent" cx="246" cy="44" r="5" />
+  <circle class="sk-accent sk-pulse" cx="246" cy="44" r="12" />
+  <rect class="sk-panel" x="214" y="98" width="88" height="54" rx="7" />
+  <text class="sk-label" x="224" y="116">lat</text>
+  <text class="sk-label" x="224" y="130">lng</text>
+  <rect class="sk-bar" x="246" y="110" width="44" height="6" rx="2" />
+  <rect class="sk-bar" x="246" y="124" width="38" height="6" rx="2" />
+  <circle class="sk-fill-accent" cx="227" cy="141" r="2.2" />
+  <text class="sk-label sk-label-accent" x="234" y="144.5">2 Hz stream</text>
+</SchematicFrame>

@@ -1,0 +1,20 @@
+---
+import WorkGrid from './WorkGrid.tsx';
+import type { WorkCardData, WorkFilter } from '../../lib/work';
+
+/**
+ * Renders each project's <Cover> (passed as a slot named after its slug) to HTML and hands it to the
+ * WorkGrid island, so the React grid shows exactly the covers the Astro pages render.
+ */
+interface Props {
+  items: Omit<WorkCardData, 'coverHtml'>[];
+  filters: WorkFilter[];
+  filterLabel: string;
+  countTemplate: string;
+}
+const { items, filters, filterLabel, countTemplate } = Astro.props;
+const withCovers: WorkCardData[] = await Promise.all(
+  items.map(async (item) => ({ ...item, coverHtml: await Astro.slots.render(item.slug) })),
+);
+---
+<WorkGrid client:load items={withCovers} filters={filters} filterLabel={filterLabel} countTemplate={countTemplate} />

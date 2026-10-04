@@ -4,5 +4,5 @@ stack: [Swift, SwiftUI, AVFoundation, Firebase]
 role: { zh: iOS 開發, en: iOS developer }
 links:
   github: https://github.com/poterpan/BaeMoments
-cover: ./images/cover.png
-coverAlt: { zh: 享愛家園封面, en: BaeMoments cover }
+coverStyle: type
+coverTagline: { zh: 親子配對 · 一起完成任務養成土豆龍, en: "Parents and kids pair up · missions that raise a pet monster" }

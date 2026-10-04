@@ -1,5 +1,6 @@
 import { LOCALES, type Locale, type Localized } from './i18n';
 import type { Category } from './taxonomy';
+import type { CoverStyle, Tint } from './covers';
 
 export interface ProjectLinks {
   appStore?: string;
@@ -18,8 +19,13 @@ export interface ProjectMetaData<C> {
   links: ProjectLinks;
   featured?: number;
   bento: 'wide' | 'regular';
-  cover: C;
-  coverAlt: Localized;
+  coverStyle: CoverStyle;
+  cover?: C;
+  coverAlt?: Localized;
+  coverTagline?: Localized;
+  coverTitle?: Localized;
+  coverTint?: Tint;
+  screens?: C[];
   confidential: boolean;
   listOrder?: number;
 }

@@ -4,7 +4,7 @@ import { featuredForHome, sortForList } from '../../src/lib/projects';
 
 export interface MetaLite {
   slug: string;
-  meta: { date: string; featured?: number; listOrder?: number; categories: string[]; confidential?: boolean };
+  meta: { date: string; featured?: number; listOrder?: number; categories: string[]; confidential?: boolean; coverStyle?: string };
 }
 
 export function projectMetas(): MetaLite[] {
