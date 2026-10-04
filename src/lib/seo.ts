@@ -1,6 +1,12 @@
 import { localizedPath, type Locale } from './i18n';
 
 export const SITE = 'https://panspace.me';
+export const SITE_NAME = "Pan's Space";
+
+/** Every page <title> is `<page>｜Pan's Space` (full-width bar, no spaces). */
+export function formatTitle(page: string): string {
+  return `${page}｜${SITE_NAME}`;
+}
 
 export function canonicalUrl(lang: Locale, path: string): string {
   return `${SITE}${localizedPath(lang, path)}`;

@@ -8,7 +8,7 @@ import { mdxComponents } from '../../../components/mdx';
 import { HTML_LANG, LOCALES, type Locale } from '../../../lib/i18n';
 import { categoryLabel, t } from '../../../i18n/ui';
 import { getProfile, getProjects, type ProjectEntry } from '../../../lib/content';
-import { canonicalUrl, ogImageUrl, projectJsonLd } from '../../../lib/seo';
+import { canonicalUrl, formatTitle, ogImageUrl, projectJsonLd } from '../../../lib/seo';
 import { neighbors, visibleLinks } from '../../../lib/projects';
 import { closeTarget, vtStyle } from '../../../lib/transitions';
 
@@ -29,7 +29,7 @@ const { prev, next } = neighbors(ordered, project.slug);
 const links = visibleLinks(project.meta);
 const profile = await getProfile();
 ---
-<BaseLayout lang={lang} path={`/work/${project.slug}`} title={`${body.data.title} — ${t(lang, 'meta.siteName')}`} description={body.data.summary}
+<BaseLayout lang={lang} path={`/work/${project.slug}`} title={formatTitle(body.data.title)} description={body.data.summary}
   ogImage={ogImageUrl(lang, project.slug)}
   ogType="article"
   jsonLd={[projectJsonLd({

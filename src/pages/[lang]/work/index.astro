@@ -4,6 +4,7 @@ import WorkCovers from '../../../components/work/WorkCovers.astro';
 import Cover from '../../../components/covers/Cover.astro';
 import { langPaths, localizedPath, type Locale } from '../../../lib/i18n';
 import { categoryLabel, t } from '../../../i18n/ui';
+import { formatTitle } from '../../../lib/seo';
 import { CATEGORIES } from '../../../lib/taxonomy';
 import { formatPeriod } from '../../../lib/dates';
 import { getProjects } from '../../../lib/content';
@@ -27,7 +28,7 @@ const filters: WorkFilter[] = [
   ...CATEGORIES.map((c) => ({ key: c, label: categoryLabel(lang, c) })),
 ];
 ---
-<BaseLayout lang={lang} path="/work" title={`${t(lang, 'work.title')} — ${t(lang, 'meta.siteName')}`} description={t(lang, 'work.description')}>
+<BaseLayout lang={lang} path="/work" title={formatTitle(t(lang, 'work.title'))} description={t(lang, 'work.description')}>
   <section class="section">
     <p class="mono-path">~/work</p>
     <h1 class="page-title">{t(lang, 'work.title')}</h1>

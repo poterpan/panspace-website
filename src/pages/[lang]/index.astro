@@ -4,7 +4,7 @@ import BentoGrid from '../../components/home/BentoGrid.astro';
 import BootOverlay from '../../components/home/BootOverlay.astro';
 import ExperienceSnippet from '../../components/home/ExperienceSnippet.astro';
 import { langPaths, type Locale } from '../../lib/i18n';
-import { canonicalUrl, personJsonLd } from '../../lib/seo';
+import { canonicalUrl, formatTitle, personJsonLd } from '../../lib/seo';
 import { t } from '../../i18n/ui';
 import { getAwards, getExperience, getProfile, getProjects } from '../../lib/content';
 import { featuredForHome } from '../../lib/projects';
@@ -16,7 +16,7 @@ const lang = Astro.params.lang as Locale;
 const [projects, profile, experience, awards] = await Promise.all([getProjects(), getProfile(), getExperience(), getAwards()]);
 const featured = featuredForHome(projects);
 ---
-<BaseLayout lang={lang} path="/" title={`${profile.name[lang]} — ${t(lang, 'home.title')}`} description={profile.tagline[lang]}
+<BaseLayout lang={lang} path="/" title={formatTitle(t(lang, 'home.title'))} description={profile.tagline[lang]}
   jsonLd={[personJsonLd({
     name: profile.name[lang], url: canonicalUrl(lang, '/'), email: profile.email, description: profile.tagline[lang],
     location: profile.location[lang], sameAs: [profile.socials.github, profile.socials.linkedin].filter((u): u is string => Boolean(u)),
