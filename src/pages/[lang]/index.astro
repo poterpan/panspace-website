@@ -3,7 +3,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import BentoGrid from '../../components/home/BentoGrid.astro';
 import BootOverlay from '../../components/home/BootOverlay.astro';
 import ExperienceSnippet from '../../components/home/ExperienceSnippet.astro';
-import ContactSection from '../../components/ContactSection.astro';
 import { langPaths, type Locale } from '../../lib/i18n';
 import { canonicalUrl, personJsonLd } from '../../lib/seo';
 import { t } from '../../i18n/ui';
@@ -29,5 +28,4 @@ const featured = featuredForHome(projects);
   <BootOverlay lines={bootLines(profile.name.en, featured.map((p) => p.slug))} />
   <BentoGrid lang={lang} profile={profile} featured={featured} awardsCount={awards.length} awardHighlights={notableAwards(awards, 3)} />
   <ExperienceSnippet lang={lang} items={recentExperience(experience, 5)} />
-  <ContactSection lang={lang} profile={profile} />
 </BaseLayout>

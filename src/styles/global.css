@@ -119,12 +119,12 @@
   transition: border-color 0.2s;
 }
 a.bento-card:hover { border-color: var(--color-line-strong); }
-.bento-hero { grid-area: hero; min-height: 320px; gap: 20px; }
-.bento-hero h1 { font-size: clamp(2.25rem, 4.6vw, 3.75rem); font-weight: 750; letter-spacing: -0.02em; line-height: 1.1; margin: 8px 0; }
-.bento-hero .tagline { color: var(--color-muted); font-size: clamp(1.125rem, 1.5vw, 1.3rem); line-height: 1.55; margin: 0; }
-/* `$ now`: a terminal panel that takes whatever height the hero has above the name. */
+.bento-hero { grid-area: hero; min-height: 320px; gap: 20px; justify-content: space-between; }
+.bento-hero h1 { font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 750; letter-spacing: -0.02em; line-height: 1.1; margin: 8px 0; }
+.bento-hero .tagline { color: var(--color-muted); font-size: 1.0625rem; line-height: 1.6; margin: 0; max-width: 34em; text-wrap: pretty; }
+/* `$ now`: a terminal panel sized to its lines; the name block sits at the bottom of the hero. */
 .now-panel {
-  flex: 1; display: flex; flex-direction: column; gap: 2px;
+  display: flex; flex-direction: column; gap: 2px;
   background: #0b0d10; border: 1px solid var(--color-line); border-radius: 12px; padding: 14px 16px;
   font: 14px/1.9 var(--font-mono); color: #c9ced8;
 }
@@ -290,10 +290,11 @@ a.bento-card:hover { border-color: var(--color-line-strong); }
 .timeline-mini li { display: grid; grid-template-columns: 9.5rem 1fr; gap: 12px; }
 @media (max-width: 639.98px) { .timeline-mini li { grid-template-columns: 1fr; gap: 0; } }
 .more-link { display: inline-block; margin-top: 16px; color: var(--color-accent); text-decoration: none; }
-.contact-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.contact-email { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
-.contact-label { min-width: 4.5rem; }
-.contact-value { overflow-wrap: anywhere; }
+.contact-list { margin: 0; display: grid; gap: 12px; }
+.contact-row { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); align-items: center; gap: 4px 16px; }
+.contact-row dd { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; min-width: 0; }
+.contact-value { font-size: 1rem; color: var(--color-text); text-decoration: none; overflow-wrap: anywhere; }
+.contact-value:hover { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
 .copy-btn {
   display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px;
   font: 12px var(--font-mono); color: var(--color-muted); background: #16191f;

@@ -7,30 +7,47 @@ import type { Profile } from '../lib/content';
 interface Props { lang: Locale; profile: Profile }
 const { lang, profile } = Astro.props;
 const resume = resumeHref(lang);
+// Link text is the address itself (github.com/poterpan), so every row reads the same way.
+const bare = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+const socials = [
+  { label: t(lang, 'contact.github'), href: profile.socials.github },
+  ...(profile.socials.linkedin ? [{ label: t(lang, 'contact.linkedin'), href: profile.socials.linkedin }] : []),
+].map((s) => ({ ...s, text: bare(s.href) }));
 ---
 <section id="contact" class="section" aria-labelledby="contact-title">
   <h2 id="contact-title" class="section-title">{t(lang, 'contact.title')}</h2>
-  <ul class="contact-list">
-    <li class="contact-email">
-      <span class="mono-path contact-label">{t(lang, 'contact.email')}</span>
-      <a class="contact-value" href={`mailto:${profile.email}`}>{profile.email}</a>
-      <button
-        type="button"
-        class="copy-btn"
-        aria-label={t(lang, 'contact.copyEmail')}
-        data-copy-email={profile.email}
-        data-copy-label={t(lang, 'contact.copy')}
-        data-copied-label={t(lang, 'contact.copied')}
-        hidden
-      >
-        <svg class="icon-copy" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" /><path d="M10.5 3.5v-.5a1.5 1.5 0 0 0-1.5-1.5H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.5h.5" /></svg>
-        <svg class="icon-done" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 8.5l3 3 7-7" /></svg>
-        <span data-copy-text>{t(lang, 'contact.copy')}</span>
-      </button>
-      <span class="sr-only" data-copy-status role="status" aria-live="polite"></span>
-    </li>
-    {resume && <li><a href={resume} download>{t(lang, 'contact.resume')}</a></li>}
-    <li><a href={profile.socials.github} rel="me noopener" target="_blank">{t(lang, 'contact.github')}</a></li>
-    {profile.socials.linkedin && <li><a href={profile.socials.linkedin} rel="me noopener" target="_blank">{t(lang, 'contact.linkedin')}</a></li>}
-  </ul>
+  <dl class="contact-list">
+    <div class="contact-row">
+      <dt class="mono-path contact-label">{t(lang, 'contact.email')}</dt>
+      <dd>
+        <a class="contact-value" href={`mailto:${profile.email}`}>{profile.email}</a>
+        <button
+          type="button"
+          class="copy-btn"
+          aria-label={t(lang, 'contact.copyEmail')}
+          data-copy-email={profile.email}
+          data-copy-label={t(lang, 'contact.copy')}
+          data-copied-label={t(lang, 'contact.copied')}
+          hidden
+        >
+          <svg class="icon-copy" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" /><path d="M10.5 3.5v-.5a1.5 1.5 0 0 0-1.5-1.5H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.5h.5" /></svg>
+          <svg class="icon-done" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 8.5l3 3 7-7" /></svg>
+          <span data-copy-text>{t(lang, 'contact.copy')}</span>
+        </button>
+        <span class="sr-only" data-copy-status role="status" aria-live="polite"></span>
+      </dd>
+    </div>
+    {resume && (
+      <div class="contact-row">
+        <dt class="mono-path contact-label">{t(lang, 'contact.resumeLabel')}</dt>
+        <dd><a class="contact-value" href={resume} download>{t(lang, 'contact.resume')}</a></dd>
+      </div>
+    )}
+    {socials.map((s) => (
+      <div class="contact-row">
+        <dt class="mono-path contact-label">{s.label}</dt>
+        <dd><a class="contact-value" href={s.href} rel="me noopener" target="_blank">{s.text}</a></dd>
+      </div>
+    ))}
+  </dl>
 </section>

@@ -1,4 +1,3 @@
-import { existsSync } from 'node:fs';
 import { expect, test } from './fixtures';
 import { featuredSlugs } from './routes';
 
@@ -54,28 +53,10 @@ test.describe('homepage', () => {
     await expect(page.locator('#experience a.more-link')).toHaveAttribute('href', '/zh/about#timeline');
   });
 
-  test('contact: email link, conditional résumé, copy button copies', async ({ page, context }, info) => {
-    await page.goto('/en');
-    const contact = page.locator('#contact');
-    await expect(contact.locator('a[href="mailto:poter.pan@panspace.me"]')).toBeVisible();
-    const hasResume = existsSync('public/resume-en.pdf');
-    await expect(contact.locator('a[href="/resume-en.pdf"]')).toHaveCount(hasResume ? 1 : 0);
-    // The label reads as its own column, not glued to the address.
-    const label = await contact.locator('.contact-label').boundingBox();
-    const value = await contact.locator('a.contact-value').boundingBox();
-    expect(value!.x - (label!.x + label!.width)).toBeGreaterThanOrEqual(12);
-    test.skip(info.project.name !== 'desktop', 'clipboard permission is desktop-only in this setup');
-    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
-    const button = contact.getByRole('button', { name: 'Copy email' });
-    await expect(button).toBeVisible();
-    await expect(button).toHaveText('Copy');
-    await expect(button.locator('svg.icon-copy')).toBeVisible();
-    await button.click();
-    await expect(button).toHaveText('Copied');
-    await expect(contact.locator('[data-copy-status]')).toHaveText('Copied');
-    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('poter.pan@panspace.me');
-    await expect(button).toHaveText('Copy', { timeout: 3000 });
-    await expect(contact.locator('[data-copy-status]')).toHaveText('');
+  test('the homepage has no contact section: the Bento strip carries contact', async ({ page }) => {
+    await page.goto('/zh');
+    await expect(page.locator('#contact')).toHaveCount(0);
+    await expect(page.locator('.status-bar a[href="mailto:poter.pan@panspace.me"]')).toBeVisible();
   });
 
   test.describe('without JavaScript', () => {
@@ -85,7 +66,6 @@ test.describe('homepage', () => {
       await expect(page.locator('.bento-hero h1')).toBeVisible();
       await expect(page.locator('.project-card').first()).toBeVisible();
       await expect(page.locator('a[href="mailto:poter.pan@panspace.me"]').first()).toBeVisible();
-      await expect(page.locator('button[data-copy-email]')).toBeHidden();
       await page.locator('.project-card').first().click();
       await expect(page).toHaveURL(/\/zh\/work\//);
     });
