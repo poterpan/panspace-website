@@ -8,7 +8,8 @@ import { coverTint, screensFor, tintStyle } from '../../lib/covers';
 /**
  * A project's cover, in the style its meta.yaml picks:
  * `image` (a screenshot), `phones` (name + two framed app screenshots), `browser` (name + one web screenshot in a
- * browser window), `schematic` (a per-project line drawing) or `type` (name + one-line feature). Non-image covers repeat
+ * browser window), `window` (name + a hand-built app panel in `window/<slug>.astro`), `schematic` (a per-project line
+ * drawing) or `type` (name + one-line feature). Non-image covers repeat
  * what the card already says, so they are hidden from assistive tech; only the phones' and browser's screenshots are
  * announced, through coverAlt.
  */
@@ -37,6 +38,11 @@ const Schematic = style === 'schematic' ? schematics[`./schematic/${slug}.astro`
 if (style === 'schematic' && !Schematic) {
   throw new Error(`${slug} uses coverStyle: schematic but src/components/covers/schematic/${slug}.astro is missing`);
 }
+const windows = import.meta.glob<{ default: AstroComponentFactory }>('./window/*.astro', { eager: true });
+const Panel = style === 'window' ? windows[`./window/${slug}.astro`]?.default : undefined;
+if (style === 'window' && !Panel) {
+  throw new Error(`${slug} uses coverStyle: window but src/components/covers/window/${slug}.astro is missing`);
+}
 const screens = screensFor(meta.screens, lang);
 const phoneWidths = context === 'hero' ? [320, 640] : [200, 400];
 const browserWidths = context === 'hero' ? [640, 1280] : [400, 800];
@@ -61,7 +67,7 @@ const phoneClass = meta.coverFramed === false ? 'cover-phone cover-phone-bare' :
       class="cover-img"
     />
   )}
-  {(style === 'type' || style === 'phones' || style === 'browser') && (
+  {(style === 'type' || style === 'phones' || style === 'browser' || style === 'window') && (
     <div class="cover-type" aria-hidden="true">
       <p class="cover-name">{name}</p>
       {tagline && <p class="cover-tagline">{tagline}</p>}
@@ -80,6 +86,12 @@ const phoneClass = meta.coverFramed === false ? 'cover-phone cover-phone-bare' :
     <div class="cover-browser" role="img" aria-label={meta.coverAlt?.[lang]}>
       <span class="cover-browser-bar"><i></i><i></i><i></i></span>
       <Picture src={screens[0]} alt="" formats={['avif', 'webp']} widths={browserWidths} sizes={context === 'hero' ? '640px' : '240px'} loading={loading} />
+    </div>
+  )}
+  {Panel && (
+    <div class="cover-window" aria-hidden="true">
+      <span class="cover-browser-bar"><i></i><i></i><i></i></span>
+      <Panel lang={lang} />
     </div>
   )}
   {Schematic && (

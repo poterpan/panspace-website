@@ -1,0 +1,9 @@
+---
+import type { Locale } from '../../../lib/i18n';
+import DiscordBilling from '../../mdx/DiscordBilling.astro';
+
+/** ChipPot's cover panel: its Discord billing message, rebuilt in HTML. */
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+---
+<DiscordBilling lang={lang} context="cover" />

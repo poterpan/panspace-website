@@ -6,8 +6,6 @@ role: { zh: 獨立開發, en: Solo developer }
 links:
   github: https://github.com/poterpan/ChipPot
 featured: 3
-coverStyle: browser
+coverStyle: window
 coverTagline: { zh: Discord 按鈕繳費 · 後台一鍵對帳, en: "Pay from a Discord button · one-click reconciliation" }
 coverTint: emerald
-screens: [./images/01-discord-billing.webp]
-coverAlt: { zh: ChipPot 機器人在 Discord 發出的 2026-10 開始繳費訊息，列出各方案金額和繳費按鈕, en: "ChipPot's Discord message opening October 2026 billing, with each plan's price and a Pay button" }

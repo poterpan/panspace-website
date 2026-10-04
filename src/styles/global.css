@@ -254,6 +254,22 @@ a.bento-card:hover { border-color: var(--color-line-strong); }
 .cover-browser-bar i { width: 1.1cqi; height: 1.1cqi; border-radius: 50%; background: #ffffff59; }
 .cover-browser img { display: block; width: 100%; height: auto; }
 
+/* window: like browser, but the right side is a hand-built app panel (covers/window/<slug>.astro) in a Discord-dark frame */
+.cover[data-cover="window"] .cover-type { right: 53%; padding-right: 0; }
+.cover[data-cover="window"] .cover-name { font-size: clamp(1.1rem, 8cqi, 3.75rem); }
+.cover[data-cover="window"] { background:
+    linear-gradient(#ffffff0a 1px, transparent 1px) 0 0 / 16px 16px,
+    linear-gradient(90deg, #ffffff0a 1px, transparent 1px) 0 0 / 16px 16px,
+    radial-gradient(110% 100% at 100% 100%, color-mix(in srgb, var(--cover-glow) 85%, transparent), transparent 60%),
+    #0b0d10; }
+.cover-window {
+  position: absolute; z-index: 1; left: 50%; top: 16%; width: 62cqi;
+  border-radius: 1.6cqi 0 0 0; overflow: hidden; background: #1e1f22;
+  box-shadow: 0 0 0 1px #ffffff40, 0 18px 40px #000a, 0 0 70px color-mix(in srgb, var(--cover-accent) 28%, transparent);
+  font-size: 1.9cqi;
+}
+.cover-window .dc { border: 0; border-radius: 0; }
+
 /* schematic: one line language for every drawing */
 .cover-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .cover-svg * { vector-effect: non-scaling-stroke; }
@@ -450,6 +466,36 @@ body:has([data-window]) :is([data-window], .site-nav, .site-footer, dialog) { cu
 .mdx-diagram svg { display: block; min-width: 680px; }
 .mdx-compare img, .mdx-diagram img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--color-line); }
 figcaption { font-size: 0.875rem; color: var(--color-muted); margin-top: 8px; }
+
+/* DiscordBilling (components/mdx): a Discord message rebuilt in HTML; every size is in em so covers can scale it */
+.mdx-discord { max-width: 34rem; }
+.mdx-discord .dc { font-size: 15px; }
+.dc {
+  background: #313338; color: #dbdee1; border: 1px solid #ffffff14; border-radius: 0.6em;
+  padding: 1em 1.1em 1.1em 0.9em; line-height: 1.375; text-align: left;
+}
+.dc p, .prose-ps .dc p { margin: 0; color: inherit; }
+.dc-msg { display: grid; grid-template-columns: 2.6em minmax(0, 1fr); gap: 0 0.95em; }
+.dc-avatar svg { display: block; width: 2.6em; height: 2.6em; }
+.dc-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.4em; }
+.dc-name { color: #f2f3f5; font-weight: 600; }
+.dc-badge { align-self: center; font-size: 0.65em; font-weight: 600; line-height: 1.5; padding: 0 0.4em; border-radius: 0.3em; background: #5865f2; color: #fff; }
+.dc-time { font-size: 0.75em; color: #949ba4; }
+.dc-title { font-weight: 700; color: #f2f3f5; margin-top: 0.1em !important; }
+.dc-plans, .prose-ps .dc-plans { list-style: none; margin: 0.1em 0 0; padding: 0; }
+.prose-ps .dc-plans li { margin: 0; color: inherit; }
+.dc-cover .dc-plans li { white-space: nowrap; }
+.mdx-discord .dc { overflow-wrap: anywhere; }
+.dc-mention { background: #5865f24d; color: #c9cdfb; border-radius: 0.2em; padding: 0 0.15em; font-weight: 500; margin-right: 0.35em; }
+.dc-text { margin-top: 0.9em !important; }
+.dc-cmd { font: 0.85em var(--font-mono); background: #2b2d31; border: 1px solid #1e1f22; border-radius: 0.25em; padding: 0.1em 0.3em; }
+.dc-button { display: inline-block; margin-top: 0.55em; padding: 0.3em 1.1em; border-radius: 0.2em; background: #5865f2; color: #fff; font-size: 0.875em; font-weight: 500; }
+.dc-ephemeral { margin-top: 0.9em; padding-top: 0.6em; border-top: 1px solid #ffffff0f; }
+.dc-ephemeral .dc-body { background: #5865f20f; border-left: 0.2em solid #5865f2; border-radius: 0.2em; padding: 0.35em 0.6em; }
+.dc-done { color: #f2f3f5; }
+.dc-check { color: #23a55a; font-weight: 700; }
+.dc-only { font-size: 0.75em; color: #949ba4; margin-top: 0.15em !important; }
+.dc-link { color: #00a8fc; }
 
 /* ---------- view transitions (keep unlayered) ----------
    The opening card (named on demand by scripts/window.ts) and the window frame share one name: its box grows into the window, the

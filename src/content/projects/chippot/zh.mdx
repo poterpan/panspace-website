@@ -2,7 +2,6 @@
 title: ChipPot
 summary: 給合買 AI 訂閱的社團用的帳務與對帳系統。成員在 Discord 按一個按鈕就能繳費，管理員在後台一鍵核對；整套跑在 Cloudflare 的 serverless 服務上，開源。
 ---
-import discord from './images/01-discord-billing.webp';
 import dashboard from './images/02-admin-dashboard.webp';
 
 ## 背景與問題
@@ -26,13 +25,14 @@ import dashboard from './images/02-admin-dashboard.webp';
 - **後台整個放在 Cloudflare Access 後面**，前端與 API 同源，Worker 端再驗一次 JWT 和信箱白名單。
 - **CSV 匯入先預覽差異**：新增、暫停、恢復哪些訂閱，確認後才寫入，可以重複執行。
 
+<DiscordBilling lang="zh" caption="成員在 Discord 收到的開始繳費訊息：各方案金額以身分組標出，按「繳費」就能送出；完成後只有本人看得到確認回覆。" />
+
 <Gallery
   label="ChipPot 截圖"
   images={[
-    { src: discord, alt: "Discord 上的開始繳費訊息：各方案金額，下方是「繳費」按鈕" },
     { src: dashboard, alt: "管理後台的對帳看板：本期待繳、應收總額與各方案的繳費狀態" },
   ]}
-  caption="成員在 Discord 收到的繳費通知，以及管理員的對帳看板。"
+  caption="管理員的對帳看板。"
 />
 
 ## 成果

@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { parse } from 'yaml';
 import Cover from '../../src/components/covers/Cover.astro';
+import DiscordBilling from '../../src/components/mdx/DiscordBilling.astro';
 import { TINTS, coverTint, tintStyle } from '../../src/lib/covers';
 import { renderAstro } from './helpers/render';
 
@@ -26,6 +27,16 @@ describe('project covers', () => {
     '%s has its schematic drawing',
     (slug) => expect(existsSync(`src/components/covers/schematic/${slug}.astro`)).toBe(true),
   );
+  it.each(metas.filter((m) => m.meta.coverStyle === 'window').map((m) => m.slug))(
+    '%s has its window panel',
+    (slug) => expect(existsSync(`src/components/covers/window/${slug}.astro`)).toBe(true),
+  );
+  it('every window panel belongs to a project that uses it', () => {
+    for (const file of readdirSync('src/components/covers/window')) {
+      const slug = file.replace(/\.astro$/, '');
+      expect(metas.find((m) => m.slug === slug)?.meta.coverStyle, file).toBe('window');
+    }
+  });
   it('every schematic drawing belongs to a project that uses it', () => {
     for (const file of readdirSync('src/components/covers/schematic')) {
       const slug = file.replace(/\.astro$/, '');
@@ -97,5 +108,32 @@ describe('<Cover>', () => {
     expect(html).toMatch(/class="cover-browser" role="img" aria-label="Dashboard screenshot"/);
     expect(html.match(/<img\b[^>]*\salt(?:="")?[\s>]/g)).toHaveLength(1);
     expect(html).toContain('~/work/demo-app');
+  });
+  it('window: the name beside a hand-built app panel, all decorative', async () => {
+    const html = await renderAstro(Cover, {
+      lang: 'zh', context: 'card',
+      project: { ...project({ coverStyle: 'window', coverTagline: tagline }), slug: 'chippot' },
+    });
+    expect(html).toContain('data-cover="window"');
+    expect(html).toMatch(/class="cover-window" aria-hidden="true"/);
+    expect(html).toContain('2026-10 開始繳費');
+    expect(html).not.toMatch(/<img\b/);
+  });
+});
+
+describe('<DiscordBilling>', () => {
+  it.each([
+    ['zh', ['2026-10 開始繳費', '@ChatGPT', '@Claude-Standard', '@Claude-Premium', '/繳費', '應用', '已完成繳費']],
+    ['en', ['October 2026 billing is open', '@ChatGPT', '@Claude-Standard', '@Claude-Premium', '/pay', 'APP', 'Payment submitted']],
+  ] as const)('%s: the billing message is real text, no bitmap', async (lang, texts) => {
+    const html = await renderAstro(DiscordBilling, { lang, caption: 'cap' });
+    for (const t of texts) expect(html, t).toContain(t);
+    expect(html).not.toMatch(/<img\b/);
+    expect(html).toMatch(/<figure class="mdx-discord">[\s\S]*<figcaption>cap<\/figcaption>/);
+  });
+  it('as a cover panel it is a plain block with no figure or caption', async () => {
+    const html = await renderAstro(DiscordBilling, { lang: 'en', context: 'cover' });
+    expect(html).not.toContain('<figure');
+    expect(html).toContain('class="dc');
   });
 });

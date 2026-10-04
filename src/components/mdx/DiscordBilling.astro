@@ -1,0 +1,73 @@
+---
+import type { Locale } from '../../lib/i18n';
+
+/**
+ * ChipPot's billing message, rebuilt in HTML so it stays crisp at any size: the bot's post with plan prices as role
+ * mentions and a Pay button, then the ephemeral confirmation a member sees after paying. Only generic plan data.
+ * `figure` (default) is a captioned figure for project pages; `cover` is a bare block inside the ChipPot cover window,
+ * which hides it from assistive tech. Sizes are in em, so the cover scales the whole message with one font-size.
+ */
+interface Props { lang: Locale; context?: 'figure' | 'cover'; caption?: string }
+const { lang, context = 'figure', caption } = Astro.props;
+
+const copy = {
+  zh: {
+    badge: '應用',
+    time: '2026/10/1 上午9:00',
+    title: '2026-10 開始繳費',
+    plans: [['ChatGPT', 'ChatGPT：NT$315'], ['Claude-Standard', 'Claude Standard：NT$251'], ['Claude-Premium', 'Claude Premium：NT$1,258']],
+    before: '請點下方「繳費」按鈕，或使用',
+    command: '/繳費',
+    after: '指令（可附截圖）。',
+    button: '繳費',
+    done: '已完成繳費',
+    only: '只有你看得到這則訊息',
+    dismiss: '關閉訊息',
+  },
+  en: {
+    badge: 'APP',
+    time: '10/1/2026 9:00 AM',
+    title: 'October 2026 billing is open',
+    plans: [['ChatGPT', 'ChatGPT: NT$315'], ['Claude-Standard', 'Claude Standard: NT$251'], ['Claude-Premium', 'Claude Premium: NT$1,258']],
+    before: 'Tap Pay below, or use the',
+    command: '/pay',
+    after: 'command (screenshots welcome).',
+    button: 'Pay',
+    done: 'Payment submitted',
+    only: 'Only you can see this',
+    dismiss: 'Dismiss message',
+  },
+}[lang];
+const Wrapper = context === 'figure' ? 'figure' : 'div';
+---
+<Wrapper class={context === 'figure' ? 'mdx-discord' : 'dc-cover'}>
+  <div class="dc">
+    <div class="dc-msg">
+      <span class="dc-avatar" aria-hidden="true">
+        <svg viewBox="0 0 40 40" focusable="false">
+          <circle cx="20" cy="20" r="20" fill="#1f3d35" />
+          <circle cx="23" cy="10.5" r="3" fill="#f4c542" />
+          <path d="M11 17h18v3.2a9 9 0 0 1-18 0z" fill="#f3efe4" />
+          <rect x="9.5" y="15" width="21" height="3" rx="1.5" fill="#f3efe4" />
+        </svg>
+      </span>
+      <div class="dc-body">
+        <p class="dc-head"><span class="dc-name">ChipPot</span><span class="dc-badge">{copy.badge}</span><span class="dc-time">{copy.time}</span></p>
+        <p class="dc-title"><span aria-hidden="true">📢 </span>{copy.title}</p>
+        <ul class="dc-plans">
+          {copy.plans.map(([role, line]) => <li><span class="dc-mention">@{role}</span> {line}</li>)}
+        </ul>
+        <p class="dc-text">{copy.before} <code class="dc-cmd">{copy.command}</code> {copy.after}</p>
+        <span class="dc-button">{copy.button}</span>
+      </div>
+    </div>
+    <div class="dc-msg dc-ephemeral">
+      <span class="dc-gutter" aria-hidden="true"></span>
+      <div class="dc-body">
+        <p class="dc-done"><span class="dc-check" aria-hidden="true">✓</span> {copy.done}</p>
+        <p class="dc-only">{copy.only} · <span class="dc-link">{copy.dismiss}</span></p>
+      </div>
+    </div>
+  </div>
+  {context === 'figure' && caption && <figcaption>{caption}</figcaption>}
+</Wrapper>

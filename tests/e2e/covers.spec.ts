@@ -24,9 +24,9 @@ for (const [path, slugs] of [['/zh', featuredSlugs()], ['/zh/work', orderedSlugs
 
 const drawnSlugs = () => orderedSlugs().filter((s) => styleOf(s) !== 'image');
 
-test('/zh/work shows phones, browser and schematic covers, with the path label on drawn ones', async ({ page }) => {
+test('/zh/work shows phones, browser, window and schematic covers, with the path label on drawn ones', async ({ page }) => {
   await page.goto('/zh/work');
-  for (const style of ['phones', 'browser', 'schematic']) {
+  for (const style of ['phones', 'browser', 'window', 'schematic']) {
     expect(slugsWith(style).length, style).toBeGreaterThan(0);
     await expect(page.locator(`.work-card .cover[data-cover="${style}"]`)).toHaveCount(slugsWith(style).length);
   }
@@ -114,6 +114,20 @@ test('per-locale screens: the zh and en ntutbox covers show different shots', as
   for (const src of zh) expect(en).not.toContain(src);
 });
 
+test('ChipPot: a hand-built Discord message in the cover window (decorative) and as a captioned figure', async ({ page }) => {
+  await page.goto('/zh/work');
+  const win = cardOf(page, 'chippot').locator('.cover-window');
+  await expect(win).toHaveAttribute('aria-hidden', 'true');
+  await expect(win).toContainText('2026-10 開始繳費');
+  await expect(win.locator('img')).toHaveCount(0);
+  await page.goto('/en/work/chippot');
+  const figure = page.locator('figure.mdx-discord');
+  await expect(figure).toContainText('October 2026 billing is open');
+  await expect(figure.locator('.dc-button')).toHaveText('Pay');
+  await expect(figure.locator('figcaption')).toContainText('billing message');
+  await expect(figure.locator('img')).toHaveCount(0);
+});
+
 test('a browser cover shows one screenshot in a window that bleeds off the right edge', async ({ page }) => {
   const slug = slugsWith('browser')[0]!;
   await page.goto('/zh/work');
@@ -154,7 +168,7 @@ test('PhoneStrip snaps without smooth scrolling when motion is reduced', async (
 test('no horizontal page overflow at 390px', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   const drawn = ['phones', 'browser', 'schematic'].map((style) => slugsWith(style)[0]!);
-  for (const path of ['/zh', '/zh/work', '/zh/work/ntutbox', ...drawn.map((s) => `/zh/work/${s}`)]) {
+  for (const path of ['/zh', '/zh/work', '/zh/work/ntutbox', '/en/work/chippot', ...drawn.map((s) => `/zh/work/${s}`)]) {
     await page.goto(path);
     const extra = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     expect(extra, path).toBeLessThanOrEqual(0);
