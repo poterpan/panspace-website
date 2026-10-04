@@ -476,7 +476,8 @@ figcaption { font-size: 0.875rem; color: var(--color-muted); margin-top: 8px; }
 }
 .dc p, .prose-ps .dc p { margin: 0; color: inherit; }
 .dc-msg { display: grid; grid-template-columns: 2.6em minmax(0, 1fr); gap: 0 0.95em; }
-.dc-avatar svg { display: block; width: 2.6em; height: 2.6em; }
+.dc-avatar { display: block; width: 2.6em; height: 2.6em; border-radius: 50%; overflow: hidden; }
+.dc-avatar svg { display: block; width: 100%; height: 100%; }
 .dc-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.4em; }
 .dc-name { color: #f2f3f5; font-weight: 600; }
 .dc-badge { align-self: center; font-size: 0.65em; font-weight: 600; line-height: 1.5; padding: 0 0.4em; border-radius: 0.3em; background: #5865f2; color: #fff; }

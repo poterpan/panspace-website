@@ -129,6 +129,8 @@ describe('<DiscordBilling>', () => {
     const html = await renderAstro(DiscordBilling, { lang, caption: 'cap' });
     for (const t of texts) expect(html, t).toContain(t);
     expect(html).not.toMatch(/<img\b/);
+    // the real ChipPot logo, inlined as the bot avatar
+    expect(html).toMatch(/class="dc-avatar"[^>]*><svg[^>]*viewBox="0 0 1254 1254"[\s\S]*#074340[\s\S]*#f4b32b/);
     expect(html).toMatch(/<figure class="mdx-discord">[\s\S]*<figcaption>cap<\/figcaption>/);
   });
   it('as a cover panel it is a plain block with no figure or caption', async () => {

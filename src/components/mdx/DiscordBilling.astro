@@ -1,9 +1,11 @@
 ---
 import type { Locale } from '../../lib/i18n';
+import logo from '../../assets/chippot-logo.svg?raw';
 
 /**
  * ChipPot's billing message, rebuilt in HTML so it stays crisp at any size: the bot's post with plan prices as role
  * mentions and a Pay button, then the ephemeral confirmation a member sees after paying. Only generic plan data.
+ * The avatar is the real ChipPot logo (src/assets/chippot-logo.svg), inlined so it stays sharp at avatar size.
  * `figure` (default) is a captioned figure for project pages; `cover` is a bare block inside the ChipPot cover window,
  * which hides it from assistive tech. Sizes are in em, so the cover scales the whole message with one font-size.
  */
@@ -43,14 +45,7 @@ const Wrapper = context === 'figure' ? 'figure' : 'div';
 <Wrapper class={context === 'figure' ? 'mdx-discord' : 'dc-cover'}>
   <div class="dc">
     <div class="dc-msg">
-      <span class="dc-avatar" aria-hidden="true">
-        <svg viewBox="0 0 40 40" focusable="false">
-          <circle cx="20" cy="20" r="20" fill="#1f3d35" />
-          <circle cx="23" cy="10.5" r="3" fill="#f4c542" />
-          <path d="M11 17h18v3.2a9 9 0 0 1-18 0z" fill="#f3efe4" />
-          <rect x="9.5" y="15" width="21" height="3" rx="1.5" fill="#f3efe4" />
-        </svg>
-      </span>
+      <span class="dc-avatar" aria-hidden="true" set:html={logo} />
       <div class="dc-body">
         <p class="dc-head"><span class="dc-name">ChipPot</span><span class="dc-badge">{copy.badge}</span><span class="dc-time">{copy.time}</span></p>
         <p class="dc-title"><span aria-hidden="true">📢 </span>{copy.title}</p>
