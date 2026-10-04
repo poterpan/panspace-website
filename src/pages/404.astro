@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatTitle } from '../lib/seo';
 ---
-<BaseLayout lang="en" path={null} title="404 · command not found — Pan's Space" description="This page does not exist." noindex>
+<BaseLayout lang="en" path={null} title={formatTitle('Page not found')} description="找不到這個頁面。This page does not exist." noindex>
   <section class="section not-found">
     <h1 class="page-title">404</h1>
     <div class="nf-term" aria-label="Terminal">

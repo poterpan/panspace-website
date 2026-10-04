@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { SITE, alternateLinks, canonicalUrl, jsonLdScript, ogImageUrl, personJsonLd, projectJsonLd } from '../../src/lib/seo';
+import { SITE, alternateLinks, canonicalUrl, formatTitle, jsonLdScript, ogImageUrl, personJsonLd, projectJsonLd } from '../../src/lib/seo';
 
 describe('canonical and alternates', () => {
   it('builds absolute canonical URLs without trailing slashes', () => {
@@ -38,5 +38,12 @@ describe('OG and JSON-LD helpers', () => {
   });
   it('escapes < so JSON-LD cannot close the script tag', () => {
     expect(jsonLdScript({ a: '</script><b>' })).toBe('{"a":"\\u003c/script>\\u003cb>"}');
+  });
+});
+
+describe('formatTitle', () => {
+  it('joins the page name and the site name with a full-width bar and no spaces', () => {
+    expect(formatTitle('作品')).toBe("作品｜Pan's Space");
+    expect(formatTitle('NTUTBox')).toBe("NTUTBox｜Pan's Space");
   });
 });

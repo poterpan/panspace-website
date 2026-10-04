@@ -29,5 +29,7 @@ const { lang, path, title, description, noindex, ogImage, ogType, jsonLd } = Ast
 <meta property="og:image:height" content="630" />
 <meta property="og:locale" content={OG_LOCALE[lang]} />
 <meta property="og:locale:alternate" content={OG_LOCALE[otherLocale(lang)]} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
 <meta name="twitter:card" content="summary_large_image" />
 {jsonLd.map((d) => <script type="application/ld+json" set:html={jsonLdScript(d)} />)}
