@@ -48,13 +48,20 @@
   title: { zh: Swift Coding Club 社團老師, en: Swift Coding Club instructor }
   org: { zh: 台中市私立國小, en: A private elementary school in Taichung }
   description: { zh: 兩個學期教國小學生基礎程式，用 Swift 從做出會動的畫面學起。, en: "Taught elementary-school students basic programming over two semesters, starting from making something move on screen in Swift." }
+- id: coding-camp-organizer
+  type: teaching
+  start: "2024-01"
+  end: "2024-01"
+  title: { zh: 程式設計營隊總召, en: "Chief organizer, kids' coding camp" }
+  org: { zh: 逢甲大學 iOS Club × 台中市私立國際學校, en: Feng Chia University iOS Club × a private international school in Taichung }
+  description: { zh: 以社長身分擔任「用程式設計玩轉校園」營隊總召，規劃並帶領國小學生用 Swift Playgrounds 與機器人學程式。, en: "As club president, chief organizer of a coding camp where elementary-school students learned programming with Swift Playgrounds and robots; planned and ran it." }
 - id: ios-club-president
   type: teaching
   start: "2023-08"
   end: "2024-07"
   title: { zh: 第 7 屆社長, en: President (7th term) }
   org: { zh: 逢甲大學 iOS Club, en: Feng Chia University iOS Club }
-  description: { zh: 帶領社團規劃課程與活動，並擔任給國小學生的程式營隊總召，與合作學校共同舉辦。, en: "Led the club's courses and events, and directed a coding camp for elementary-school students run with partner schools." }
+  description: { zh: 帶領社團規劃課程與活動。, en: "Led the club's courses and events." }
 - id: mbot-camp-instructor
   type: teaching
   start: "2022-12"
