@@ -58,13 +58,22 @@ test.describe('homepage', () => {
     await expect(contact.locator('a[href="mailto:poter.pan@panspace.me"]')).toBeVisible();
     const hasResume = existsSync('public/resume-en.pdf');
     await expect(contact.locator('a[href="/resume-en.pdf"]')).toHaveCount(hasResume ? 1 : 0);
+    // The label reads as its own column, not glued to the address.
+    const label = await contact.locator('.contact-label').boundingBox();
+    const value = await contact.locator('a.contact-value').boundingBox();
+    expect(value!.x - (label!.x + label!.width)).toBeGreaterThanOrEqual(12);
     test.skip(info.project.name !== 'desktop', 'clipboard permission is desktop-only in this setup');
     await context.grantPermissions(['clipboard-read', 'clipboard-write']);
-    const button = contact.locator('button[data-copy-email]');
+    const button = contact.getByRole('button', { name: 'Copy email' });
     await expect(button).toBeVisible();
+    await expect(button).toHaveText('Copy');
+    await expect(button.locator('svg.icon-copy')).toBeVisible();
     await button.click();
+    await expect(button).toHaveText('Copied');
     await expect(contact.locator('[data-copy-status]')).toHaveText('Copied');
     expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('poter.pan@panspace.me');
+    await expect(button).toHaveText('Copy', { timeout: 3000 });
+    await expect(contact.locator('[data-copy-status]')).toHaveText('');
   });
 
   test.describe('without JavaScript', () => {

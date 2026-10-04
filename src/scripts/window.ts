@@ -58,3 +58,21 @@ document.addEventListener('keydown', (e) => {
   if (el?.closest('input, textarea, select, [contenteditable="true"]')) return;
   document.querySelector<HTMLAnchorElement>('[data-window-close]')?.click();
 });
+
+// The page around the window is its backdrop: a click there closes the window like ✕ does.
+// Both ends of the click must be on the backdrop, so a selection dragged out of the window never closes it.
+// Only bare page surface counts: <body> (side gutters) or <main> (the strip around the frame). That excludes
+// the window, nav and footer, and <html>, which receives every click while a view transition is running.
+const isBackdrop = (target: EventTarget | null) =>
+  !!document.querySelector('[data-window]') && (target === document.body || target === document.getElementById('main'));
+let pressedOnBackdrop = false;
+
+document.addEventListener('pointerdown', (e) => {
+  pressedOnBackdrop = e.button === 0 && isBackdrop(e.target);
+});
+
+document.addEventListener('click', (e) => {
+  if (!pressedOnBackdrop || !isBackdrop(e.target) || String(window.getSelection() ?? '') !== '') return;
+  pressedOnBackdrop = false;
+  document.querySelector<HTMLAnchorElement>('[data-window-close]')?.click();
+});

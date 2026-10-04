@@ -9,14 +9,20 @@ function bind(): void {
     button.dataset.bound = '1';
     button.addEventListener('click', async () => {
       const status = button.parentElement?.querySelector<HTMLElement>('[data-copy-status]');
+      const label = button.querySelector<HTMLElement>('[data-copy-text]');
       try {
         await navigator.clipboard.writeText(button.dataset.copyEmail ?? '');
-        if (status) {
-          status.textContent = button.dataset.copiedLabel ?? '';
+        button.dataset.copied = '';
+        if (label) label.textContent = button.dataset.copiedLabel ?? '';
+        if (status) status.textContent = button.dataset.copiedLabel ?? '';
+        window.clearTimeout(Number(button.dataset.timer));
+        button.dataset.timer = String(
           window.setTimeout(() => {
-            status.textContent = '';
-          }, 2000);
-        }
+            delete button.dataset.copied;
+            if (label) label.textContent = button.dataset.copyLabel ?? '';
+            if (status) status.textContent = '';
+          }, 1500),
+        );
       } catch {
         // Clipboard denied: the mailto link next to the button still works.
       }
