@@ -6,6 +6,13 @@ bio:
   zh: 我是潘柏嘉（Poter），在台北念研究所，大學讀逢甲大學通訊工程學系。我做 iOS、全端與電腦視覺：北科盒子是我一個人開發、上架並持續維運的校園 App；研究上則和醫學中心合作，做脊椎 X 光的 AI 分析。大學時在 iOS Club 從教學、社長做到網管，教學和帶團隊也是我很重視的經驗。
   en: I'm Poter Pan, a graduate student in Taipei with a bachelor's in communications engineering from Feng Chia University. I work across iOS, full-stack and computer vision. NTUTBox is a campus app I built, shipped and still run on my own, and in research I work with a medical center on AI analysis of spine X-rays. At university I went from instructor to president to webmaster of the iOS Club, and teaching and leading teams still matter a lot to me.
 location: { zh: 台北, en: "Taipei, Taiwan" }
+now:
+  - label: { zh: building, en: building }
+    value: { zh: NTUTBox 北科盒子, en: NTUTBox }
+  - label: { zh: studying, en: studying }
+    value: { zh: 北科大碩士 · 醫學影像 AI, en: "MS @ NTUT · medical-imaging AI" }
+  - label: { zh: based in, en: based in }
+    value: { zh: 台北, en: Taipei }
 email: poter.pan@panspace.me
 freelance: open
 socials:

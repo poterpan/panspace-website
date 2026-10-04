@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { awardYearRange, recentExperience, sortAwards, sortByStartDesc } from '../../src/lib/experience';
+import { notableAwards, recentExperience, sortAwards, sortByStartDesc } from '../../src/lib/experience';
 
 describe('experience helpers', () => {
   const items = [
@@ -26,8 +26,29 @@ describe('award helpers', () => {
   it('sorts by year desc, then id', () => {
     expect(sortAwards(awards).map((a) => a.id)).toEqual(['a', 'y', 'x']);
   });
-  it('computes the year range', () => {
-    expect(awardYearRange(awards)).toEqual([2022, 2024]);
-    expect(awardYearRange([])).toBeNull();
+});
+
+describe('notableAwards', () => {
+  const award = (id: string, year: number, kind: 'award' | 'paper', rank?: string) => ({
+    id, year, kind, ...(rank ? { rank: { zh: rank, en: rank } } : {}),
+  });
+  const items = [
+    award('mention-2024', 2024, 'award', 'Honorable mention'),
+    award('paper-2024', 2024, 'paper'),
+    award('third-2024', 2024, 'award', 'Third prize'),
+    award('second-2023', 2023, 'award', 'Second prize'),
+    award('third-2023', 2023, 'award', 'Third place'),
+    award('second-2022', 2022, 'award', 'Second prize'),
+  ];
+  it('prefers placed competition wins over mentions and papers, most recent first', () => {
+    expect(notableAwards(items, 3).map((a) => a.id)).toEqual(['third-2024', 'second-2023', 'third-2023']);
+  });
+  it('within a year, a higher place wins the slot', () => {
+    const year = [award('a-third', 2023, 'award', 'Third place'), award('b-second', 2023, 'award', 'Second prize, Taiwan final'), award('c-second', 2023, 'award', 'Second prize')];
+    expect(notableAwards(year, 2).map((a) => a.id)).toEqual(['b-second', 'c-second']);
+  });
+  it('fills with the rest when there are too few wins, still newest first', () => {
+    const few = [items[0]!, items[1]!, items[3]!];
+    expect(notableAwards(few, 3).map((a) => a.id)).toEqual(['mention-2024', 'paper-2024', 'second-2023']);
   });
 });

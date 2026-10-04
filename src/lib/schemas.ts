@@ -109,6 +109,8 @@ export function profileSchema<C extends z.ZodType>(photo: C) {
         .array(z.object({ group: localized, items: z.array(z.string().min(1)).min(1) }).strict())
         .min(1),
       photo: photo.optional(),
+      /** The homepage `$ now` panel: what I'm doing right now, one label/value line each. */
+      now: z.array(z.object({ label: localized, value: localized }).strict()).min(1).max(5).optional(),
     })
     .strict();
 }

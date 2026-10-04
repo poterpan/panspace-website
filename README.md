@@ -22,6 +22,10 @@ pnpm lhci         # Lighthouse CI against a running preview
 
 Set `E2E_PORT` to run the preview, e2e, link check and Lighthouse on a port other than 8788.
 
+## Homepage `$ now` panel
+
+The terminal panel in the homepage hero lists `now` from `src/content/profile.yaml` (up to five `{ label, value }` lines, zh/en), followed by a status line driven by `freelance`.
+
 ## Project covers and screenshots
 
 Each project's `meta.yaml` picks a `coverStyle`: `image` (default, uses `cover` + `coverAlt`), `type` (big name + `coverTagline`), `schematic` (a drawing in `src/components/covers/schematic/<slug>.astro`), `phones` or `browser`.

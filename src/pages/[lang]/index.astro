@@ -9,7 +9,7 @@ import { canonicalUrl, personJsonLd } from '../../lib/seo';
 import { t } from '../../i18n/ui';
 import { getAwards, getExperience, getProfile, getProjects } from '../../lib/content';
 import { featuredForHome } from '../../lib/projects';
-import { awardYearRange, recentExperience } from '../../lib/experience';
+import { notableAwards, recentExperience } from '../../lib/experience';
 import { bootGateScript, bootLines } from '../../lib/boot';
 
 export const getStaticPaths = langPaths;
@@ -27,7 +27,7 @@ const featured = featuredForHome(projects);
     <script is:inline set:html={bootGateScript()} />
   </Fragment>
   <BootOverlay lines={bootLines(profile.name.en, featured.map((p) => p.slug))} />
-  <BentoGrid lang={lang} profile={profile} featured={featured} awardsCount={awards.length} awardYears={awardYearRange(awards)} />
+  <BentoGrid lang={lang} profile={profile} featured={featured} awardsCount={awards.length} awardHighlights={notableAwards(awards, 3)} />
   <ExperienceSnippet lang={lang} items={recentExperience(experience, 5)} />
   <ContactSection lang={lang} profile={profile} />
 </BaseLayout>

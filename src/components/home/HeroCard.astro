@@ -1,13 +1,35 @@
 ---
 import { localizedPath, type Locale } from '../../lib/i18n';
+import { t } from '../../i18n/ui';
 import type { Profile } from '../../lib/content';
 
 interface Props { lang: Locale; profile: Profile }
 const { lang, profile } = Astro.props;
+const status = t(lang, profile.freelance === 'open' ? 'status.open' : 'status.busy');
+// Each line types itself in once the boot sequence is gone (CSS only; the text is always in the HTML).
+const lines = [
+  ...(profile.now ?? []).map((l) => ({ key: l.label[lang], value: l.value[lang], status: false })),
+  { key: t(lang, 'bento.nowStatus'), value: status, status: true },
+];
+const line = (i: number, text: string) => `--i:${i};--chars:${[...text].length}`;
 ---
 <a href={localizedPath(lang, '/about')} class="bento-card bento-hero" data-spotlight>
-  <span class="mono-path">~/panspace · $ whoami</span>
-  <h1>{profile.name[lang]}</h1>
-  <p class="tagline">{profile.tagline[lang]}</p>
-  <p class="mono-path">{profile.location[lang]}</p>
+  <div class="now-panel">
+    <div class="now-bar" aria-hidden="true"><i></i><i></i><i></i><span>~/panspace — zsh</span></div>
+    <p class="now-line now-cmd" style={line(0, '$ now')}><span class="now-prompt">$</span> now</p>
+    {lines.map((l, i) => (
+      <p class="now-line" style={line(i + 1, `${l.key} ${l.value}`)}>
+        <span class="now-key">{l.key}</span>
+        <span class:list={['now-value', l.status && 'now-status']}>
+          {l.status && <span class="status-dot" data-status={profile.freelance} aria-hidden="true"></span>}{l.value}
+        </span>
+      </p>
+    ))}
+    <p class="now-line now-end" style={line(lines.length + 1, '$')} aria-hidden="true"><span class="now-prompt">$</span><span class="now-caret"></span></p>
+  </div>
+  <div class="hero-id">
+    <span class="mono-path">~/panspace · $ whoami</span>
+    <h1>{profile.name[lang]}</h1>
+    <p class="tagline">{profile.tagline[lang]}</p>
+  </div>
 </a>

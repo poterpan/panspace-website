@@ -1,7 +1,7 @@
 ---
 import type { Locale } from '../../lib/i18n';
 import { t } from '../../i18n/ui';
-import type { Profile, ProjectEntry } from '../../lib/content';
+import type { Award, Profile, ProjectEntry } from '../../lib/content';
 import HeroCard from './HeroCard.astro';
 import ProjectCard from './ProjectCard.astro';
 import AwardsCard from './AwardsCard.astro';
@@ -13,9 +13,9 @@ interface Props {
   profile: Profile;
   featured: ProjectEntry[];
   awardsCount: number;
-  awardYears: [number, number] | null;
+  awardHighlights: Award[];
 }
-const { lang, profile, featured, awardsCount, awardYears } = Astro.props;
+const { lang, profile, featured, awardsCount, awardHighlights } = Astro.props;
 const SLOTS = ['p1', 'p2', 'p3', 'p4', 'p5'] as const;
 ---
 <section class="bento" aria-label={t(lang, 'home.bentoLabel')}>
@@ -23,7 +23,7 @@ const SLOTS = ['p1', 'p2', 'p3', 'p4', 'p5'] as const;
   {featured.slice(0, SLOTS.length).map((project, i) => (
     <ProjectCard lang={lang} project={project} slot={SLOTS[i]!} eager={i === 0} />
   ))}
-  <AwardsCard lang={lang} count={awardsCount} years={awardYears} />
+  <AwardsCard lang={lang} count={awardsCount} highlights={awardHighlights} />
   <StackCard lang={lang} skills={profile.skills} />
   <StatusBar lang={lang} profile={profile} />
 </section>

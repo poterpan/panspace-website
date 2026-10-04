@@ -1,12 +1,17 @@
 ---
 import { localizedPath, type Locale } from '../../lib/i18n';
 import { t } from '../../i18n/ui';
+import type { Award } from '../../lib/content';
 
-interface Props { lang: Locale; count: number; years: [number, number] | null }
-const { lang, count, years } = Astro.props;
+interface Props { lang: Locale; count: number; highlights: Award[] }
+const { lang, count, highlights } = Astro.props;
 ---
 <a href={`${localizedPath(lang, '/about')}#awards`} class="bento-card awards-card" data-spotlight>
-  <span class="mono-path">{t(lang, 'bento.awards')}</span>
-  <strong class="big-number">{count}</strong>
-  {years && <span class="mono-path">{years[0] === years[1] ? years[0] : `${years[0]} – ${years[1]}`}</span>}
+  <span class="mono-path">{t(lang, 'bento.awards')} · {count}</span>
+  <ul class="awards-mini">
+    {highlights.map((a) => (
+      <li><span class="mono-path">{a.year}</span><span>{a.name[lang]}{a.rank && <span class="awards-rank"> {a.rank[lang]}</span>}</span></li>
+    ))}
+  </ul>
+  <span class="awards-all">{t(lang, 'bento.awardsAll')}</span>
 </a>

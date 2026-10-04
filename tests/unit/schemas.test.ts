@@ -119,6 +119,20 @@ describe('profileSchema', () => {
     expect(profile.safeParse({ ...valid, email: 'nope' }).success).toBe(false);
     expect(profile.safeParse({ ...valid, freelance: 'maybe' }).success).toBe(false);
   });
+  const line = { label: { zh: 'building', en: 'building' }, value: { zh: '北科盒子', en: 'NTUTBox' } };
+  it('accepts a `now` panel of label/value lines, and no panel at all', () => {
+    expect(profile.safeParse({ ...valid, now: [line, line, line] }).success).toBe(true);
+    expect(profile.safeParse(valid).success).toBe(true);
+  });
+  it.each([
+    ['an empty list', []],
+    ['more than five lines', Array(6).fill(line)],
+    ['a line without a value', [{ label: line.label }]],
+    ['a one-language value', [{ ...line, value: { zh: '北科盒子' } }]],
+    ['an unknown key', [{ ...line, href: 'https://x.dev' }]],
+  ])('rejects a `now` panel with %s', (_name, now) => {
+    expect(profile.safeParse({ ...valid, now }).success).toBe(false);
+  });
 });
 
 describe('experienceSchema / awardSchema', () => {

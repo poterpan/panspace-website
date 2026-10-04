@@ -5,9 +5,14 @@ import type { Profile } from '../../lib/content';
 
 interface Props { lang: Locale; skills: Profile['skills'] }
 const { lang, skills } = Astro.props;
-const preview = skills.flatMap((g) => g.items.slice(0, 2)).slice(0, 8);
+// Four groups, at most six tools: the first two of the first two groups, then one each.
+const rows = skills.slice(0, 4).map((g, i) => ({ group: g.group[lang], items: g.items.slice(0, i < 2 ? 2 : 1) }));
 ---
 <a href={`${localizedPath(lang, '/about')}#skills`} class="bento-card stack-card" data-spotlight>
   <span class="mono-path">{t(lang, 'bento.stack')}</span>
-  <p class="mono-path" style="color: var(--color-text); line-height: 1.8; margin: 0">{preview.join(' · ')}</p>
+  <dl class="stack-mini">
+    {rows.map((r) => (
+      <div><dt class="mono-path">{r.group}</dt><dd>{r.items.join(' · ')}</dd></div>
+    ))}
+  </dl>
 </a>
