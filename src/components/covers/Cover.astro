@@ -7,9 +7,10 @@ import { coverTint, tintStyle } from '../../lib/covers';
 
 /**
  * A project's cover, in the style its meta.yaml picks:
- * `image` (a screenshot), `phones` (name + two framed app screenshots), `schematic` (a per-project line drawing)
- * or `type` (name + one-line feature). Non-image covers repeat what the card already says, so they are hidden
- * from assistive tech; only the phones' screenshots are announced, through coverAlt.
+ * `image` (a screenshot), `phones` (name + two framed app screenshots), `browser` (name + one web screenshot in a
+ * browser window), `schematic` (a per-project line drawing) or `type` (name + one-line feature). Non-image covers repeat
+ * what the card already says, so they are hidden from assistive tech; only the phones' and browser's screenshots are
+ * announced, through coverAlt.
  */
 interface Props {
   lang: Locale;
@@ -37,6 +38,9 @@ if (style === 'schematic' && !Schematic) {
   throw new Error(`${slug} uses coverStyle: schematic but src/components/covers/schematic/${slug}.astro is missing`);
 }
 const phoneWidths = context === 'hero' ? [320, 640] : [200, 400];
+const browserWidths = context === 'hero' ? [640, 1280] : [400, 800];
+// coverFramed: false is for shots that already show a device, so they are not framed twice.
+const phoneClass = meta.coverFramed === false ? 'cover-phone cover-phone-bare' : 'cover-phone';
 ---
 <div
   class:list={['cover', className]}
@@ -56,7 +60,7 @@ const phoneWidths = context === 'hero' ? [320, 640] : [200, 400];
       class="cover-img"
     />
   )}
-  {(style === 'type' || style === 'phones') && (
+  {(style === 'type' || style === 'phones' || style === 'browser') && (
     <div class="cover-type" aria-hidden="true">
       <p class="cover-name">{name}</p>
       {tagline && <p class="cover-tagline">{tagline}</p>}
@@ -65,10 +69,16 @@ const phoneWidths = context === 'hero' ? [320, 640] : [200, 400];
   {style === 'phones' && meta.screens && (
     <div class="cover-phones" role="img" aria-label={meta.coverAlt?.[lang]}>
       {meta.screens.map((src, i) => (
-        <span class="cover-phone" data-phone={i}>
+        <span class={phoneClass} data-phone={i}>
           <Picture src={src} alt="" formats={['avif', 'webp']} widths={phoneWidths} sizes={context === 'hero' ? '240px' : '120px'} loading={loading} />
         </span>
       ))}
+    </div>
+  )}
+  {style === 'browser' && meta.screens?.[0] && (
+    <div class="cover-browser" role="img" aria-label={meta.coverAlt?.[lang]}>
+      <span class="cover-browser-bar"><i></i><i></i><i></i></span>
+      <Picture src={meta.screens[0]} alt="" formats={['avif', 'webp']} widths={browserWidths} sizes={context === 'hero' ? '640px' : '240px'} loading={loading} />
     </div>
   )}
   {Schematic && (

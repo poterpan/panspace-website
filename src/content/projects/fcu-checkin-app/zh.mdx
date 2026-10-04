@@ -2,6 +2,10 @@
 title: FCU 簽到 App
 summary: 逢甲大學推出課堂 QR Code 簽到後，我做的一個 iOS App：打開就是掃描器，掃到教室的 QR Code 就用自己的帳號完成簽到，並保留簽到紀錄。
 ---
+import login from './images/01-login.webp';
+import scan from './images/02-scan.webp';
+import confirm from './images/03-confirm.webp';
+import done from './images/04-done.webp';
 
 ## 背景與問題
 
@@ -16,6 +20,16 @@ summary: 逢甲大學推出課堂 QR Code 簽到後，我做的一個 iOS App：
 App 用 SwiftUI 開發，打開就直接進入相機掃描畫面，用 AVFoundation 辨識 QR Code。登入一次後保存工作階段，之後掃碼就能直接送出簽到，結果和歷史紀錄都留在 App 裡。
 
 相機權限、登入失效和網路錯誤都有對應的提示，讓使用者知道簽到到底有沒有成功，而不是停在一個轉圈的畫面。
+
+<PhoneStrip
+  label="FCU 簽到 App 截圖"
+  items={[
+    { src: login, alt: '登入畫面：用學號透過 NID 登入，可綁定 Face ID', caption: 'NID 登入' },
+    { src: scan, alt: '掃描畫面：把教室的 QR Code 放進框內（鏡頭畫面已模糊處理）', caption: '掃描 QR Code' },
+    { src: confirm, alt: '打卡資訊：課程編碼與生成時間，確認後送出', caption: '確認打卡' },
+    { src: done, alt: '簽到完成：課程、節次與登記時間', caption: '簽到完成' },
+  ]}
+/>
 
 ## 成果
 

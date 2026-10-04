@@ -2,6 +2,10 @@
 title: Incognito Earth
 summary: Honorable mention at the Mobile Application Innovation Contest. A community app for cleaner cities that lets people report litter, see it on a map, and start or join local clean-up events.
 ---
+import map from './images/01-map.webp';
+import addSpot from './images/02-add-spot.webp';
+import ar from './images/03-ar.webp';
+import event from './images/04-event.webp';
 
 ## Background & problem
 
@@ -14,6 +18,16 @@ I built the iOS app for the team, including sign-in, events and the community fe
 ## Approach & technical decisions
 
 The app is SwiftUI with an MVVM structure, using Firebase for sign-in, data and image storage. Users create clean-up events with photos, and others browse event cards, like them and sign up.
+
+<PhoneStrip
+  label="Incognito Earth app screenshots"
+  items={[
+    { src: map, alt: 'Litter map: reported spots, each marked by type', caption: 'Litter map' },
+    { src: addSpot, alt: 'Reporting a spot: the photo is classified automatically', caption: 'Report and classify' },
+    { src: ar, alt: 'AR view: a nearby reported spot and its distance over the camera feed', caption: 'AR guide' },
+    { src: event, alt: 'A clean-up event page with time, place and a join button', caption: 'Clean-up event' },
+  ]}
+/>
 
 ## Outcome
 

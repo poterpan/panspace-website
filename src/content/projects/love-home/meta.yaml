@@ -4,5 +4,7 @@ stack: [Swift, SwiftUI, AVFoundation, Firebase]
 role: { zh: iOS 開發, en: iOS developer }
 links:
   github: https://github.com/poterpan/BaeMoments
-coverStyle: type
+coverStyle: phones
 coverTagline: { zh: 親子配對 · 一起完成任務養成土豆龍, en: "Parents and kids pair up · missions that raise a pet monster" }
+screens: [./images/03-pet-hatched.webp, ./images/01-role.webp]
+coverAlt: { zh: 享愛家園 App 孵化的土豆龍與身分選擇畫面, en: "BaeMoments' hatched pet monster and the parent-or-child sign-up screen" }

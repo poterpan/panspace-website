@@ -8,5 +8,9 @@ links:
   website: https://ntutbox.com
 featured: 1
 bento: wide
-cover: ./images/cover.png
-coverAlt: { zh: 北科盒子官網首頁，旁邊是 App 的今日總覽畫面, en: "The NTUTBox website hero next to the app's Today screen" }
+coverStyle: phones
+coverTagline: { zh: 課表 · 成績 · 公告 · 小工具, en: "Timetable · grades · notices · widgets" }
+coverTint: blue
+screens: [./images/app-1.webp, ./images/app-4.webp]
+coverFramed: false
+coverAlt: { zh: 北科盒子 App 的今日總覽與成績查詢畫面, en: "The NTUTBox app's Today and Grades screens" }

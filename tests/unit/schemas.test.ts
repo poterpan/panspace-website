@@ -63,6 +63,12 @@ describe('projectMetaSchema cover variants', () => {
     ['phones with one screen', { ...base, coverStyle: 'phones', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: ['a.png'] }],
     ['phones without tagline', { ...base, coverStyle: 'phones', coverAlt: validMeta.coverAlt, screens: ['a.png', 'b.png'] }],
     ['phones without coverAlt', { ...base, coverStyle: 'phones', coverTagline: tagline, screens: ['a.png', 'b.png'] }],
+    ['phones with three screens', { ...base, coverStyle: 'phones', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: ['a.png', 'b.png', 'c.png'] }],
+    ['browser without screens', { ...base, coverStyle: 'browser', coverTagline: tagline, coverAlt: validMeta.coverAlt }],
+    ['browser with two screens', { ...base, coverStyle: 'browser', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: ['a.png', 'b.png'] }],
+    ['browser without coverAlt', { ...base, coverStyle: 'browser', coverTagline: tagline, screens: ['a.png'] }],
+    ['browser without tagline', { ...base, coverStyle: 'browser', coverAlt: validMeta.coverAlt, screens: ['a.png'] }],
+    ['coverFramed outside phones', { ...base, coverStyle: 'browser', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: ['a.png'], coverFramed: false }],
     ['schematic without tagline', { ...base, coverStyle: 'schematic' }],
     ['type without tagline', { ...base, coverStyle: 'type' }],
     ['type with an image cover', { ...validMeta, coverStyle: 'type', coverTagline: tagline }],
@@ -74,6 +80,8 @@ describe('projectMetaSchema cover variants', () => {
   });
   it.each([
     ['phones', { ...base, coverStyle: 'phones', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: ['a.png', 'b.png'] }],
+    ['phones (unframed)', { ...base, coverStyle: 'phones', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: ['a.png', 'b.png'], coverFramed: false }],
+    ['browser', { ...base, coverStyle: 'browser', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: ['a.png'] }],
     ['schematic', { ...base, coverStyle: 'schematic', coverTagline: tagline }],
     ['type', { ...base, coverStyle: 'type', coverTagline: tagline, coverTitle: { zh: '名稱', en: 'Name' }, coverTint: 'rose' }],
   ])('accepts a %s cover without an image', (_name, input) => {

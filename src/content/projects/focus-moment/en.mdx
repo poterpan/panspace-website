@@ -1,7 +1,10 @@
 ---
 title: Focus Moment
-summary: Third prize at the Cross-Strait Youth Maker Competition. A classroom system that uses image processing and AI to estimate attention without any wearables, giving teachers real-time feedback on their pacing.
+summary: Third prize at the Cross-Strait Youth Maker Competition. A classroom system that estimates attention from video with image processing and AI, no wearables needed, and gives teachers live feedback on a web dashboard.
 ---
+import live from './images/01-live.webp';
+import playback from './images/02-playback.webp';
+import history from './images/03-history.webp';
 
 ## Background & problem
 
@@ -14,6 +17,18 @@ Team member, working on the system's design and development.
 ## Approach & technical decisions
 
 The system analyses classroom video to estimate how focused students are, with nothing for them to wear, and gives the teacher feedback in real time.
+
+Teachers use it through a web dashboard. The live view lists each student's state and the headcount. When a recorded class is played back, a colour-coded timeline shows what share of the room was focused, and a bar chart compares focused and distracted students for each interval.
+
+<Gallery
+  label="Focus Moment web screenshots"
+  images={[
+    { src: live, alt: "Live view: each student's attention state, the headcount and the share who are focused" },
+    { src: playback, alt: 'Class playback with an attention timeline and a focused-versus-distracted bar chart' },
+    { src: history, alt: 'History: recorded classes listed by date and time' },
+  ]}
+  caption="Student video in these screenshots is blurred."
+/>
 
 ## Outcome
 

@@ -180,7 +180,7 @@ a.bento-card:hover { border-color: var(--color-line-strong); }
 .project-card .cover-path { display: none; }
 
 /* phones: the name on the left, two framed screenshots on the right that bleed off the bottom edge */
-.cover[data-cover="phones"] .cover-type { right: 46%; padding-right: 0; }
+.cover[data-cover="phones"] .cover-type { right: 52%; padding-right: 0; }
 .cover[data-cover="phones"] .cover-name { font-size: clamp(1.1rem, 8cqi, 3.75rem); }
 .cover[data-cover="phones"] { background:
     linear-gradient(#ffffff0a 1px, transparent 1px) 0 0 / 16px 16px,
@@ -195,6 +195,25 @@ a.bento-card:hover { border-color: var(--color-line-strong); }
 .cover-phone[data-phone="0"] { right: 27cqi; top: 15%; transform: rotate(-4deg); }
 .cover-phone[data-phone="1"] { right: 5cqi; top: 30%; transform: rotate(3deg); }
 .cover-phone img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 2.9cqi; }
+.cover-phone-bare { padding: 0; background: none; border-radius: 2.4cqi; }
+.cover-phone-bare img { border-radius: 2.4cqi; }
+
+/* browser: the landscape analog of phones, one web screenshot in a window that bleeds off the right and bottom edges */
+.cover[data-cover="browser"] .cover-type { right: 53%; padding-right: 0; }
+.cover[data-cover="browser"] .cover-name { font-size: clamp(1.1rem, 8cqi, 3.75rem); }
+.cover[data-cover="browser"] { background:
+    linear-gradient(#ffffff0a 1px, transparent 1px) 0 0 / 16px 16px,
+    linear-gradient(90deg, #ffffff0a 1px, transparent 1px) 0 0 / 16px 16px,
+    radial-gradient(110% 100% at 100% 100%, color-mix(in srgb, var(--cover-glow) 85%, transparent), transparent 60%),
+    #0b0d10; }
+.cover-browser {
+  position: absolute; z-index: 1; left: 50%; top: 18%; width: 62cqi;
+  border-radius: 1.6cqi 0 0 0; overflow: hidden; background: #1a1d23;
+  box-shadow: 0 18px 40px #000a, 0 0 0 1px #ffffff1f;
+}
+.cover-browser-bar { display: flex; gap: 0.9cqi; align-items: center; height: 3.4cqi; padding-inline: 1.6cqi; }
+.cover-browser-bar i { width: 1.1cqi; height: 1.1cqi; border-radius: 50%; background: #ffffff33; }
+.cover-browser img { display: block; width: 100%; height: auto; }
 
 /* schematic: one line language for every drawing */
 .cover-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: none; stroke-linecap: round; stroke-linejoin: round; }

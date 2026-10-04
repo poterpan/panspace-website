@@ -22,13 +22,15 @@ for (const [path, slugs] of [['/zh', featuredSlugs()], ['/zh/work', orderedSlugs
   });
 }
 
-test('/zh/work shows image, schematic and type covers, with the path label on drawn ones', async ({ page }) => {
+const drawnSlugs = () => orderedSlugs().filter((s) => styleOf(s) !== 'image');
+
+test('/zh/work shows image, phones, browser and schematic covers, with the path label on drawn ones', async ({ page }) => {
   await page.goto('/zh/work');
-  for (const style of ['image', 'schematic', 'type']) {
+  for (const style of ['image', 'phones', 'browser', 'schematic']) {
     expect(slugsWith(style).length, style).toBeGreaterThan(0);
     await expect(page.locator(`.work-card .cover[data-cover="${style}"]`)).toHaveCount(slugsWith(style).length);
   }
-  for (const slug of [...slugsWith('schematic'), ...slugsWith('type')]) {
+  for (const slug of drawnSlugs()) {
     await expect(cardOf(page, slug).locator('.cover-path')).toHaveText(`~/work/${slug}`);
     await expect(cardOf(page, slug).locator('.cover-svg, .cover-name').first()).toBeVisible();
   }
@@ -75,11 +77,42 @@ test('a schematic card still grows into the project window', async ({ page }) =>
   await expect(page.locator('.project-hero .cover[data-cover="schematic"] .cover-svg')).toBeVisible();
 });
 
-test('a type card still grows into the project window', async ({ page }) => {
-  const slug = slugsWith('type')[0]!;
+test('a phones card still grows into the project window', async ({ page }) => {
+  const slug = slugsWith('phones').find((s) => !featuredSlugs().includes(s))!;
   await openFrom(page, '/zh/work', slug);
-  // The window header already carries the name, so a type cover has no hero.
-  await expect(page.locator('.project-hero')).toHaveCount(0);
+  await expect(page.locator('.project-hero .cover[data-cover="phones"] .cover-phone')).toHaveCount(2);
+});
+
+test('phones and browser covers announce their screenshots once, through coverAlt', async ({ page }) => {
+  await page.goto('/zh/work');
+  for (const slug of [...slugsWith('phones'), ...slugsWith('browser')]) {
+    const shots = cardOf(page, slug).locator('.cover-phones, .cover-browser');
+    await expect(shots, slug).toHaveAttribute('role', 'img');
+    await expect(shots, slug).toHaveAttribute('aria-label', /.+/);
+    for (const img of await shots.locator('img').all()) await expect(img, slug).toHaveAttribute('alt', '');
+  }
+});
+
+test('ntutbox shots already show a device, so its phones cover is not framed twice', async ({ page }) => {
+  await page.goto('/zh');
+  await expect(cardOf(page, 'ntutbox').locator('.cover-phone-bare')).toHaveCount(2);
+  const padding = await cardOf(page, 'ntutbox').locator('.cover-phone').first().evaluate((el) => getComputedStyle(el).paddingTop);
+  expect(padding).toBe('0px');
+  const framed = slugsWith('phones').find((s) => s !== 'ntutbox')!;
+  await page.goto('/zh/work');
+  await expect(cardOf(page, framed).locator('.cover-phone-bare')).toHaveCount(0);
+});
+
+test('a browser cover shows one screenshot in a window that bleeds off the right edge', async ({ page }) => {
+  const slug = slugsWith('browser')[0]!;
+  await page.goto('/zh/work');
+  const cover = cardOf(page, slug).locator('.cover');
+  const win = cover.locator('.cover-browser');
+  await expect(win.locator('img')).toHaveCount(1);
+  await expect(win.locator('img')).toBeVisible();
+  const [c, w] = await Promise.all([cover.boundingBox(), win.boundingBox()]);
+  expect(w!.x + w!.width).toBeGreaterThan(c!.x + c!.width);
+  await expect(cover.locator('.cover-name')).toBeVisible();
 });
 
 test('PhoneStrip: a focusable region of phone-framed screenshots that scrolls sideways', async ({ page }) => {
@@ -109,7 +142,7 @@ test('PhoneStrip snaps without smooth scrolling when motion is reduced', async (
 
 test('no horizontal page overflow at 390px', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  const drawn = [...slugsWith('schematic'), ...slugsWith('type')].slice(0, 2);
+  const drawn = ['phones', 'browser', 'schematic'].map((style) => slugsWith(style)[0]!);
   for (const path of ['/zh', '/zh/work', '/zh/work/ntutbox', ...drawn.map((s) => `/zh/work/${s}`)]) {
     await page.goto(path);
     const extra = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);

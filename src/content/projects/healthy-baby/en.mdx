@@ -2,6 +2,11 @@
 title: Healthy Baby
 summary: Second prize in the Taiwan and Greater China finals of the Mobile Application Innovation Contest. A parenting app for feeds, sleep, diapers and growth, with on-device jaundice and stool-colour checks.
 ---
+import home from './images/01-home.webp';
+import jaundice from './images/02-jaundice.webp';
+import colourCard from './images/03-colour-card.webp';
+import timeline from './images/04-timeline.webp';
+import addMenu from './images/05-add.webp';
 
 ## Background & problem
 
@@ -16,6 +21,17 @@ I built the iOS app and the Apple Watch app for the team.
 The app is SwiftUI, with accounts and data in Firebase and support for more than one baby. Daily logs (feeds, sleep, diapers, height and weight) turn into trend charts.
 
 Image checks run on the phone with Core ML, built on MobileNetV2, so photos of the baby never need to leave the device. The Watch app syncs with the phone over WatchConnectivity and handles heart-rate and breathing checks.
+
+<PhoneStrip
+  label="Healthy Baby app screenshots"
+  items={[
+    { src: home, alt: 'Home: height and weight, the next diaper estimate and vitals', caption: 'Home' },
+    { src: jaundice, alt: 'Jaundice check: a stool photo is read for its colour', caption: 'Jaundice check' },
+    { src: colourCard, alt: 'The nine-colour stool card, normal and abnormal shades side by side', caption: 'Colour card' },
+    { src: timeline, alt: 'Timeline of waking, sleep, diapers, feeds and heart rate', caption: 'Timeline' },
+    { src: addMenu, alt: 'Add menu: growth, daily log, measure and check', caption: 'Add a log' },
+  ]}
+/>
 
 ## Outcome
 

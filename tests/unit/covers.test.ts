@@ -67,5 +67,26 @@ describe('<Cover>', () => {
     expect(html).toMatch(/class="cover-phones" role="img" aria-label="Two screenshots"/);
     expect(html.match(/class="cover-phone"/g)).toHaveLength(2);
     expect(html.match(/<img\b[^>]*\salt(?:="")?[\s>]/g)).toHaveLength(2);
+    expect(html).not.toContain('cover-phone-bare');
+  });
+  it('phones: coverFramed false drops our frame for shots that already show a device', async () => {
+    const html = await renderAstro(Cover, {
+      lang: 'en', context: 'card',
+      project: project({ coverStyle: 'phones', coverTagline: tagline, coverAlt: { zh: '兩張截圖', en: 'Two screenshots' }, screens: [fakeImage('a'), fakeImage('b')], coverFramed: false }),
+    });
+    expect(html.match(/class="cover-phone cover-phone-bare"/g)).toHaveLength(2);
+  });
+  it('browser: the name beside one screenshot in a browser window, announced through coverAlt', async () => {
+    const wide = { src: '/src/w.png', width: 1600, height: 842, format: 'png' as const };
+    const html = await renderAstro(Cover, {
+      lang: 'en', context: 'card',
+      project: project({ coverStyle: 'browser', coverTagline: tagline, coverAlt: { zh: '網頁截圖', en: 'Dashboard screenshot' }, screens: [wide] }),
+    });
+    expect(html).toContain('data-cover="browser"');
+    expect(html).toMatch(/<div class="cover-type" aria-hidden="true">/);
+    expect(html).toContain('Demo App');
+    expect(html).toMatch(/class="cover-browser" role="img" aria-label="Dashboard screenshot"/);
+    expect(html.match(/<img\b[^>]*\salt(?:="")?[\s>]/g)).toHaveLength(1);
+    expect(html).toContain('~/work/demo-app');
   });
 });

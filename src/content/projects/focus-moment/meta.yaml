@@ -1,7 +1,9 @@
 date: "2024-08"
-categories: [competition, ai]
+categories: [competition, web, ai]
 stack: [Python, OpenCV, YOLO]
 role: { zh: 團隊成員, en: Team member }
-coverStyle: type
-coverTagline: { zh: 用影像估計課堂專注度 · 即時回饋給老師, en: "Camera-based attention estimate · live feedback for teachers" }
+coverStyle: browser
+coverTagline: { zh: 用教室影像估計專注度 · 網頁儀表板即時回饋老師, en: "Classroom video → attention estimate · a live web dashboard for teachers" }
+screens: [./images/02-playback.webp]
+coverAlt: { zh: 專注時刻網頁的課堂回放，旁邊是專注度比例圖, en: "Focus Moment's web playback view with an attention chart" }
 coverTint: violet

@@ -2,6 +2,10 @@
 title: 無痕地球
 summary: 移動應用創新賽佳作作品。一款環保社群 App：回報垃圾位置、在地圖上查看，並發起或參加社區淨灘、掃街活動，希望讓城市裡的垃圾問題被看見、被處理。
 ---
+import map from './images/01-map.webp';
+import addSpot from './images/02-add-spot.webp';
+import ar from './images/03-ar.webp';
+import event from './images/04-event.webp';
 
 ## 背景與問題
 
@@ -14,6 +18,16 @@ summary: 移動應用創新賽佳作作品。一款環保社群 App：回報垃�
 ## 做法與技術決策
 
 App 用 SwiftUI 開發，採 MVVM 架構，登入、資料與圖片儲存都用 Firebase。使用者可以發起清潔活動、附上照片，其他人瀏覽活動卡片、按讚和報名參加。
+
+<PhoneStrip
+  label="無痕地球 App 截圖"
+  items={[
+    { src: map, alt: '垃圾地圖：回報的地點依類型標上不同圖示', caption: '垃圾地圖' },
+    { src: addSpot, alt: '回報垃圾地點：拍照後自動辨識垃圾種類', caption: '回報與影像辨識' },
+    { src: ar, alt: 'AR 模式：鏡頭畫面上標出附近回報點和距離', caption: 'AR 導引' },
+    { src: event, alt: '淨灘活動頁：時間、地點與參加按鈕', caption: '淨灘活動' },
+  ]}
+/>
 
 ## 成果
 

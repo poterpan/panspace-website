@@ -1,6 +1,6 @@
 import type { Category } from './taxonomy';
 
-export const COVER_STYLES = ['image', 'phones', 'schematic', 'type'] as const;
+export const COVER_STYLES = ['image', 'phones', 'browser', 'schematic', 'type'] as const;
 export type CoverStyle = (typeof COVER_STYLES)[number];
 
 /** Cover tints: a deep glow behind the cover and a light accent for marks drawn on it. */

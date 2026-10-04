@@ -3,6 +3,9 @@ end: "2024-03"
 categories: [ios]
 stack: [Swift, SwiftUI, AVFoundation]
 role: { zh: 獨立開發, en: Solo developer }
-coverStyle: type
+coverStyle: phones
 coverTagline: { zh: 打開就是掃描器 · 掃教室 QR Code 完成簽到, en: "Opens to a scanner · scan the classroom code to check in" }
 coverTint: blue
+screens: [./images/01-login.webp, ./images/03-confirm.webp]
+coverAlt: { zh: FCU 簽到 App 的登入畫面與打卡確認視窗, en: "The FCU Check-in App's sign-in screen and check-in confirmation" }
+coverTitle: { zh: FCU 簽到, en: FCU Check-in }

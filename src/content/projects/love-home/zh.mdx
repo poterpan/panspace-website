@@ -2,6 +2,10 @@
 title: 享愛家園
 summary: 海峽兩岸青年創客大賽二等獎作品。給雙薪家庭的親子互動 App，爸媽和孩子各自登入、互相配對，一起完成任務養成「土豆龍」，用照片、錄音和貼文分享彼此的日常。
 ---
+import role from './images/01-role.webp';
+import egg from './images/02-pet-egg.webp';
+import hatched from './images/03-pet-hatched.webp';
+import post from './images/04-post.webp';
 
 ## 背景與問題
 
@@ -16,6 +20,16 @@ summary: 海峽兩岸青年創客大賽二等獎作品。給雙薪家庭的親�
 App 用 SwiftUI 開發，帳號與資料存在 Firebase。爸媽和孩子註冊時選擇各自的角色，再透過配對連結成一個家庭。
 
 互動的核心是養成遊戲：家人一起完成任務，「土豆龍」就會一級級長大。分享的部分支援拍照、錄音與貼文，也有搖一搖之類的小互動。
+
+<PhoneStrip
+  label="享愛家園 App 截圖"
+  items={[
+    { src: role, alt: '註冊時選擇身分：家長或小孩', caption: '選擇身分' },
+    { src: egg, alt: '小孩首頁：Lv 1 的怪獸蛋與每日任務', caption: '怪獸蛋' },
+    { src: hatched, alt: '完成任務後孵出的土豆龍，升到 Lv 3', caption: '土豆龍孵化' },
+    { src: post, alt: '發文：一張照片加上一段錄音', caption: '照片加錄音' },
+  ]}
+/>
 
 ## 成果
 

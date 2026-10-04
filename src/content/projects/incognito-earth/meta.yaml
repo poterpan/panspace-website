@@ -4,6 +4,8 @@ stack: [Swift, SwiftUI, Firebase]
 role: { zh: iOS 開發, en: iOS developer }
 links:
   github: https://github.com/poterpan/IncognitoEarth
-coverStyle: type
+coverStyle: phones
 coverTagline: { zh: 回報垃圾 · 地圖檢視 · 發起社區淨灘, en: "Report litter · see it on a map · start a clean-up" }
 coverTint: lime
+screens: [./images/01-map.webp, ./images/04-event.webp]
+coverAlt: { zh: 無痕地球 App 的垃圾地圖與淨灘活動頁, en: "Incognito Earth's litter map and a clean-up event page" }

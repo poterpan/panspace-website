@@ -2,6 +2,11 @@
 title: 健康寶寶
 summary: 移動應用創新賽台灣區與大中華區二等獎作品。一款給新手爸媽的育兒 App，記錄餵奶、睡眠、尿布與成長，結合黃疸與大便顏色辨識，以及 Apple Watch 上的心率、呼吸檢測。
 ---
+import home from './images/01-home.webp';
+import jaundice from './images/02-jaundice.webp';
+import colourCard from './images/03-colour-card.webp';
+import timeline from './images/04-timeline.webp';
+import addMenu from './images/05-add.webp';
 
 ## 背景與問題
 
@@ -16,6 +21,17 @@ summary: 移動應用創新賽台灣區與大中華區二等獎作品。一款�
 App 用 SwiftUI 開發，帳號與資料存在 Firebase，可以管理多個寶寶的紀錄。日常紀錄（餵奶、睡眠、尿布、身高體重）都整理成趨勢圖。
 
 辨識功能用 Core ML 在手機上執行，以 MobileNetV2 為基礎判讀照片，不需要把寶寶的照片上傳到伺服器。Apple Watch App 透過 WatchConnectivity 和手機同步，負責心率與呼吸的檢測。
+
+<PhoneStrip
+  label="健康寶寶 App 截圖"
+  items={[
+    { src: home, alt: '首頁：身高體重、大小便時間預測與生理指數', caption: '首頁總覽' },
+    { src: jaundice, alt: '黃疸辨識：拍下大便照片判讀顏色', caption: '黃疸辨識' },
+    { src: colourCard, alt: '嬰兒黃金九色卡：對照正常與不正常的大便顏色', caption: '九色卡' },
+    { src: timeline, alt: '時間軸：起床、睡覺、大小便、餵食與心率紀錄', caption: '時間軸' },
+    { src: addMenu, alt: '新增選單：成長記錄、日常記錄、測量與辨識', caption: '新增紀錄' },
+  ]}
+/>
 
 ## 成果
 

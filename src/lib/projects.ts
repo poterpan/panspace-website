@@ -26,6 +26,7 @@ export interface ProjectMetaData<C> {
   coverTitle?: Localized;
   coverTint?: Tint;
   screens?: C[];
+  coverFramed?: boolean;
   confidential: boolean;
   listOrder?: number;
 }

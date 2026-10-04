@@ -24,9 +24,9 @@ Set `E2E_PORT` to run the preview, e2e, link check and Lighthouse on a port othe
 
 ## Project covers and screenshots
 
-Each project's `meta.yaml` picks a `coverStyle`: `image` (default, uses `cover` + `coverAlt`), `type` (big name + `coverTagline`), `schematic` (a drawing in `src/components/covers/schematic/<slug>.astro`) or `phones`.
-To add app screenshots, put the files in `src/content/projects/<slug>/images/`, set `coverStyle: phones` with `screens: [./images/a.png, ./images/b.png]`, `coverTagline` and `coverAlt`, and show the full set in the MDX with `<PhoneStrip label="…" items={[{ src, alt, caption }]} />`.
-Landscape web screenshots keep using `<Gallery>`.
+Each project's `meta.yaml` picks a `coverStyle`: `image` (default, uses `cover` + `coverAlt`), `type` (big name + `coverTagline`), `schematic` (a drawing in `src/components/covers/schematic/<slug>.astro`), `phones` or `browser`.
+To add app screenshots, put the files in `src/content/projects/<slug>/images/`, set `coverStyle: phones` with `screens: [./images/a.png, ./images/b.png]`, `coverTagline` and `coverAlt` (add `coverFramed: false` if the shots already show a device), and show the full set in the MDX with `<PhoneStrip label="…" items={[{ src, alt, caption }]} />`.
+For a web project, `coverStyle: browser` takes one landscape shot in `screens`; show the full set with `<Gallery>`. Strip metadata and blur real people's faces and personal data before committing screenshots.
 
 ## Content policy
 

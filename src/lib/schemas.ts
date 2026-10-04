@@ -40,7 +40,8 @@ export function projectMetaSchema<C extends z.ZodType>(cover: C) {
       coverTagline: localized.optional(),
       coverTitle: localized.optional(),
       coverTint: z.enum(TINT_NAMES).optional(),
-      screens: z.array(cover).length(2).optional(),
+      screens: z.array(cover).min(1).max(2).optional(),
+      coverFramed: z.boolean().optional(),
       confidential: z.boolean().default(false),
       listOrder: z.number().int().optional(),
     })
@@ -60,12 +61,18 @@ export function projectMetaSchema<C extends z.ZodType>(cover: C) {
         forbid('cover', style);
         need('coverTagline', style);
       }
-      if (m.coverStyle === 'phones') {
+      // phones: two portrait app shots; browser: one landscape web shot.
+      const shots = m.coverStyle === 'phones' ? 2 : m.coverStyle === 'browser' ? 1 : 0;
+      if (shots) {
         need('screens', style);
         need('coverAlt', style);
+        if (m.screens && m.screens.length !== shots) {
+          ctx.addIssue({ code: 'custom', message: `screens needs exactly ${shots} image(s) ${style}`, path: ['screens'] });
+        }
       } else {
         forbid('screens', style);
       }
+      if (m.coverStyle !== 'phones') forbid('coverFramed', style);
     })
     .refine((m) => endNotBefore(m.date, m.end), {
       message: 'end must not be before date',

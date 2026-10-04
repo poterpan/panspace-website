@@ -2,6 +2,10 @@
 title: FCU Check-in App
 summary: When Feng Chia University introduced QR-code attendance, I built an iOS app for it. It opens straight to a scanner, checks you in with your own account when you scan the classroom code, and keeps a history.
 ---
+import login from './images/01-login.webp';
+import scan from './images/02-scan.webp';
+import confirm from './images/03-confirm.webp';
+import done from './images/04-done.webp';
 
 ## Background & problem
 
@@ -16,6 +20,16 @@ Built it alone: interface, sign-in and check-in flow, camera scanning, and keepi
 The app is SwiftUI and opens directly to a camera scanner that reads QR codes with AVFoundation. After one sign-in the session is kept, so a scan submits the check-in straight away, and results and history stay in the app.
 
 Camera permissions, expired sessions and network errors each get a clear message, so students know whether the check-in went through instead of staring at a spinner.
+
+<PhoneStrip
+  label="FCU Check-in App screenshots"
+  items={[
+    { src: login, alt: 'Sign-in: student ID through the NID login, with optional Face ID', caption: 'Sign in' },
+    { src: scan, alt: 'Scanner: fit the classroom QR code in the frame (camera view blurred)', caption: 'Scan' },
+    { src: confirm, alt: 'Check-in details: course code and when the code was made, then confirm', caption: 'Confirm' },
+    { src: done, alt: 'Done: course, period and the time it was recorded', caption: 'Checked in' },
+  ]}
+/>
 
 ## Outcome
 

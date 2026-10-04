@@ -2,6 +2,10 @@
 title: BaeMoments
 summary: Second prize at the Cross-Strait Youth Maker Competition. A family app where parents and kids pair up, complete missions to raise a pet monster, and share their days with photos, voice clips and posts.
 ---
+import role from './images/01-role.webp';
+import egg from './images/02-pet-egg.webp';
+import hatched from './images/03-pet-hatched.webp';
+import post from './images/04-post.webp';
 
 ## Background & problem
 
@@ -16,6 +20,16 @@ I built the iOS app for the team.
 The app is SwiftUI with accounts and data in Firebase. Parents and children each pick a role when they sign up and then pair into one family.
 
 The core is a raising game: as the family completes missions together, their pet monster grows level by level. Sharing covers photos, voice recordings and posts, plus small touches like shake-to-interact.
+
+<PhoneStrip
+  label="BaeMoments app screenshots"
+  items={[
+    { src: role, alt: 'Picking a role at sign-up: parent or child', caption: 'Pick a role' },
+    { src: egg, alt: "The kid's home: a level-1 egg and the daily missions", caption: 'The egg' },
+    { src: hatched, alt: 'After a few missions the pet monster hatches, now level 3', caption: 'Hatched' },
+    { src: post, alt: 'A new post: one photo with a voice clip', caption: 'Photo and voice' },
+  ]}
+/>
 
 ## Outcome
 
