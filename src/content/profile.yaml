@@ -10,7 +10,7 @@ now:
   - label: { zh: building, en: building }
     value: { zh: NTUTBox 北科盒子, en: NTUTBox }
   - label: { zh: studying, en: studying }
-    value: { zh: 北科大 創新 AI 所 碩士班, en: "MS, Innovative AI, NTUT" }
+    value: { zh: 北科大 創新 AI 碩, en: "MS, AI Technology (MPAI), NTUT" }
   - label: { zh: based in, en: based in }
     value: { zh: 台北, en: Taipei }
 email: poter.pan@panspace.me

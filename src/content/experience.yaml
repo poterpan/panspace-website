@@ -3,7 +3,7 @@
   start: "2025-09"
   end: present
   title: { zh: 碩士班（就讀中）, en: "Master's student" }
-  org: { zh: 國立臺北科技大學 創新 AI 所, en: "National Taipei University of Technology — Innovative AI program" }
+  org: { zh: 國立臺北科技大學 創新 AI 碩, en: "National Taipei University of Technology — Master Program in AI Technology (MPAI)" }
   description: { zh: 在台北攻讀碩士，研究生成式 AI 的應用。, en: "Master's study in Taipei, researching applications of generative AI." }
 - id: ntutbox-indie
   type: work

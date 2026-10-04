@@ -16,6 +16,11 @@ describe('master\'s program copy', () => {
     expect(ms).toBeDefined();
     expect(JSON.stringify(ms)).not.toMatch(TOPIC);
   });
+  it('the English program name is the official one (MPAI), not a made-up translation', () => {
+    const text = readFileSync('src/content/profile.yaml', 'utf8') + readFileSync('src/content/experience.yaml', 'utf8');
+    expect(text).toContain('Master Program in AI Technology (MPAI)');
+    expect(text).not.toMatch(/Innovative AI/i);
+  });
   it('the spine project is not framed as grad-school research', () => {
     for (const lang of ['zh', 'en']) {
       expect(readFileSync(`src/content/projects/spine-ai/${lang}.mdx`, 'utf8')).not.toMatch(/研究所|grad school|\bgraduate\b|\bmaster|碩士|thesis/i);
