@@ -4,6 +4,6 @@ stack: [Python, OpenCV, YOLO]
 role: { zh: 團隊成員, en: Team member }
 coverStyle: browser
 coverTagline: { zh: 用教室影像估計專注度 · 網頁儀表板即時回饋老師, en: "Classroom video → attention estimate · a live web dashboard for teachers" }
-screens: [./images/02-playback.webp]
-coverAlt: { zh: 專注時刻網頁的課堂回放，旁邊是專注度比例圖, en: "Focus Moment's web playback view with an attention chart" }
+screens: [./images/cover-live.webp]
+coverAlt: { zh: 專注時刻網頁的即時畫面：教室影像上標出每個人的姿態與專注狀態, en: "Focus Moment's live web view, marking each person's pose and attention state on the classroom video" }
 coverTint: violet

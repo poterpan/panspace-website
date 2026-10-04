@@ -40,7 +40,13 @@ export function projectMetaSchema<C extends z.ZodType>(cover: C) {
       coverTagline: localized.optional(),
       coverTitle: localized.optional(),
       coverTint: z.enum(TINT_NAMES).optional(),
-      screens: z.array(cover).min(1).max(2).optional(),
+      // One list for both languages, or a list per language for shots taken in each UI language.
+      screens: z
+        .union([
+          z.array(cover).min(1).max(2),
+          z.object({ zh: z.array(cover).min(1).max(2), en: z.array(cover).min(1).max(2) }).strict(),
+        ])
+        .optional(),
       coverFramed: z.boolean().optional(),
       confidential: z.boolean().default(false),
       listOrder: z.number().int().optional(),
@@ -66,7 +72,8 @@ export function projectMetaSchema<C extends z.ZodType>(cover: C) {
       if (shots) {
         need('screens', style);
         need('coverAlt', style);
-        if (m.screens && m.screens.length !== shots) {
+        const lists = !m.screens ? [] : Array.isArray(m.screens) ? [m.screens] : [m.screens.zh, m.screens.en];
+        if (lists.some((list) => list.length !== shots)) {
           ctx.addIssue({ code: 'custom', message: `screens needs exactly ${shots} image(s) ${style}`, path: ['screens'] });
         }
       } else {

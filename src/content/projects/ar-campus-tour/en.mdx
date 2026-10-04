@@ -2,6 +2,8 @@
 title: AR Campus Tour
 summary: A graduate AR course project. ARCore visual positioning anchors a virtual guide in front of real NTUT buildings, where it greets you and answers typed or spoken questions. iOS and Android, built by a team of four.
 ---
+import catGame from './images/01-cat-game.webp';
+import guide from './images/02-ar-guide.webp';
 
 ## Background & problem
 
@@ -20,6 +22,14 @@ Once localized, the app creates anchors at the real coordinates of five points o
 **The codebase** is split into five modules with Assembly Definitions: POI data, AR positioning, the guide, the cat and the UI. That kept compile coupling low and avoided Unity scene merge conflicts. All work that touched the main scene went through me, while teammates delivered self-contained modules, so four people could work in parallel.
 
 **CI/CD** on GitHub Actions builds iOS (to a public TestFlight) and Android automatically. API keys are generated from secrets at build time and never committed.
+
+<PhoneStrip
+  label="AR Campus Tour app screenshots"
+  items={[
+    { src: catGame, alt: 'The AR campus-cat game: the guide in front of a building, tap the ground to place cat food', caption: 'Campus-cat game' },
+    { src: guide, alt: 'The AR guide at the cafeteria entrance, answering what there is to eat nearby', caption: 'Ask the guide' },
+  ]}
+/>
 
 ## Outcome
 

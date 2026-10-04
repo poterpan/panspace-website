@@ -161,9 +161,11 @@ a.bento-card:hover { border-color: var(--color-line-strong); }
   margin: 0; color: #f4f5f8;
   font-size: clamp(1.25rem, 10cqi, 4.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.02;
   text-wrap: balance;
+  /* keep CJK words whole so names break at their spaces ("AR / 校園導覽") */
+  word-break: keep-all; overflow-wrap: anywhere;
 }
 .cover-tagline {
-  margin: 2.6cqi 0 0; max-width: 34em;
+  margin: 2.6cqi 0 0; max-width: 34em; word-break: keep-all; overflow-wrap: anywhere;
   font: clamp(10px, 3.1cqi, 15px) / 1.5 var(--font-mono); color: #c9ced8;
 }
 .cover-tagline::before { content: ""; display: block; width: 2.4em; height: 2px; border-radius: 2px; background: var(--cover-accent); margin-bottom: 0.9em; }

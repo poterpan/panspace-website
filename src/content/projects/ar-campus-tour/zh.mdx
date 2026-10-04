@@ -2,6 +2,8 @@
 title: AR 校園導覽
 summary: 研究所「電腦圖學與擴增實境」課的期末專案。用 ARCore 的視覺定位把虛擬導遊錨定在北科真實的建築前，走到哪就講到哪，還能用文字或語音向它提問；iOS 與 Android 雙平台，四人團隊完成。
 ---
+import catGame from './images/01-cat-game.webp';
+import guide from './images/02-ar-guide.webp';
 
 ## 背景與問題
 
@@ -20,6 +22,14 @@ summary: 研究所「電腦圖學與擴增實境」課的期末專案。用 ARCo
 **架構**上把程式碼依 Assembly Definition 切成景點資料、AR 定位、導遊、校園貓與 UI 五個模組，降低組員之間的編譯耦合和 Unity 場景合併衝突。會動到主場景的工作集中在我這裡，其他組員交付獨立模組，讓四個人能平行開發。
 
 **CI/CD** 用 GitHub Actions 自動建置 iOS（發佈到 TestFlight 公開測試）與 Android 版本，金鑰由 secret 在建置時產生，不進版控。
+
+<PhoneStrip
+  label="AR 校園導覽 App 截圖"
+  items={[
+    { src: catGame, alt: 'AR 校園貓小遊戲：化工館前的導遊旁，點擊地面放置罐頭餵貓', caption: '校園貓小遊戲' },
+    { src: guide, alt: 'AR 導遊站在學生餐廳入口，對話框裡回答附近有什麼好吃', caption: 'AR 導遊問答' },
+  ]}
+/>
 
 ## 成果
 

@@ -3,7 +3,7 @@ import { Picture } from 'astro:assets';
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 import type { Locale } from '../../lib/i18n';
 import type { ProjectEntry } from '../../lib/content';
-import { coverTint, tintStyle } from '../../lib/covers';
+import { coverTint, screensFor, tintStyle } from '../../lib/covers';
 
 /**
  * A project's cover, in the style its meta.yaml picks:
@@ -37,6 +37,7 @@ const Schematic = style === 'schematic' ? schematics[`./schematic/${slug}.astro`
 if (style === 'schematic' && !Schematic) {
   throw new Error(`${slug} uses coverStyle: schematic but src/components/covers/schematic/${slug}.astro is missing`);
 }
+const screens = screensFor(meta.screens, lang);
 const phoneWidths = context === 'hero' ? [320, 640] : [200, 400];
 const browserWidths = context === 'hero' ? [640, 1280] : [400, 800];
 // coverFramed: false is for shots that already show a device, so they are not framed twice.
@@ -66,19 +67,19 @@ const phoneClass = meta.coverFramed === false ? 'cover-phone cover-phone-bare' :
       {tagline && <p class="cover-tagline">{tagline}</p>}
     </div>
   )}
-  {style === 'phones' && meta.screens && (
+  {style === 'phones' && screens.length > 0 && (
     <div class="cover-phones" role="img" aria-label={meta.coverAlt?.[lang]}>
-      {meta.screens.map((src, i) => (
+      {screens.map((src, i) => (
         <span class={phoneClass} data-phone={i}>
           <Picture src={src} alt="" formats={['avif', 'webp']} widths={phoneWidths} sizes={context === 'hero' ? '240px' : '120px'} loading={loading} />
         </span>
       ))}
     </div>
   )}
-  {style === 'browser' && meta.screens?.[0] && (
+  {style === 'browser' && screens[0] && (
     <div class="cover-browser" role="img" aria-label={meta.coverAlt?.[lang]}>
       <span class="cover-browser-bar"><i></i><i></i><i></i></span>
-      <Picture src={meta.screens[0]} alt="" formats={['avif', 'webp']} widths={browserWidths} sizes={context === 'hero' ? '640px' : '240px'} loading={loading} />
+      <Picture src={screens[0]} alt="" formats={['avif', 'webp']} widths={browserWidths} sizes={context === 'hero' ? '640px' : '240px'} loading={loading} />
     </div>
   )}
   {Schematic && (

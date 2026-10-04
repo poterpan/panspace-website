@@ -76,6 +76,15 @@ describe('<Cover>', () => {
     });
     expect(html.match(/class="cover-phone cover-phone-bare"/g)).toHaveLength(2);
   });
+  it('phones: per-locale screens show the shots for the page language', async () => {
+    const meta = { coverStyle: 'phones', coverTagline: tagline, coverAlt: { zh: '兩張截圖', en: 'Two screenshots' }, screens: { zh: [fakeImage('zh-a'), fakeImage('zh-b')], en: [fakeImage('en-a'), fakeImage('en-b')] } };
+    const zh = await renderAstro(Cover, { lang: 'zh', context: 'card', project: project(meta) });
+    const en = await renderAstro(Cover, { lang: 'en', context: 'card', project: project(meta) });
+    expect(zh).toContain('zh-a');
+    expect(zh).not.toContain('en-a');
+    expect(en).toContain('en-b');
+    expect(en).not.toContain('zh-b');
+  });
   it('browser: the name beside one screenshot in a browser window, announced through coverAlt', async () => {
     const wide = { src: '/src/w.png', width: 1600, height: 842, format: 'png' as const };
     const html = await renderAstro(Cover, {

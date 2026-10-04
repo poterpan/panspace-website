@@ -11,6 +11,8 @@ bento: wide
 coverStyle: phones
 coverTagline: { zh: 課表 · 成績 · 公告 · 小工具, en: "Timetable · grades · notices · widgets" }
 coverTint: blue
-screens: [./images/app-1.webp, ./images/app-4.webp]
+screens:
+  zh: [./images/zh/02-today.webp, ./images/zh/06-grades.webp]
+  en: [./images/en/02-today.webp, ./images/en/06-grades.webp]
 coverFramed: false
 coverAlt: { zh: 北科盒子 App 的今日總覽與成績查詢畫面, en: "The NTUTBox app's Today and Grades screens" }

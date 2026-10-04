@@ -4,6 +4,8 @@ stack: [Python, FastAPI, FunASR, OpenCC, JavaScript]
 role: { zh: 獨立開發, en: Solo developer }
 links:
   github: https://github.com/poterpan/asr-server
-cover: ./images/cover.png
+coverStyle: browser
+coverTagline: { zh: 自架轉錄 · 講者分離 · 台灣繁體 · 給 LLM 的格式, en: "Self-hosted transcription · speaker labels · Taiwan Traditional Chinese · LLM-ready" }
+screens: [./images/01-transcript.webp]
 coverAlt: { zh: asr-server 網頁介面：上傳音檔後得到標上講者與時間的逐字稿, en: "The asr-server web UI showing a finished transcript with speaker labels and timestamps" }
 listOrder: 1

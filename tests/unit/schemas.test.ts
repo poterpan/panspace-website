@@ -69,6 +69,8 @@ describe('projectMetaSchema cover variants', () => {
     ['browser without coverAlt', { ...base, coverStyle: 'browser', coverTagline: tagline, screens: ['a.png'] }],
     ['browser without tagline', { ...base, coverStyle: 'browser', coverAlt: validMeta.coverAlt, screens: ['a.png'] }],
     ['coverFramed outside phones', { ...base, coverStyle: 'browser', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: ['a.png'], coverFramed: false }],
+    ['per-locale screens missing a locale', { ...base, coverStyle: 'phones', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: { zh: ['a.png', 'b.png'] } }],
+    ['per-locale screens with a wrong count', { ...base, coverStyle: 'phones', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: { zh: ['a.png', 'b.png'], en: ['a.png'] } }],
     ['schematic without tagline', { ...base, coverStyle: 'schematic' }],
     ['type without tagline', { ...base, coverStyle: 'type' }],
     ['type with an image cover', { ...validMeta, coverStyle: 'type', coverTagline: tagline }],
@@ -81,6 +83,7 @@ describe('projectMetaSchema cover variants', () => {
   it.each([
     ['phones', { ...base, coverStyle: 'phones', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: ['a.png', 'b.png'] }],
     ['phones (unframed)', { ...base, coverStyle: 'phones', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: ['a.png', 'b.png'], coverFramed: false }],
+    ['phones with per-locale screens', { ...base, coverStyle: 'phones', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: { zh: ['a.png', 'b.png'], en: ['c.png', 'd.png'] } }],
     ['browser', { ...base, coverStyle: 'browser', coverTagline: tagline, coverAlt: validMeta.coverAlt, screens: ['a.png'] }],
     ['schematic', { ...base, coverStyle: 'schematic', coverTagline: tagline }],
     ['type', { ...base, coverStyle: 'type', coverTagline: tagline, coverTitle: { zh: '名稱', en: 'Name' }, coverTint: 'rose' }],

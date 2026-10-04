@@ -103,6 +103,17 @@ test('ntutbox shots already show a device, so its phones cover is not framed twi
   await expect(cardOf(page, framed).locator('.cover-phone-bare')).toHaveCount(0);
 });
 
+test('per-locale screens: the zh and en ntutbox covers show different shots', async ({ page }) => {
+  const srcs = async (lang: string) => {
+    await page.goto(`/${lang}/work`);
+    return page.locator(`a.vt-card[href="/${lang}/work/ntutbox"] .cover-phone img`).evaluateAll((imgs) => imgs.map((i) => i.getAttribute('src')));
+  };
+  const [zh, en] = [await srcs('zh'), await srcs('en')];
+  expect(zh).toHaveLength(2);
+  expect(en).toHaveLength(2);
+  for (const src of zh) expect(en).not.toContain(src);
+});
+
 test('a browser cover shows one screenshot in a window that bleeds off the right edge', async ({ page }) => {
   const slug = slugsWith('browser')[0]!;
   await page.goto('/zh/work');
@@ -121,9 +132,9 @@ test('PhoneStrip: a focusable region of phone-framed screenshots that scrolls si
   const region = page.getByRole('region', { name: '北科盒子 App 截圖' });
   await expect(region).toHaveAttribute('tabindex', '0');
   // ntutbox's shots already include a device, so this strip opts out of our frame.
-  await expect(region.locator('.phone-bare img')).toHaveCount(4);
+  await expect(region.locator('.phone-bare img')).toHaveCount(6);
   await expect(region.locator('.phone-frame')).toHaveCount(0);
-  await expect(region.locator('figcaption')).toHaveText(['今日總覽', '成績與排名', '北科小郵差', '學校帳號登入']);
+  await expect(region.locator('figcaption')).toHaveText(['課表', '今日總覽', '選課與課程', '共同空堂', '成績與排名', '北科小郵差']);
   const overflow = await region.evaluate((el) => el.scrollWidth - el.clientWidth);
   expect(overflow).toBeGreaterThan(0);
   await region.focus();

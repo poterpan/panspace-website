@@ -1,3 +1,4 @@
+import type { Locale } from './i18n';
 import type { Category } from './taxonomy';
 
 export const COVER_STYLES = ['image', 'phones', 'browser', 'schematic', 'type'] as const;
@@ -31,4 +32,10 @@ export function coverTint(meta: { coverTint?: Tint; categories: readonly Categor
 
 export function tintStyle(tint: Tint): string {
   return `--cover-glow:${TINTS[tint].glow};--cover-accent:${TINTS[tint].accent}`;
+}
+
+/** A cover's screenshots for one language: `screens` is either shared or split by language. */
+export function screensFor<C>(screens: C[] | { zh: C[]; en: C[] } | undefined, lang: Locale): C[] {
+  if (!screens) return [];
+  return Array.isArray(screens) ? screens : screens[lang];
 }
