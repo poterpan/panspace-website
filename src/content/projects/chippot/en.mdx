@@ -2,6 +2,8 @@
 title: ChipPot
 summary: Billing and reconciliation for clubs that co-buy AI subscriptions. Members pay with one button in Discord, admins verify in one click, and the whole thing runs serverless on Cloudflare. Open source.
 ---
+import discord from './images/01-discord-billing.webp';
+import dashboard from './images/02-admin-dashboard.webp';
 
 ## Background & problem
 
@@ -23,6 +25,15 @@ A few deliberate choices:
 - **Core and channel adapters are separate.** Billing logic doesn't depend on Discord, and LINE and Telegram adapters are pre-wired.
 - **The admin site sits behind Cloudflare Access.** The SPA and API share an origin, and the Worker re-verifies the JWT and an email allow-list.
 - **CSV imports preview the diff first**: which subscriptions get added, paused or reactivated. Nothing is written until you confirm, and re-runs are idempotent.
+
+<Gallery
+  label="ChipPot screenshots"
+  images={[
+    { src: discord, alt: "The billing message in Discord: each plan's price, with a Pay button below" },
+    { src: dashboard, alt: "The admin reconciliation board: this period's unpaid count, total due and each plan's payment status" },
+  ]}
+  caption="The billing notice members get in Discord, and the admin reconciliation board."
+/>
 
 ## Outcome
 

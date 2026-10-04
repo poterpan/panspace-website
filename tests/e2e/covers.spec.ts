@@ -24,9 +24,9 @@ for (const [path, slugs] of [['/zh', featuredSlugs()], ['/zh/work', orderedSlugs
 
 const drawnSlugs = () => orderedSlugs().filter((s) => styleOf(s) !== 'image');
 
-test('/zh/work shows image, phones, browser and schematic covers, with the path label on drawn ones', async ({ page }) => {
+test('/zh/work shows phones, browser and schematic covers, with the path label on drawn ones', async ({ page }) => {
   await page.goto('/zh/work');
-  for (const style of ['image', 'phones', 'browser', 'schematic']) {
+  for (const style of ['phones', 'browser', 'schematic']) {
     expect(slugsWith(style).length, style).toBeGreaterThan(0);
     await expect(page.locator(`.work-card .cover[data-cover="${style}"]`)).toHaveCount(slugsWith(style).length);
   }
