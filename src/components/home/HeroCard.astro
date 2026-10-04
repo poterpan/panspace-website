@@ -5,7 +5,8 @@ import type { Profile } from '../../lib/content';
 
 interface Props { lang: Locale; profile: Profile }
 const { lang, profile } = Astro.props;
-const status = t(lang, profile.freelance === 'open' ? 'status.open' : 'status.busy');
+// The terminal speaks English in both languages; the Bento strip below carries the localized status.
+const status = t('en', profile.freelance === 'open' ? 'status.open' : 'status.busy');
 // Each line types itself in once the boot sequence is gone (CSS only; the text is always in the HTML).
 const lines = [
   ...(profile.now ?? []).map((l) => ({ key: l.label[lang], value: l.value[lang], status: false })),

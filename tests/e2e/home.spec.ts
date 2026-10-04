@@ -72,7 +72,7 @@ test.describe('homepage', () => {
     test('the `$ now` panel is plain text in the HTML', async ({ page }) => {
       await page.goto('/zh');
       const panel = page.locator('.bento-hero .now-panel');
-      for (const text of ['building', 'NTUTBox 北科盒子', 'studying', '北科大 創新 AI 碩', 'based in', '台北', '開放接案中']) {
+      for (const text of ['building', 'NTUTBox 北科盒子', 'studying', '北科大 創新 AI 碩', 'based in', 'Taipei', 'Open for freelance']) {
         await expect(panel).toContainText(text);
       }
       await expect(panel.locator('.now-line').last()).toBeVisible();
@@ -85,6 +85,10 @@ test.describe('homepage', () => {
       const values = await page.locator('.now-panel .now-value').allTextContents();
       expect(values.map((v) => v.trim())).toEqual(['NTUTBox', 'MS, AI Technology (MPAI), NTUT', 'Taipei', 'Open for freelance']);
       await expect(page.locator('.now-panel .now-status .status-dot')).toHaveAttribute('data-status', 'open');
+      // zh keeps its own values except the place and the status, which stay in terminal English.
+      await page.goto('/zh');
+      const zh = await page.locator('.now-panel .now-value').allTextContents();
+      expect(zh.map((v) => v.trim())).toEqual(['NTUTBox 北科盒子', '北科大 創新 AI 碩', 'Taipei', 'Open for freelance']);
     });
 
     test('reduced motion: the panel is static', async ({ page }) => {

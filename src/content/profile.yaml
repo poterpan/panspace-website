@@ -12,7 +12,7 @@ now:
   - label: { zh: studying, en: studying }
     value: { zh: 北科大 創新 AI 碩, en: "MS, AI Technology (MPAI), NTUT" }
   - label: { zh: based in, en: based in }
-    value: { zh: 台北, en: Taipei }
+    value: { zh: Taipei, en: Taipei }
 email: poter.pan@panspace.me
 freelance: open
 socials:
