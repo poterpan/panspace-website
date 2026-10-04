@@ -12,13 +12,15 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  WRANGLER_SEND_METRICS: 'false'
+
 jobs:
-  verify:
+  # Static checks + the one and only build. dist/ is shared with the e2e shards and Lighthouse.
+  build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
     env:
-      WRANGLER_SEND_METRICS: 'false'
-      E2E_SKIP_BUILD: '1'
       CONTENT_DENYLIST: ${{ secrets.CONTENT_DENYLIST }}
     steps:
       - uses: actions/checkout@v7
@@ -28,25 +30,123 @@ jobs:
           node-version-file: .node-version
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # Astro writes optimized images (AVIF/WebP) to node_modules/.astro/assets, named by content hash,
+      # so a restore-key fallback is safe: stale entries are simply never read.
+      - uses: actions/cache@v6
+        with:
+          path: node_modules/.astro
+          key: astro-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('src/**/*.png', 'src/**/*.jpg', 'src/**/*.jpeg', 'src/**/*.webp', 'src/**/*.svg', 'public/**') }}
+          restore-keys: |
+            astro-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+            astro-${{ runner.os }}-
       - run: pnpm check
       - run: pnpm test
       - run: pnpm build
       - run: pnpm check:dist
-      - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm test:e2e
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist
+          retention-days: 1
+          if-no-files-found: error
+
+  e2e:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+    env:
+      E2E_SKIP_BUILD: '1'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist
+      - name: Resolve Playwright version
+        id: pw
+        run: echo "version=$(pnpm exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+      - name: Cache Playwright browsers
+        id: pw-cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}-chromium
+      - name: Install Chromium and system deps
+        if: steps.pw-cache.outputs.cache-hit != 'true'
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Install system deps only (browser cache hit)
+        if: steps.pw-cache.outputs.cache-hit == 'true'
+        run: pnpm exec playwright install-deps chromium
+      - run: pnpm exec playwright test --shard=${{ matrix.shard }}/2
+      # Playwright stops its web server when done; start one for the link check (shard 1 only).
+      - name: Start local Workers server
+        if: matrix.shard == 1
+        run: |
+          pnpm preview:cf > wrangler.log 2>&1 &
+          for _ in $(seq 1 60); do curl -fsS http://127.0.0.1:8788/zh > /dev/null && exit 0; sleep 1; done
+          cat wrangler.log
+          exit 1
+      - name: Link check
+        if: matrix.shard == 1
+        run: pnpm check:links
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: playwright-report-${{ matrix.shard }}
+          path: playwright-report
+          retention-days: 14
+          if-no-files-found: ignore
+
+  # Slow (5 URLs x 3 runs) and not a PR gate: main only.
+  lhci:
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist
       - name: Start local Workers server
         run: |
           pnpm preview:cf > wrangler.log 2>&1 &
-          for i in $(seq 1 60); do curl -fsS http://127.0.0.1:8788/zh > /dev/null && exit 0; sleep 1; done
+          for _ in $(seq 1 60); do curl -fsS http://127.0.0.1:8788/zh > /dev/null && exit 0; sleep 1; done
           cat wrangler.log
           exit 1
-      - run: pnpm check:links
       - run: pnpm lhci
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: reports
-          path: |
-            playwright-report
-            .lighthouseci
+          name: lighthouse-reports
+          path: .lighthouseci
           retention-days: 14
+          if-no-files-found: ignore
+
+  # Required status check on main (branch protection): keep this exact name.
+  verify:
+    if: always()
+    needs: [build, e2e]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require build and all e2e shards to succeed
+        run: |
+          echo "build=${{ needs.build.result }} e2e=${{ needs.e2e.result }}"
+          [ "${{ needs.build.result }}" = "success" ] && [ "${{ needs.e2e.result }}" = "success" ]
