@@ -18,7 +18,7 @@
   start: "2025-10"
   end: "2026-09"
   title: { zh: 運動動作分析 AI 系統, en: Sports motion-analysis AI system }
-  org: { zh: 商業客戶（保密）, en: Commercial client (confidential) }
+  org: { zh: 商業客戶, en: Commercial client }
   description: { zh: 擔任技術負責人，從資料標註、模型訓練到雲端上線，交付投籃影片分析系統。, en: "Technical lead, from data labelling and model training to cloud deployment, delivering a shooting-video analysis system." }
 - id: ios-club-webmaster
   type: teaching
