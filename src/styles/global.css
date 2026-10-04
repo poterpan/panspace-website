@@ -365,6 +365,7 @@ html[data-boot="folding"] .boot { animation: boot-fold 400ms cubic-bezier(0.7, 0
 .mdx-phones-list li { flex: 0 0 auto; width: clamp(150px, 40vw, 200px); scroll-snap-align: start; }
 .phone-frame { display: block; padding: 5px; border-radius: 28px; background: #0a0a0a; box-shadow: 0 14px 36px #0009, 0 0 0 1px #ffffff1f; }
 .phone-frame img { display: block; width: 100%; height: auto; aspect-ratio: 9 / 19.5; object-fit: cover; object-position: top; border-radius: 23px; }
+.phone-bare img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--color-line); }
 .mdx-phones-list figcaption { text-align: center; }
 .mdx-compare-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 .mdx-diagram { overflow-x: auto; }

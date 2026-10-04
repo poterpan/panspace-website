@@ -2,9 +2,12 @@
 import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
-/** Portrait app screenshots in phone frames, one caption each, in a row that scrolls sideways. */
-interface Props { label: string; items: { src: ImageMetadata; alt: string; caption: string }[]; caption?: string }
-const { label, items, caption } = Astro.props;
+/**
+ * Portrait app screenshots in phone frames, one caption each, in a row that scrolls sideways.
+ * `framed={false}` drops our frame for images that already show a device (e.g. App Store marketing shots).
+ */
+interface Props { label: string; items: { src: ImageMetadata; alt: string; caption: string }[]; caption?: string; framed?: boolean }
+const { label, items, caption, framed = true } = Astro.props;
 ---
 <figure class="mdx-phones">
   <div class="mdx-phones-track" role="region" aria-label={label} tabindex="0">
@@ -12,7 +15,7 @@ const { label, items, caption } = Astro.props;
       {items.map((item) => (
         <li>
           <figure>
-            <span class="phone-frame">
+            <span class={framed ? 'phone-frame' : 'phone-bare'}>
               <Picture src={item.src} alt={item.alt} formats={['avif', 'webp']} widths={[220, 440]} sizes="220px" />
             </span>
             <figcaption>{item.caption}</figcaption>

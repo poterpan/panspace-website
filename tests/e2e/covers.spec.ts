@@ -87,7 +87,9 @@ test('PhoneStrip: a focusable region of phone-framed screenshots that scrolls si
   await page.goto('/zh/work/ntutbox');
   const region = page.getByRole('region', { name: '北科盒子 App 截圖' });
   await expect(region).toHaveAttribute('tabindex', '0');
-  await expect(region.locator('.phone-frame img')).toHaveCount(4);
+  // ntutbox's shots already include a device, so this strip opts out of our frame.
+  await expect(region.locator('.phone-bare img')).toHaveCount(4);
+  await expect(region.locator('.phone-frame')).toHaveCount(0);
   await expect(region.locator('figcaption')).toHaveText(['今日總覽', '成績與排名', '北科小郵差', '學校帳號登入']);
   const overflow = await region.evaluate((el) => el.scrollWidth - el.clientWidth);
   expect(overflow).toBeGreaterThan(0);
