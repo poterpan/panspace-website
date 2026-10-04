@@ -3,8 +3,8 @@
   start: "2025-09"
   end: present
   title: { zh: 碩士班（就讀中）, en: "Master's student" }
-  org: { zh: 國立臺北科技大學, en: National Taipei University of Technology }
-  description: { zh: 在台北念研究所，研究醫學影像 AI，與醫學中心合作脊椎 X 光分析。, en: "Graduate study in Taipei, researching medical-imaging AI and working with a medical center on spine X-ray analysis." }
+  org: { zh: 國立臺北科技大學 創新 AI 所, en: "National Taipei University of Technology — Innovative AI program" }
+  description: { zh: 在台北攻讀碩士，研究生成式 AI 的應用。, en: "Master's study in Taipei, researching applications of generative AI." }
 - id: ntutbox-indie
   type: work
   start: "2025-09"

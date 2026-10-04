@@ -72,7 +72,7 @@ test.describe('homepage', () => {
     test('the `$ now` panel is plain text in the HTML', async ({ page }) => {
       await page.goto('/zh');
       const panel = page.locator('.bento-hero .now-panel');
-      for (const text of ['building', 'NTUTBox 北科盒子', 'studying', '北科大碩士 · 醫學影像 AI', 'based in', '台北', '開放接案中']) {
+      for (const text of ['building', 'NTUTBox 北科盒子', 'studying', '北科大 創新 AI 所 碩士班', 'based in', '台北', '開放接案中']) {
         await expect(panel).toContainText(text);
       }
       await expect(panel.locator('.now-line').last()).toBeVisible();
@@ -83,7 +83,7 @@ test.describe('homepage', () => {
     test('lines come from profile.yaml plus the availability status', async ({ page }) => {
       await page.goto('/en');
       const values = await page.locator('.now-panel .now-value').allTextContents();
-      expect(values.map((v) => v.trim())).toEqual(['NTUTBox', 'MS @ NTUT · medical-imaging AI', 'Taipei', 'Open for freelance']);
+      expect(values.map((v) => v.trim())).toEqual(['NTUTBox', 'MS, Innovative AI, NTUT', 'Taipei', 'Open for freelance']);
       await expect(page.locator('.now-panel .now-status .status-dot')).toHaveAttribute('data-status', 'open');
     });
 
