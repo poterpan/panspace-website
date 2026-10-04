@@ -10,8 +10,12 @@ function run(): void {
   const { steps, foldAt, totalMs } = buildBootTimeline(lines);
   const els = overlay.querySelectorAll<HTMLElement>('.boot-line');
   const timers: number[] = [];
+  // Exposed for tests: the scheduled length, plus start/end marks measured in page time.
+  root.dataset.bootPlanned = String(totalMs);
+  performance.mark('ps:boot-start');
 
   const finish = () => {
+    performance.mark('ps:boot-end');
     timers.forEach((id) => window.clearTimeout(id));
     window.removeEventListener('keydown', finish);
     window.removeEventListener('pointerdown', finish);
