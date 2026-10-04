@@ -23,7 +23,7 @@ describe('master\'s program copy', () => {
   });
   it('the spine project is not framed as grad-school research', () => {
     for (const lang of ['zh', 'en']) {
-      expect(readFileSync(`src/content/projects/spine-ai/${lang}.mdx`, 'utf8')).not.toMatch(/研究所|grad school|\bgraduate\b|\bmaster|碩士|thesis/i);
+      expect(readFileSync(`src/content/projects/spine-ai/${lang}.mdx`, 'utf8')).not.toMatch(/研究所|grad school|\bgraduate\b|\bmaster|碩士|thesis|論文|paper-ready/i);
     }
   });
 });
