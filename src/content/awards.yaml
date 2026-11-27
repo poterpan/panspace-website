@@ -1,3 +1,9 @@
+- id: edc-2025-cervai
+  year: 2025
+  kind: award
+  name: { zh: CervAI 頸椎手術輔助智慧評估系統, en: "CervAI: smart assessment for cervical spine surgery" }
+  rank: { zh: 亞軍, en: Second place }
+  org: { zh: 全國電子設計創意競賽, en: National Electronic Design Creativity Competition }
 - id: fcu-capstone-2024
   year: 2024
   kind: award

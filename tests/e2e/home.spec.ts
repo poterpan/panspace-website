@@ -138,7 +138,7 @@ test.describe('homepage', () => {
     const card = page.locator('a.awards-card');
     await expect(card).toHaveAttribute('href', '/zh/about#awards');
     await expect(card.locator('.awards-mini li')).toHaveCount(3);
-    await expect(card.locator('.awards-mini li').first()).toContainText('2024');
+    await expect(card.locator('.awards-mini li').first()).toContainText('2025');
     await expect(card.locator('.awards-all')).toHaveText('全部 →');
     await card.click();
     await expect(page).toHaveURL(/\/zh\/about#awards$/);
